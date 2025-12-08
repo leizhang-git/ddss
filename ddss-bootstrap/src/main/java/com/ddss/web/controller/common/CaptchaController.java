@@ -6,6 +6,9 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FastByteArrayOutputStream;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,8 +29,10 @@ import com.ddss.system.service.ISysConfigService;
  * @author ruoyi
  */
 @RestController
-public class CaptchaController
-{
+public class CaptchaController {
+
+    private static final Logger log = LoggerFactory.getLogger(CaptchaController.class);
+
     @Resource(name = "captchaProducer")
     private Producer captchaProducer;
 
@@ -39,17 +44,15 @@ public class CaptchaController
     
     @Autowired
     private ISysConfigService configService;
-    /**
+        /**
      * 生成验证码
      */
     @GetMapping("/captchaImage")
-    public AjaxResult getCode(HttpServletResponse response) throws IOException
-    {
+    public AjaxResult getCode(HttpServletResponse response) throws IOException {
         AjaxResult ajax = AjaxResult.success();
         boolean captchaEnabled = configService.selectCaptchaEnabled();
         ajax.put("captchaEnabled", captchaEnabled);
-        if (!captchaEnabled)
-        {
+        if (!captchaEnabled) {
             return ajax;
         }
 
@@ -57,38 +60,49 @@ public class CaptchaController
         String uuid = IdUtils.simpleUUID();
         String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + uuid;
 
-        String capStr = null, code = null;
+        String displayText = null;
+        String verifyCode = null;
         BufferedImage image = null;
 
         // 生成验证码
         String captchaType = DdssConfig.getCaptchaType();
-        if ("math".equals(captchaType))
-        {
+        if ("math".equals(captchaType)) {
             String capText = captchaProducerMath.createText();
-            capStr = capText.substring(0, capText.lastIndexOf("@"));
-            code = capText.substring(capText.lastIndexOf("@") + 1);
-            image = captchaProducerMath.createImage(capStr);
-        }
-        else if ("char".equals(captchaType))
-        {
-            capStr = code = captchaProducer.createText();
-            image = captchaProducer.createImage(capStr);
+            int splitIndex = capText.lastIndexOf("@");
+            if (splitIndex == -1 || splitIndex >= capText.length() - 1) {
+                return AjaxResult.error("验证码生成失败，请联系管理员");
+            }
+            displayText = capText.substring(0, splitIndex);
+            verifyCode = capText.substring(splitIndex + 1);
+            image = captchaProducerMath.createImage(displayText);
+        } else if ("char".equals(captchaType)) {
+            displayText = verifyCode = captchaProducer.createText();
+            image = captchaProducer.createImage(displayText);
+        } else {
+            return AjaxResult.error("不支持的验证码类型：" + captchaType);
         }
 
-        redisCache.setCacheObject(verifyKey, code, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
-        // 转换流信息写出
-        FastByteArrayOutputStream os = new FastByteArrayOutputStream();
-        try
-        {
-            ImageIO.write(image, "jpg", os);
+        if (image == null) {
+            return AjaxResult.error("验证码图片生成失败，请重试");
         }
-        catch (IOException e)
-        {
+
+        redisCache.setCacheObject(verifyKey, verifyCode, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+
+        // 转换流信息写出
+        try (FastByteArrayOutputStream os = new FastByteArrayOutputStream()) {
+            boolean result = ImageIO.write(image, "jpg", os);
+            if (!result) {
+                log.warn("图像写入失败，可能由于缺少对应的 ImageWriter 支持");
+                return AjaxResult.error("图像编码失败");
+            }
+            ajax.put("uuid", uuid);
+            ajax.put("img", Base64.encode(os.toByteArray()));
+        } catch (IOException e) {
+            log.error("生成验证码图片异常", e);
             return AjaxResult.error(e.getMessage());
         }
 
-        ajax.put("uuid", uuid);
-        ajax.put("img", Base64.encode(os.toByteArray()));
         return ajax;
     }
+
 }

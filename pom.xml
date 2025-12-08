@@ -221,7 +221,7 @@
     </dependencyManagement>
 
     <modules>
-        <module>ddss-admin</module>
+        <module>ddss-bootstrap</module>
         <module>ddss-framework</module>
         <module>ddss-system</module>
         <module>ddss-quartz</module>
