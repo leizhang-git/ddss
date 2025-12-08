@@ -1,6 +1,7 @@
 package com.ddss.framework.config;
 
 import com.ddss.framework.config.properties.PermitAllUrlProperties;
+import com.ddss.framework.config.properties.WhitelistProperties;
 import com.ddss.framework.security.filter.JwtAuthenticationTokenFilter;
 import com.ddss.framework.security.handle.AuthenticationEntryPointImpl;
 import com.ddss.framework.security.handle.LogoutSuccessHandlerImpl;
@@ -65,6 +66,10 @@ public class SecurityConfig {
     @Autowired
     private PermitAllUrlProperties permitAllUrl;
 
+    // 注入白名单配置
+    @Autowired
+    private WhitelistProperties whitelistProperties;
+
     /**
      * 身份验证实现
      */
@@ -104,16 +109,15 @@ public class SecurityConfig {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 // 基于token，所以不需要session
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // 注解标记允许匿名访问的url
+                // 配置白名单
                 .authorizeHttpRequests((requests) -> {
-                    permitAllUrl.getUrls().forEach(url -> requests.antMatchers(url).permitAll());
-                    // 对于登录login 注册register 验证码captchaImage 允许匿名访问
-                    requests.antMatchers("/login", "/register", "/captchaImage").permitAll()
-                            // 静态资源，可匿名访问
-                            .antMatchers(HttpMethod.GET, "/", "/*.html", "/**/*.html", "/**/*.css", "/**/*.js", "/profile/**").permitAll()
-                            .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/*/api-docs", "/druid/**").permitAll()
-                            // 除上面外的所有请求全部需要鉴权认证
-                            .anyRequest().authenticated();
+                    // 从配置文件读取白名单
+                    whitelistProperties.getUrls().forEach(url ->
+                            requests.antMatchers(url).permitAll()
+                    );
+
+                    // 除白名单外的所有请求全部需要鉴权认证
+                    requests.anyRequest().authenticated();
                 })
                 // 添加Logout filter
                 .logout(logout -> logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler))
