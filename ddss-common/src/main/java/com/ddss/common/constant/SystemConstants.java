@@ -10,6 +10,9 @@ import java.util.Locale;
  * @author ruoyi
  */
 public class SystemConstants {
+
+    public static final String AES_KEY="as234dh677k9afio";
+
     /**
      * UTF-8 字符集
      */
