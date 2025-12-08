@@ -1,14 +1,5 @@
 package com.ddss.web.controller.system;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.core.domain.entity.SysMenu;
@@ -24,6 +15,15 @@ import com.ddss.framework.web.service.SysPermissionService;
 import com.ddss.framework.web.service.TokenService;
 import com.ddss.system.service.ISysConfigService;
 import com.ddss.system.service.ISysMenuService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * 登录验证

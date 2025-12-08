@@ -1,24 +1,12 @@
 package com.ddss.framework.web.service;
 
-import javax.annotation.Resource;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Component;
 import com.ddss.common.constant.CacheConstants;
 import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.UserConstants;
 import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.exception.ServiceException;
-import com.ddss.common.exception.user.BlackListException;
-import com.ddss.common.exception.user.CaptchaException;
-import com.ddss.common.exception.user.CaptchaExpireException;
-import com.ddss.common.exception.user.UserNotExistsException;
-import com.ddss.common.exception.user.UserPasswordNotMatchException;
+import com.ddss.common.exception.user.*;
 import com.ddss.common.utils.DateUtils;
 import com.ddss.common.utils.MessageUtils;
 import com.ddss.common.utils.StringUtils;
@@ -28,6 +16,14 @@ import com.ddss.framework.manager.factory.AsyncFactory;
 import com.ddss.framework.security.context.AuthenticationContextHolder;
 import com.ddss.system.service.ISysConfigService;
 import com.ddss.system.service.ISysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * 登录校验方法

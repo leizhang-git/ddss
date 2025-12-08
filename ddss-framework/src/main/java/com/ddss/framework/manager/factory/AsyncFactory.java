@@ -1,9 +1,5 @@
 package com.ddss.framework.manager.factory;
 
-import java.util.TimerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.utils.LogUtils;
 import com.ddss.common.utils.ServletUtils;
@@ -16,8 +12,11 @@ import com.ddss.system.domain.SysOperLog;
 import com.ddss.system.service.ISysLogininforService;
 import com.ddss.system.service.ISysOperLogService;
 import eu.bitwalker.useragentutils.UserAgent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.TimerTask;
 
 /**
  * 异步工厂（产生任务用）

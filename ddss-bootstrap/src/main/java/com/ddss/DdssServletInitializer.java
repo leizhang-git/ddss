@@ -5,14 +5,12 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 
 /**
  * web容器中进行部署
- * 
+ *
  * @author ruoyi
  */
-public class DdssServletInitializer extends SpringBootServletInitializer
-{
+public class DdssServletInitializer extends SpringBootServletInitializer {
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application)
-    {
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(DdssApplication.class);
     }
 }

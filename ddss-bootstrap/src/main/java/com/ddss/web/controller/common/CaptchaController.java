@@ -1,19 +1,5 @@
 package com.ddss.web.controller.common;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.FastByteArrayOutputStream;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import com.google.code.kaptcha.Producer;
 import com.ddss.common.config.DdssConfig;
 import com.ddss.common.constant.CacheConstants;
 import com.ddss.common.constant.SystemConstants;
@@ -22,10 +8,24 @@ import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.utils.sign.Base64;
 import com.ddss.common.utils.uuid.IdUtils;
 import com.ddss.system.service.ISysConfigService;
+import com.google.code.kaptcha.Producer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FastByteArrayOutputStream;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 验证码操作处理
- * 
+ *
  * @author ruoyi
  */
 @RestController
@@ -41,10 +41,11 @@ public class CaptchaController {
 
     @Autowired
     private RedisCache redisCache;
-    
+
     @Autowired
     private ISysConfigService configService;
-        /**
+
+    /**
      * 生成验证码
      */
     @GetMapping("/captchaImage")
