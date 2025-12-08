@@ -10,7 +10,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import com.ddss.common.utils.http.HttpHelper;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 
 /**
  * 构建可重复读取inputStream的request
@@ -24,10 +24,10 @@ public class RepeatedlyRequestWrapper extends HttpServletRequestWrapper
     public RepeatedlyRequestWrapper(HttpServletRequest request, ServletResponse response) throws IOException
     {
         super(request);
-        request.setCharacterEncoding(Constants.UTF8);
-        response.setCharacterEncoding(Constants.UTF8);
+        request.setCharacterEncoding(SystemConstants.UTF8);
+        response.setCharacterEncoding(SystemConstants.UTF8);
 
-        body = HttpHelper.getBodyString(request).getBytes(Constants.UTF8);
+        body = HttpHelper.getBodyString(request).getBytes(SystemConstants.UTF8);
     }
 
     @Override

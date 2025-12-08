@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.filter.RefererFilter;
 import com.ddss.common.filter.RepeatableFilter;
 import com.ddss.common.filter.XssFilter;
@@ -56,7 +56,7 @@ public class FilterConfig
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setDispatcherTypes(DispatcherType.REQUEST);
         registration.setFilter(new RefererFilter());
-        registration.addUrlPatterns(Constants.RESOURCE_PREFIX + "/*");
+        registration.addUrlPatterns(SystemConstants.RESOURCE_PREFIX + "/*");
         registration.setName("refererFilter");
         registration.setOrder(FilterRegistrationBean.HIGHEST_PRECEDENCE);
         Map<String, String> initParameters = new HashMap<String, String>();

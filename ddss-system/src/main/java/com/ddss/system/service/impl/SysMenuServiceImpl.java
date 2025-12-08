@@ -10,7 +10,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.UserConstants;
 import com.ddss.common.core.domain.TreeSelect;
 import com.ddss.common.core.domain.entity.SysMenu;
@@ -537,7 +537,7 @@ public class SysMenuServiceImpl implements ISysMenuService
      */
     public String innerLinkReplaceEach(String path)
     {
-        return StringUtils.replaceEach(path, new String[] { Constants.HTTP, Constants.HTTPS, Constants.WWW, ".", ":" },
+        return StringUtils.replaceEach(path, new String[] { SystemConstants.HTTP, SystemConstants.HTTPS, SystemConstants.WWW, ".", ":" },
                 new String[] { "", "", "", "/", "/" });
     }
 }

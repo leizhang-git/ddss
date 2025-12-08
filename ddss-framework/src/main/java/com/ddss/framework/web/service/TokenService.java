@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import com.ddss.common.constant.CacheConstants;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.utils.ServletUtils;
@@ -69,7 +69,7 @@ public class TokenService
             {
                 Claims claims = parseToken(token);
                 // 解析对应的权限以及用户信息
-                String uuid = (String) claims.get(Constants.LOGIN_USER_KEY);
+                String uuid = (String) claims.get(SystemConstants.LOGIN_USER_KEY);
                 String userKey = getTokenKey(uuid);
                 LoginUser user = redisCache.getCacheObject(userKey);
                 return user;
@@ -119,8 +119,8 @@ public class TokenService
         refreshToken(loginUser);
 
         Map<String, Object> claims = new HashMap<>();
-        claims.put(Constants.LOGIN_USER_KEY, token);
-        claims.put(Constants.JWT_USERNAME, loginUser.getUsername());
+        claims.put(SystemConstants.LOGIN_USER_KEY, token);
+        claims.put(SystemConstants.JWT_USERNAME, loginUser.getUsername());
         return createToken(claims);
     }
 
@@ -218,9 +218,9 @@ public class TokenService
     private String getToken(HttpServletRequest request)
     {
         String token = request.getHeader(header);
-        if (StringUtils.isNotEmpty(token) && token.startsWith(Constants.TOKEN_PREFIX))
+        if (StringUtils.isNotEmpty(token) && token.startsWith(SystemConstants.TOKEN_PREFIX))
         {
-            token = token.replace(Constants.TOKEN_PREFIX, "");
+            token = token.replace(SystemConstants.TOKEN_PREFIX, "");
         }
         return token;
     }

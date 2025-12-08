@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.GenConstants;
 import com.ddss.common.core.text.CharsetKit;
 import com.ddss.common.exception.ServiceException;
@@ -221,7 +221,7 @@ public class GenTableServiceImpl implements IGenTableService
         {
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+            Template tpl = Velocity.getTemplate(template, SystemConstants.UTF8);
             tpl.merge(context, sw);
             dataMap.put(template, sw.toString());
         }
@@ -271,7 +271,7 @@ public class GenTableServiceImpl implements IGenTableService
             {
                 // 渲染模板
                 StringWriter sw = new StringWriter();
-                Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+                Template tpl = Velocity.getTemplate(template, SystemConstants.UTF8);
                 tpl.merge(context, sw);
                 try
                 {
@@ -382,13 +382,13 @@ public class GenTableServiceImpl implements IGenTableService
         {
             // 渲染模板
             StringWriter sw = new StringWriter();
-            Template tpl = Velocity.getTemplate(template, Constants.UTF8);
+            Template tpl = Velocity.getTemplate(template, SystemConstants.UTF8);
             tpl.merge(context, sw);
             try
             {
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(VelocityUtils.getFileName(template, table)));
-                IOUtils.write(sw.toString(), zip, Constants.UTF8);
+                IOUtils.write(sw.toString(), zip, SystemConstants.UTF8);
                 IOUtils.closeQuietly(sw);
                 zip.flush();
                 zip.closeEntry();

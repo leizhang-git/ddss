@@ -15,7 +15,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import com.ddss.common.config.DdssConfig;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.utils.DateUtils;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.common.utils.uuid.IdUtils;
@@ -112,7 +112,7 @@ public class FileUtils
      */
     public static String stripPrefix(String filePath)
     {
-        return StringUtils.substringAfter(filePath, Constants.RESOURCE_PREFIX);
+        return StringUtils.substringAfter(filePath, SystemConstants.RESOURCE_PREFIX);
     }
 
     /**

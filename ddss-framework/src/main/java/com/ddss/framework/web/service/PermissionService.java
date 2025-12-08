@@ -3,7 +3,7 @@ package com.ddss.framework.web.service;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.domain.entity.SysRole;
 import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.utils.SecurityUtils;
@@ -69,7 +69,7 @@ public class PermissionService
         }
         PermissionContextHolder.setContext(permissions);
         Set<String> authorities = loginUser.getPermissions();
-        for (String permission : permissions.split(Constants.PERMISSION_DELIMITER))
+        for (String permission : permissions.split(SystemConstants.PERMISSION_DELIMITER))
         {
             if (permission != null && hasPermissions(authorities, permission))
             {
@@ -99,7 +99,7 @@ public class PermissionService
         for (SysRole sysRole : loginUser.getUser().getRoles())
         {
             String roleKey = sysRole.getRoleKey();
-            if (Constants.SUPER_ADMIN.equals(roleKey) || roleKey.equals(StringUtils.trim(role)))
+            if (SystemConstants.SUPER_ADMIN.equals(roleKey) || roleKey.equals(StringUtils.trim(role)))
             {
                 return true;
             }
@@ -135,7 +135,7 @@ public class PermissionService
         {
             return false;
         }
-        for (String role : roles.split(Constants.ROLE_DELIMITER))
+        for (String role : roles.split(SystemConstants.ROLE_DELIMITER))
         {
             if (hasRole(role))
             {
@@ -154,6 +154,6 @@ public class PermissionService
      */
     private boolean hasPermissions(Set<String> permissions, String permission)
     {
-        return permissions.contains(Constants.ALL_PERMISSION) || permissions.contains(StringUtils.trim(permission));
+        return permissions.contains(SystemConstants.ALL_PERMISSION) || permissions.contains(StringUtils.trim(permission));
     }
 }

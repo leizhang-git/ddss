@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.text.Convert;
 
 /**
@@ -190,7 +190,7 @@ public class ServletUtils
     {
         try
         {
-            return URLEncoder.encode(str, Constants.UTF8);
+            return URLEncoder.encode(str, SystemConstants.UTF8);
         }
         catch (UnsupportedEncodingException e)
         {
@@ -208,7 +208,7 @@ public class ServletUtils
     {
         try
         {
-            return URLDecoder.decode(str, Constants.UTF8);
+            return URLDecoder.decode(str, SystemConstants.UTF8);
         }
         catch (UnsupportedEncodingException e)
         {

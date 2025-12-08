@@ -5,7 +5,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.ScheduleConstants;
 import com.ddss.common.utils.ExceptionUtil;
 import com.ddss.common.utils.StringUtils;
@@ -82,13 +82,13 @@ public abstract class AbstractQuartzJob implements Job
         sysJobLog.setJobMessage(sysJobLog.getJobName() + " 总共耗时：" + runMs + "毫秒");
         if (e != null)
         {
-            sysJobLog.setStatus(Constants.FAIL);
+            sysJobLog.setStatus(SystemConstants.FAIL);
             String errorMsg = StringUtils.substring(ExceptionUtil.getExceptionMessage(e), 0, 2000);
             sysJobLog.setExceptionInfo(errorMsg);
         }
         else
         {
-            sysJobLog.setStatus(Constants.SUCCESS);
+            sysJobLog.setStatus(SystemConstants.SUCCESS);
         }
 
         // 写入数据库当中

@@ -10,7 +10,7 @@ import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ddss.common.config.DdssConfig;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.utils.StringUtils;
 
 /**
@@ -80,7 +80,7 @@ public class ImageUtils
             {
                 // 本机地址
                 String localPath = DdssConfig.getProfile();
-                String downloadPath = localPath + StringUtils.substringAfter(url, Constants.RESOURCE_PREFIX);
+                String downloadPath = localPath + StringUtils.substringAfter(url, SystemConstants.RESOURCE_PREFIX);
                 in = new FileInputStream(downloadPath);
             }
             return IOUtils.toByteArray(in);

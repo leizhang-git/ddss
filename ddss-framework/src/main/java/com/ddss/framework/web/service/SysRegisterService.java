@@ -3,7 +3,7 @@ package com.ddss.framework.web.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import com.ddss.common.constant.CacheConstants;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.UserConstants;
 import com.ddss.common.core.domain.entity.SysUser;
 import com.ddss.common.core.domain.model.RegisterBody;
@@ -86,7 +86,7 @@ public class SysRegisterService
             }
             else
             {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, Constants.REGISTER, MessageUtils.message("user.register.success")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, SystemConstants.REGISTER, MessageUtils.message("user.register.success")));
             }
         }
         return msg;

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.ddss.common.config.DdssConfig;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.framework.interceptor.RepeatSubmitInterceptor;
 
 /**
@@ -30,7 +30,7 @@ public class ResourcesConfig implements WebMvcConfigurer
     public void addResourceHandlers(ResourceHandlerRegistry registry)
     {
         /** 本地文件上传路径 */
-        registry.addResourceHandler(Constants.RESOURCE_PREFIX + "/**")
+        registry.addResourceHandler(SystemConstants.RESOURCE_PREFIX + "/**")
                 .addResourceLocations("file:" + DdssConfig.getProfile() + "/");
 
         /** swagger配置 */

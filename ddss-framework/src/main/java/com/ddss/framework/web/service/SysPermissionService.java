@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.UserConstants;
 import com.ddss.common.core.domain.entity.SysRole;
 import com.ddss.common.core.domain.entity.SysUser;
@@ -40,7 +40,7 @@ public class SysPermissionService
         // 管理员拥有所有权限
         if (user.isAdmin())
         {
-            roles.add(Constants.SUPER_ADMIN);
+            roles.add(SystemConstants.SUPER_ADMIN);
         }
         else
         {
@@ -61,7 +61,7 @@ public class SysPermissionService
         // 管理员拥有所有权限
         if (user.isAdmin())
         {
-            perms.add(Constants.ALL_PERMISSION);
+            perms.add(SystemConstants.ALL_PERMISSION);
         }
         else
         {

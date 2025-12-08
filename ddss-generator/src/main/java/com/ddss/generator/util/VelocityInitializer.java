@@ -2,7 +2,7 @@ package com.ddss.generator.util;
 
 import java.util.Properties;
 import org.apache.velocity.app.Velocity;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 
 /**
  * VelocityEngine工厂
@@ -22,7 +22,7 @@ public class VelocityInitializer
             // 加载classpath目录下的vm文件
             p.setProperty("resource.loader.file.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
             // 定义字符集
-            p.setProperty(Velocity.INPUT_ENCODING, Constants.UTF8);
+            p.setProperty(Velocity.INPUT_ENCODING, SystemConstants.UTF8);
             // 初始化Velocity引擎，指定配置Properties
             Velocity.init(p);
         }

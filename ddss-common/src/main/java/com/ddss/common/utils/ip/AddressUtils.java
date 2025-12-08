@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.ddss.common.config.DdssConfig;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.common.utils.http.HttpUtils;
 
@@ -35,7 +35,7 @@ public class AddressUtils
         {
             try
             {
-                String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", Constants.GBK);
+                String rspStr = HttpUtils.sendGet(IP_URL, "ip=" + ip + "&json=true", SystemConstants.GBK);
                 if (StringUtils.isEmpty(rspStr))
                 {
                     log.error("获取地理位置异常 {}", ip);

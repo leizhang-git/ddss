@@ -19,7 +19,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.utils.StringUtils;
 import org.springframework.http.MediaType;
 
@@ -52,7 +52,7 @@ public class HttpUtils
      */
     public static String sendGet(String url, String param)
     {
-        return sendGet(url, param, Constants.UTF8);
+        return sendGet(url, param, SystemConstants.UTF8);
     }
 
     /**

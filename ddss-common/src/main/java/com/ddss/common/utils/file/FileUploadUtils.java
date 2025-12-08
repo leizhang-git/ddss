@@ -7,7 +7,7 @@ import java.util.Objects;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 import com.ddss.common.config.DdssConfig;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.exception.file.FileNameLengthLimitExceededException;
 import com.ddss.common.exception.file.FileSizeLimitExceededException;
 import com.ddss.common.exception.file.InvalidExtensionException;
@@ -172,7 +172,7 @@ public class FileUploadUtils
     {
         int dirLastIndex = DdssConfig.getProfile().length() + 1;
         String currentDir = StringUtils.substring(uploadDir, dirLastIndex);
-        return Constants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
+        return SystemConstants.RESOURCE_PREFIX + "/" + currentDir + "/" + fileName;
     }
 
     /**

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.code.kaptcha.Producer;
 import com.ddss.common.config.DdssConfig;
 import com.ddss.common.constant.CacheConstants;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.utils.sign.Base64;
@@ -86,7 +86,7 @@ public class CaptchaController {
             return AjaxResult.error("验证码图片生成失败，请重试");
         }
 
-        redisCache.setCacheObject(verifyKey, verifyCode, Constants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
+        redisCache.setCacheObject(verifyKey, verifyCode, SystemConstants.CAPTCHA_EXPIRATION, TimeUnit.MINUTES);
 
         // 转换流信息写出
         try (FastByteArrayOutputStream os = new FastByteArrayOutputStream()) {

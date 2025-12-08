@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import com.alibaba.fastjson2.JSON;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.utils.MessageUtils;
@@ -46,7 +46,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler
             // 删除用户缓存记录
             tokenService.delLoginUser(loginUser.getToken());
             // 记录用户退出日志
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, Constants.LOGOUT, MessageUtils.message("user.logout.success")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, SystemConstants.LOGOUT, MessageUtils.message("user.logout.success")));
         }
         ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success(MessageUtils.message("user.logout.success"))));
     }

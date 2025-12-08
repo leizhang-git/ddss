@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.PatternMatchUtils;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.HttpStatus;
 import com.ddss.common.core.domain.entity.SysRole;
 import com.ddss.common.core.domain.model.LoginUser;
@@ -146,7 +146,7 @@ public class SecurityUtils
     public static boolean hasPermi(Collection<String> authorities, String permission)
     {
         return authorities.stream().filter(StringUtils::hasText)
-                .anyMatch(x -> Constants.ALL_PERMISSION.equals(x) || PatternMatchUtils.simpleMatch(x, permission));
+                .anyMatch(x -> SystemConstants.ALL_PERMISSION.equals(x) || PatternMatchUtils.simpleMatch(x, permission));
     }
 
     /**
@@ -172,7 +172,7 @@ public class SecurityUtils
     public static boolean hasRole(Collection<String> roles, String role)
     {
         return roles.stream().filter(StringUtils::hasText)
-                .anyMatch(x -> Constants.SUPER_ADMIN.equals(x) || PatternMatchUtils.simpleMatch(x, role));
+                .anyMatch(x -> SystemConstants.SUPER_ADMIN.equals(x) || PatternMatchUtils.simpleMatch(x, role));
     }
 
 }

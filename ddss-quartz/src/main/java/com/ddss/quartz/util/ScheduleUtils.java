@@ -10,7 +10,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
-import com.ddss.common.constant.Constants;
+import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.ScheduleConstants;
 import com.ddss.common.exception.job.TaskException;
 import com.ddss.common.exception.job.TaskException.Code;
@@ -131,11 +131,11 @@ public class ScheduleUtils
         int count = StringUtils.countMatches(packageName, ".");
         if (count > 1)
         {
-            return StringUtils.startsWithAny(invokeTarget, Constants.JOB_WHITELIST_STR);
+            return StringUtils.startsWithAny(invokeTarget, SystemConstants.JOB_WHITELIST_STR);
         }
         Object obj = SpringUtils.getBean(StringUtils.split(invokeTarget, ".")[0]);
         String beanPackageName = obj.getClass().getPackage().getName();
-        return StringUtils.startsWithAny(beanPackageName, Constants.JOB_WHITELIST_STR)
-                && !StringUtils.startsWithAny(beanPackageName, Constants.JOB_ERROR_STR);
+        return StringUtils.startsWithAny(beanPackageName, SystemConstants.JOB_WHITELIST_STR)
+                && !StringUtils.startsWithAny(beanPackageName, SystemConstants.JOB_ERROR_STR);
     }
 }
