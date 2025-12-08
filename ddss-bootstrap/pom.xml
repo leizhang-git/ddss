@@ -46,7 +46,7 @@
         <!-- 核心模块-->
         <dependency>
             <groupId>com.ddss</groupId>
-            <artifactId>ddss-framework</artifactId>
+            <artifactId>ddss-ry-framework</artifactId>
         </dependency>
 
         <!-- 定时任务-->

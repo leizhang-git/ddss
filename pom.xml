@@ -199,7 +199,7 @@
             <!-- 核心模块-->
             <dependency>
                 <groupId>com.ddss</groupId>
-                <artifactId>ddss-framework</artifactId>
+                <artifactId>ddss-ry-framework</artifactId>
                 <version>${ddss.version}</version>
             </dependency>
 
@@ -222,7 +222,7 @@
 
     <modules>
         <module>ddss-bootstrap</module>
-        <module>ddss-framework</module>
+        <module>ddss-ry-framework</module>
         <module>ddss-system</module>
         <module>ddss-quartz</module>
         <module>ddss-generator</module>

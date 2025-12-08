@@ -17,7 +17,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUserList(SysUser user);
+    List<SysUser> selectUserList(SysUser user);
 
     /**
      * 根据条件分页查询已分配用户角色列表
@@ -25,7 +25,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectAllocatedList(SysUser user);
+    List<SysUser> selectAllocatedList(SysUser user);
 
     /**
      * 根据条件分页查询未分配用户角色列表
@@ -33,7 +33,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 用户信息集合信息
      */
-    public List<SysUser> selectUnallocatedList(SysUser user);
+    List<SysUser> selectUnallocatedList(SysUser user);
 
     /**
      * 通过用户名查询用户
@@ -41,7 +41,7 @@ public interface ISysUserService {
      * @param userName 用户名
      * @return 用户对象信息
      */
-    public SysUser selectUserByUserName(String userName);
+    SysUser selectUserByUserName(String userName);
 
     /**
      * 通过用户ID查询用户
@@ -49,7 +49,7 @@ public interface ISysUserService {
      * @param userId 用户ID
      * @return 用户对象信息
      */
-    public SysUser selectUserById(Long userId);
+    SysUser selectUserById(Long userId);
 
     /**
      * 根据用户ID查询用户所属角色组
@@ -57,7 +57,7 @@ public interface ISysUserService {
      * @param userName 用户名
      * @return 结果
      */
-    public String selectUserRoleGroup(String userName);
+    String selectUserRoleGroup(String userName);
 
     /**
      * 根据用户ID查询用户所属岗位组
@@ -65,7 +65,7 @@ public interface ISysUserService {
      * @param userName 用户名
      * @return 结果
      */
-    public String selectUserPostGroup(String userName);
+    String selectUserPostGroup(String userName);
 
     /**
      * 校验用户名称是否唯一
@@ -73,7 +73,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public boolean checkUserNameUnique(SysUser user);
+    boolean checkUserNameUnique(SysUser user);
 
     /**
      * 校验手机号码是否唯一
@@ -81,7 +81,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public boolean checkPhoneUnique(SysUser user);
+    boolean checkPhoneUnique(SysUser user);
 
     /**
      * 校验email是否唯一
@@ -89,21 +89,21 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public boolean checkEmailUnique(SysUser user);
+    boolean checkEmailUnique(SysUser user);
 
     /**
      * 校验用户是否允许操作
      *
      * @param user 用户信息
      */
-    public void checkUserAllowed(SysUser user);
+    void checkUserAllowed(SysUser user);
 
     /**
      * 校验用户是否有数据权限
      *
      * @param userId 用户id
      */
-    public void checkUserDataScope(Long userId);
+    void checkUserDataScope(Long userId);
 
     /**
      * 新增用户信息
@@ -111,7 +111,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int insertUser(SysUser user);
+    int insertUser(SysUser user);
 
     /**
      * 注册用户信息
@@ -119,7 +119,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public boolean registerUser(SysUser user);
+    boolean registerUser(SysUser user);
 
     /**
      * 修改用户信息
@@ -127,7 +127,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int updateUser(SysUser user);
+    int updateUser(SysUser user);
 
     /**
      * 用户授权角色
@@ -135,7 +135,7 @@ public interface ISysUserService {
      * @param userId  用户ID
      * @param roleIds 角色组
      */
-    public void insertUserAuth(Long userId, Long[] roleIds);
+    void insertUserAuth(Long userId, Long[] roleIds);
 
     /**
      * 修改用户状态
@@ -143,7 +143,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int updateUserStatus(SysUser user);
+    int updateUserStatus(SysUser user);
 
     /**
      * 修改用户基本信息
@@ -151,7 +151,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int updateUserProfile(SysUser user);
+    int updateUserProfile(SysUser user);
 
     /**
      * 修改用户头像
@@ -160,7 +160,7 @@ public interface ISysUserService {
      * @param avatar 头像地址
      * @return 结果
      */
-    public boolean updateUserAvatar(Long userId, String avatar);
+    boolean updateUserAvatar(Long userId, String avatar);
 
     /**
      * 更新用户登录信息（IP和登录时间）
@@ -170,7 +170,7 @@ public interface ISysUserService {
      * @param loginDate 登录时间
      * @return 结果
      */
-    public void updateLoginInfo(Long userId, String loginIp, Date loginDate);
+    void updateLoginInfo(Long userId, String loginIp, Date loginDate);
 
     /**
      * 重置用户密码
@@ -178,7 +178,7 @@ public interface ISysUserService {
      * @param user 用户信息
      * @return 结果
      */
-    public int resetPwd(SysUser user);
+    int resetPwd(SysUser user);
 
     /**
      * 重置用户密码
@@ -187,15 +187,7 @@ public interface ISysUserService {
      * @param password 密码
      * @return 结果
      */
-    public int resetUserPwd(Long userId, String password);
-
-    /**
-     * 通过用户ID删除用户
-     *
-     * @param userId 用户ID
-     * @return 结果
-     */
-    public int deleteUserById(Long userId);
+    int resetUserPwd(Long userId, String password);
 
     /**
      * 批量删除用户信息
@@ -203,7 +195,7 @@ public interface ISysUserService {
      * @param userIds 需要删除的用户ID
      * @return 结果
      */
-    public int deleteUserByIds(Long[] userIds);
+    int deleteUserByIds(Long[] userIds);
 
     /**
      * 导入用户数据
@@ -213,5 +205,5 @@ public interface ISysUserService {
      * @param operName        操作用户
      * @return 结果
      */
-    public String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName);
+    String importUser(List<SysUser> userList, Boolean isUpdateSupport, String operName);
 }
