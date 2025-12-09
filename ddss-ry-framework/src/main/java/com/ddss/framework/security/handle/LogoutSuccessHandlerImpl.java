@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSON;
 import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.core.domain.model.LoginUser;
-import com.ddss.common.utils.MessageUtils;
+import com.ddss.common.utils.DDSSMessageUtils;
 import com.ddss.common.utils.ServletUtils;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.framework.manager.AsyncManager;
@@ -44,8 +44,8 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
             // 删除用户缓存记录
             tokenService.delLoginUser(loginUser.getToken());
             // 记录用户退出日志
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, SystemConstants.LOGOUT, MessageUtils.message("user.logout.success")));
+            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, SystemConstants.LOGOUT, DDSSMessageUtils.message("user.logout.success")));
         }
-        ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success(MessageUtils.message("user.logout.success"))));
+        ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success(DDSSMessageUtils.message("user.logout.success"))));
     }
 }

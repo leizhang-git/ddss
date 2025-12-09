@@ -100,7 +100,7 @@ token:
 # MyBatis配置
 mybatis:
   # 搜索指定包别名
-  typeAliasesPackage: com.ddss.**.domain
+  typeAliasesPackage: com.ddss
   # 配置mapper的扫描，找到所有的mapper.xml映射文件
   mapperLocations: classpath*:mapper/**/*Mapper.xml
   # 加载全局的配置文件
@@ -143,6 +143,7 @@ whitelist:
     - /**/*.css
     - /**/*.js
     - /test/**
+    - /api/v1/ddss/test/**
 
 # 防止XSS攻击
 xss:
@@ -152,3 +153,13 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+mybatis-plus:
+  # 实体扫描，多个package用逗号或者分号分隔
+  type-aliases-package: com.ddss.server.domain.po
+  # mapper.xml 文件位置
+  mapper-locations: classpath*:/mapper/**/*.xml
+  configuration:
+    # 是否开启自动驼峰命名规则映射:从数据库列名到Java属性驼峰命名的类似映射
+    map-underscore-to-camel-case: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

@@ -2,12 +2,12 @@ package com.ddss.server.web;
 
 import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.core.domain.entity.SysRole;
-import org.springframework.security.access.prepost.PreAuthorize;
+import com.ddss.server.service.DdssSysUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 /**
  * @Author zhanglei
@@ -17,11 +17,12 @@ import java.util.List;
 @RequestMapping("/api/v1/ddss/test")
 public class DDSSTsetController {
 
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @GetMapping("/list")
+    @Autowired
+    private DdssSysUserService ddssSysUserService;
+
+    @GetMapping("/createManyData")
     public AjaxResult list(SysRole role) {
-        startPage();
-        List<SysRole> list = roleService.selectRoleList(role);
-        return getDataTable(list);
+        ddssSysUserService.testCreateManyData();
+        return AjaxResult.success();
     }
 }

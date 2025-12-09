@@ -4,7 +4,7 @@ package com.ddss.common.exception;
  * @Auth zhanglei
  * @Date 2023/2/18 21:31
  */
-public class BaseException extends RuntimeException{
+public class DDSSBaseException extends RuntimeException{
 
     private static final long serialVersionUID = 1L;
 
@@ -31,7 +31,7 @@ public class BaseException extends RuntimeException{
 
     private Throwable cause;
 
-    public BaseException(String message, String errCode, String createTime, String traceId, Throwable cause) {
+    public DDSSBaseException(String message, String errCode, String createTime, String traceId, Throwable cause) {
         this.message = message;
         this.errCode = errCode;
         this.createTime = createTime;

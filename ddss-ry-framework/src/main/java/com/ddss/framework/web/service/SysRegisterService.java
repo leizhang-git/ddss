@@ -9,7 +9,7 @@ import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.exception.user.CaptchaException;
 import com.ddss.common.exception.user.CaptchaExpireException;
 import com.ddss.common.utils.DateUtils;
-import com.ddss.common.utils.MessageUtils;
+import com.ddss.common.utils.DDSSMessageUtils;
 import com.ddss.common.utils.SecurityUtils;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.framework.manager.AsyncManager;
@@ -69,7 +69,7 @@ public class SysRegisterService {
             if (!regFlag) {
                 msg = "注册失败,请联系系统管理人员";
             } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, SystemConstants.REGISTER, MessageUtils.message("user.register.success")));
+                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, SystemConstants.REGISTER, DDSSMessageUtils.message("user.register.success")));
             }
         }
         return msg;

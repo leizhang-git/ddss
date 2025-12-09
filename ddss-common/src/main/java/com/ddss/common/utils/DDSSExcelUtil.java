@@ -14,7 +14,7 @@ import java.net.URLDecoder;
  * @Author zhanglei
  * @Date 2023/6/21 16:14
  */
-public class ExcelUtil {
+public class DDSSExcelUtil {
 
     //sheet名称
     public final static String SHEET_NAME = "default";

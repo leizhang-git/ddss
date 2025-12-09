@@ -8,7 +8,7 @@ import java.util.List;
  * @Auth zhanglei
  * @Date 2023/2/18 22:49
  */
-public class SQLUtil {
+public class DDSSSQLUtil {
 
     /**
      * pg转mysql

@@ -55,6 +55,11 @@
             <artifactId>ddss-quartz</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ddss</groupId>
+            <artifactId>ddss-server</artifactId>
+        </dependency>
+
         <!-- 代码生成-->
         <dependency>
             <groupId>com.ddss</groupId>

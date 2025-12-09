@@ -9,18 +9,18 @@ import org.springframework.lang.NonNull;
  * @Auth zhanglei
  * @Date 2023/2/18 21:09
  */
-public class SystemException extends MiddlewareException{
+public class SystemExceptionDDSS extends MiddlewareExceptionDDSS {
 
     private static final long serialVersionUID = 1L;
 
-    private static final Logger log = LoggerFactory.getLogger(SystemException.class);
+    private static final Logger log = LoggerFactory.getLogger(SystemExceptionDDSS.class);
 
     private final ErrCode errCode;
 
     /**
      * @param errCode 错误编码
      */
-    public SystemException(@NonNull ErrCode errCode) {
+    public SystemExceptionDDSS(@NonNull ErrCode errCode) {
         super(errCode.getErrCode(), null, null);
         this.errCode = errCode;
     }
@@ -29,17 +29,17 @@ public class SystemException extends MiddlewareException{
      * @param errCode    错误编码
      * @param errMessage 错误信息
      */
-    public SystemException(@NonNull ErrCode errCode, @NonNull String errMessage) {
+    public SystemExceptionDDSS(@NonNull ErrCode errCode, @NonNull String errMessage) {
         super(errCode.getErrCode(), errMessage, null);
         this.errCode = errCode;
     }
 
-    public SystemException(@NonNull ErrCode errCode, @NonNull String errMessage, @NonNull Throwable cause) {
+    public SystemExceptionDDSS(@NonNull ErrCode errCode, @NonNull String errMessage, @NonNull Throwable cause) {
         super(errCode.getErrCode(), errMessage, cause);
         this.errCode = errCode;
     }
 
-    public SystemException(@NonNull ErrCode errCode, @NonNull Throwable cause) {
+    public SystemExceptionDDSS(@NonNull ErrCode errCode, @NonNull Throwable cause) {
         super(errCode.getErrCode(), null, cause);
         this.errCode = errCode;
     }

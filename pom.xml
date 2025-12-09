@@ -33,6 +33,8 @@
         <tomcat.version>9.0.112</tomcat.version>
         <logback.version>1.2.13</logback.version>
         <hutool.version>5.8.20</hutool.version>
+        <dynamic.version>3.5.2</dynamic.version>
+        <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <spring-security.version>5.7.14</spring-security.version>
         <spring-framework.version>5.3.39</spring-framework.version>
     </properties>
@@ -40,6 +42,19 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic.version}</version>
+            </dependency>
+
+            <!-- MyBatis-Plus 依赖 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
 
             <!-- 覆盖SpringFramework的依赖配置-->
             <dependency>
@@ -215,6 +230,12 @@
             <dependency>
                 <groupId>com.ddss</groupId>
                 <artifactId>ddss-common</artifactId>
+                <version>${ddss.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ddss</groupId>
+                <artifactId>ddss-server</artifactId>
                 <version>${ddss.version}</version>
             </dependency>
 

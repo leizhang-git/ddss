@@ -1,6 +1,6 @@
 package com.ddss.common.exception.base;
 
-import com.ddss.common.utils.MessageUtils;
+import com.ddss.common.utils.DDSSMessageUtils;
 import com.ddss.common.utils.StringUtils;
 
 /**
@@ -58,7 +58,7 @@ public class BaseException extends RuntimeException {
     public String getMessage() {
         String message = null;
         if (!StringUtils.isEmpty(code)) {
-            message = MessageUtils.message(code, args);
+            message = DDSSMessageUtils.message(code, args);
         }
         if (message == null) {
             message = defaultMessage;
