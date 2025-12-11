@@ -206,6 +206,19 @@ public class TokenService {
         if (StringUtils.isNotEmpty(token) && token.startsWith(SystemConstants.TOKEN_PREFIX)) {
             token = token.replace(SystemConstants.TOKEN_PREFIX, "");
         }
+
+        // 如果header中没有，则从cookie中获取
+        if (StringUtils.isEmpty(token)) {
+            javax.servlet.http.Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (javax.servlet.http.Cookie cookie : cookies) {
+                    if ("Admin-Token".equals(cookie.getName())) {
+                        token = cookie.getValue();
+                        break;
+                    }
+                }
+            }
+        }
         return token;
     }
 
