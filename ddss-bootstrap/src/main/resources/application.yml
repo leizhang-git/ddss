@@ -163,3 +163,9 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+minio:
+  endpoint: http://192.168.161.100:9000
+  access-key: admin
+  secret-key: 12345678
+  bucket-name: app
+  secure: false

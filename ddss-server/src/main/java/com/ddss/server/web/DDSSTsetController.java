@@ -25,4 +25,10 @@ public class DDSSTsetController {
         ddssSysUserService.testCreateManyData();
         return AjaxResult.success();
     }
+
+    public static void main(String[] args) {
+        String str = "123";
+        String[] split = str.split(",");
+        System.out.println(split);
+    }
 }

@@ -23,7 +23,7 @@ public class DdssSysUserServiceImpl extends ServiceImpl<DdssSysUserMapper, DdssS
     @Override
     public void testCreateManyData() {
         List<DdssSysUser> objects = Lists.newArrayList();
-        for (int i = 400000; i < 500000; i++) {
+        for (int i = 500000; i < 1000000; i++) {
             DdssSysUser ddssSysUser = new DdssSysUser();
             ddssSysUser.setUserId(IdUtils.simpleUUID());
             ddssSysUser.setDeptId("01");
