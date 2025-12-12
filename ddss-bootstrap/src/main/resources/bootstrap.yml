@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: ddss-server
+  config:
+    import:
+      - nacos:ddss-server.yaml
+      - nacos:ddss-server-druid.yaml
+  cloud:
+    nacos:
+      config:
+        server-addr: 192.168.161.100:8848
+        file-extension: yaml
+        namespace: 996
+        group: DDSS_GROUP
+        refresh-enabled: true
+      discovery:
+        server-addr: ${spring.cloud.nacos.config.server-addr}
+        namespace: 996
+        group: DDSS_GROUP
+  profiles:
+    active: druid
+
+logging:
+  level:
+    root: INFO
+    com.alibaba.nacos: DEBUG
+    org.springframework.cloud.alibaba.nacos: DEBUG
+    com.ddss: DEBUG  # 添加你的应用包名

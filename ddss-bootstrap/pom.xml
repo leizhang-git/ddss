@@ -11,18 +11,10 @@
     <packaging>jar</packaging>
     <artifactId>ddss-bootstrap</artifactId>
 
-    <description>
-        web服务入口
-    </description>
+    <description>web服务入口</description>
 
     <dependencies>
 
-        <!-- spring-boot-devtools -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-            <optional>true</optional> <!-- 表示依赖不会传递 -->
-        </dependency>
 
         <!-- swagger3-->
         <dependency>
