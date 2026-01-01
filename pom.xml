@@ -40,6 +40,7 @@
         <tomcat.version>9.0.112</tomcat.version>
         <logback.version>1.2.13</logback.version>
         <hutool.version>5.8.20</hutool.version>
+        <janino.version>3.1.6</janino.version>
         <dynamic.version>3.5.2</dynamic.version>
         <kafka-client.version>3.4.0</kafka-client.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
@@ -50,6 +51,12 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+
+            <dependency>
+                <groupId>org.codehaus.janino</groupId>
+                <artifactId>janino</artifactId>
+                <version>${janino.version}</version>
+            </dependency>
 
             <!-- https://mvnrepository.com/artifact/com.luhuiguo/aspose-words -->
             <dependency>

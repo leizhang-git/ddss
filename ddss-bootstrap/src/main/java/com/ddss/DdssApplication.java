@@ -41,6 +41,7 @@ public class DdssApplication {
         System.setProperty("Log4jContextSelector", "org.apache.logging.log4j.core.async.AsyncLoggerContextSelector");
         ConfigurableApplicationContext ctx = SpringApplication.run(DdssApplication.class, args);
         int beanCount = ctx.getBeanDefinitionCount();
+        log.info("\n========================================= 当前操作系统: {}", System.getProperty("os.name"));
         log.info("\n========================================= bean 数量为 ：{}", beanCount);
         Environment env = ctx.getEnvironment();
         String port = env.getProperty("server.port");

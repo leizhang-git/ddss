@@ -15,6 +15,10 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.codehaus.janino</groupId>
+            <artifactId>janino</artifactId>
+        </dependency>
 
         <!-- swagger3-->
         <dependency>
