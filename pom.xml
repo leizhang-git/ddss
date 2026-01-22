@@ -44,6 +44,7 @@
         <dynamic.version>3.5.2</dynamic.version>
         <kafka-client.version>3.4.0</kafka-client.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <commons-pool2.version>2.11.2</commons-pool2.version>
         <spring-security.version>5.7.14</spring-security.version>
         <spring-framework.version>5.3.39</spring-framework.version>
     </properties>
