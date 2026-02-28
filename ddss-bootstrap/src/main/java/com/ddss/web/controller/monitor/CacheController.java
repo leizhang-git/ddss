@@ -4,12 +4,13 @@ import com.ddss.common.constant.CacheConstants;
 import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.system.domain.SysCache;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -20,8 +21,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/monitor/cache")
 public class CacheController {
-    private final static List<SysCache> caches = new ArrayList<SysCache>();
-    @Autowired
+    private final static List<SysCache> caches = new ArrayList<>();
+    @Resource
     private RedisTemplate<String, String> redisTemplate;
 
     {
@@ -37,15 +38,16 @@ public class CacheController {
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping()
     public AjaxResult getInfo() throws Exception {
-        Properties info = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info());
+        Properties info = (Properties) redisTemplate.execute((RedisCallback<Object>) RedisServerCommands::info);
         Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
-        Object dbSize = redisTemplate.execute((RedisCallback<Object>) connection -> connection.dbSize());
+        Object dbSize = redisTemplate.execute((RedisCallback<Object>) RedisServerCommands::dbSize);
 
         Map<String, Object> result = new HashMap<>(3);
         result.put("info", info);
         result.put("dbSize", dbSize);
 
         List<Map<String, String>> pieList = new ArrayList<>();
+        assert commandStats != null;
         commandStats.stringPropertyNames().forEach(key -> {
             Map<String, String> data = new HashMap<>(2);
             String property = commandStats.getProperty(key);

@@ -9,10 +9,10 @@ import com.ddss.common.utils.poi.ExcelUtil;
 import com.ddss.framework.web.service.SysPasswordService;
 import com.ddss.system.domain.SysLogininfor;
 import com.ddss.system.service.ISysLogininforService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
@@ -24,10 +24,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/monitor/logininfor")
 public class SysLogininforController extends BaseController {
-    @Autowired
+    @Resource
     private ISysLogininforService logininforService;
 
-    @Autowired
+    @Resource
     private SysPasswordService passwordService;
 
     @PreAuthorize("@ss.hasPermi('monitor:logininfor:list')")
@@ -43,7 +43,7 @@ public class SysLogininforController extends BaseController {
     @PostMapping("/export")
     public void export(HttpServletResponse response, SysLogininfor logininfor) {
         List<SysLogininfor> list = logininforService.selectLogininforList(logininfor);
-        ExcelUtil<SysLogininfor> util = new ExcelUtil<SysLogininfor>(SysLogininfor.class);
+        ExcelUtil<SysLogininfor> util = new ExcelUtil<>(SysLogininfor.class);
         util.exportExcel(response, list, "登录日志");
     }
 
