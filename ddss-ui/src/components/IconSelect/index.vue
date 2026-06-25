@@ -53,7 +53,7 @@ export default {
 }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
 .icon-body {
   width: 100%;
   padding: 10px;

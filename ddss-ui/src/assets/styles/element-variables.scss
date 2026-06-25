@@ -1,23 +1,37 @@
 /**
-* I think element-ui's default theme color is too light for long-term use.
-* So I modified the default color and you can modify it to your liking.
+* Modern DDSS theme - refined color palette inspired by modern design systems
 **/
 
-/* theme color */
-$--color-primary: #1890ff;
-$--color-success: #13ce66;
-$--color-warning: #ffba00;
-$--color-danger: #ff4949;
-// $--color-info: #1E1E1E;
+/* theme color - modern indigo-blue gradient capable */
+$--color-primary: #4F46E5;
+$--color-success: #10B981;
+$--color-warning: #F59E0B;
+$--color-danger: #EF4444;
+$--color-info: #6B7280;
 
-$--button-font-weight: 400;
+$--button-font-weight: 500;
+$--button-border-radius: 8px;
 
-// $--color-text-regular: #1f2d3d;
+$--color-text-primary: #1F2937;
+$--color-text-regular: #374151;
+$--color-text-secondary: #6B7280;
 
-$--border-color-light: #dfe4ed;
-$--border-color-lighter: #e6ebf5;
+$--border-color-base: #E5E7EB;
+$--border-color-light: #E5E7EB;
+$--border-color-lighter: #F3F4F6;
+$--border-color-extra-light: #F9FAFB;
 
-$--table-border: 1px solid #dfe6ec;
+$--table-border: 1px solid #F3F4F6;
+
+$--background-color-base: #F9FAFB;
+
+$--border-radius-base: 8px;
+$--border-radius-small: 6px;
+
+$--font-size-base: 14px;
+
+$--box-shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+$--box-shadow-light: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
 
 /* icon font path, required */
 $--font-path: '~element-ui/lib/theme-chalk/fonts';

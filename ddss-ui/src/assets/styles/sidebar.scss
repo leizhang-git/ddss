@@ -12,8 +12,8 @@
   }
 
   .sidebar-container {
-    -webkit-transition: width .28s;
-    transition: width 0.28s;
+    -webkit-transition: width .28s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1);
     width: $base-sidebar-width !important;
     background-color: $base-menu-background;
     height: 100%;
@@ -24,8 +24,7 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.12);
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -80,7 +79,10 @@
     .submenu-title-noDropdown,
     .el-submenu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: rgba(255, 255, 255, 0.06) !important;
+        border-radius: 8px;
+        margin: 2px 8px;
+        width: calc(100% - 16px) !important;
       }
     }
 
@@ -91,9 +93,12 @@
     & .nest-menu .el-submenu > .el-submenu__title,
     & .el-submenu .el-menu-item {
       min-width: $base-sidebar-width !important;
+      border-radius: 8px;
+      margin: 2px 8px;
+      width: calc(100% - 16px) !important;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: $base-sub-menu-hover !important;
       }
     }
 
@@ -201,8 +206,7 @@
   .nest-menu .el-submenu > .el-submenu__title,
   .el-menu-item {
     &:hover {
-      // you can use $subMenuHover
-      background-color: rgba(0, 0, 0, 0.06) !important;
+      background-color: rgba(255, 255, 255, 0.06) !important;
     }
   }
 
