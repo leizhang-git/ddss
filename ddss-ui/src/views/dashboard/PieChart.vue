@@ -6,7 +6,7 @@
 import * as echarts from 'echarts'
 import resize from './mixins/resize'
 
-require('echarts/theme/macarons') // echarts theme
+require('echarts/theme/macarons')
 
 export default {
   mixins: [resize],
@@ -53,24 +53,33 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
+          data: ['监控视频', '宣传视频', '培训视频', '会议视频', '其他'],
+          textStyle: {
+            color: '#606266'
+          }
         },
+        color: ['#409eff', '#67c23a', '#e6a23c', '#9b59b6', '#f56c6c'],
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '资源分类',
             type: 'pie',
             roseType: 'radius',
-            radius: [15, 95],
-            center: ['50%', '38%'],
+            radius: [15, 85],
+            center: ['50%', '42%'],
             data: [
-              {value: 320, name: 'Industries'},
-              {value: 240, name: 'Technology'},
-              {value: 149, name: 'Forex'},
-              {value: 100, name: 'Gold'},
-              {value: 59, name: 'Forecasts'}
+              {value: 520, name: '监控视频'},
+              {value: 340, name: '宣传视频'},
+              {value: 210, name: '培训视频'},
+              {value: 120, name: '会议视频'},
+              {value: 66, name: '其他'}
             ],
             animationEasing: 'cubicInOut',
-            animationDuration: 2600
+            animationDuration: 2600,
+            itemStyle: {
+              borderRadius: 4,
+              borderColor: '#fff',
+              borderWidth: 2
+            }
           }
         ]
       })

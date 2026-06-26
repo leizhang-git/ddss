@@ -3,9 +3,15 @@
     <!-- 动态背景 -->
     <div class="background">
       <div class="bg-animation"></div>
+      <div class="bg-grid"></div>
+      <div class="bg-glow bg-glow-1"></div>
+      <div class="bg-glow bg-glow-2"></div>
       <div class="noise-overlay"></div>
       <div class="particles">
-        <div v-for="n in 20" :key="n" class="particle" :style="getParticleStyle(n)"></div>
+        <div v-for="n in 30" :key="n" class="particle" :style="getParticleStyle(n)"></div>
+      </div>
+      <div class="tech-lines">
+        <div v-for="n in 6" :key="'line'+n" class="tech-line" :style="getTechLineStyle(n)"></div>
       </div>
     </div>
 
@@ -244,17 +250,32 @@ export default {
   methods: {
     // 获取粒子样式
     getParticleStyle(index) {
-      const size = Math.random() * 6 + 2
+      const size = Math.random() * 4 + 2
       const left = Math.random() * 100
-      const animationDelay = Math.random() * 20
-      const animationDuration = Math.random() * 20 + 10
+      const animationDelay = Math.random() * 15
+      const animationDuration = Math.random() * 25 + 8
       return {
         width: `${size}px`,
         height: `${size}px`,
         left: `${left}%`,
         top: `${Math.random() * 100}%`,
         animationDelay: `${animationDelay}s`,
-        animationDuration: `${animationDuration}s`
+        animationDuration: `${animationDuration}s`,
+        opacity: Math.random() * 0.6 + 0.2
+      }
+    },
+
+    // 获取科技线条样式
+    getTechLineStyle(index) {
+      const top = 15 + (index - 1) * 14
+      const width = Math.random() * 200 + 100
+      return {
+        top: `${top}%`,
+        left: `${Math.random() * 60}%`,
+        width: `${width}px`,
+        animationDelay: `${Math.random() * 5}s`,
+        animationDuration: `${Math.random() * 4 + 3}s`,
+        transform: `rotate(${Math.random() * 30 - 15}deg)`
       }
     },
 
@@ -475,10 +496,45 @@ export default {
       position: absolute;
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background: linear-gradient(135deg, #0c0c1d 0%, #1a1040 25%, #0d1b3e 50%, #1a0a2e 75%, #0c0c1d 100%);
       background-size: 400% 400%;
-      animation: gradient 15s ease infinite;
-      opacity: 0.9;
+      animation: gradient 20s ease infinite;
+    }
+
+    .bg-grid {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(64, 158, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(64, 158, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridMove 20s linear infinite;
+    }
+
+    .bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: glowPulse 8s ease-in-out infinite;
+
+      &.bg-glow-1 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(circle, #409eff, transparent);
+        top: -100px;
+        left: -100px;
+      }
+
+      &.bg-glow-2 {
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, #9b59b6, transparent);
+        bottom: -50px;
+        right: -50px;
+        animation-delay: -4s;
+      }
     }
 
     .noise-overlay {
@@ -496,10 +552,24 @@ export default {
 
       .particle {
         position: absolute;
-        background: rgba(255, 255, 255, 0.5);
+        background: rgba(64, 158, 255, 0.6);
         border-radius: 50%;
         animation: float 20s infinite linear;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 10px rgba(64, 158, 255, 0.3);
+      }
+    }
+
+    .tech-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+
+      .tech-line {
+        position: absolute;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(64, 158, 255, 0.15), rgba(155, 89, 182, 0.15), transparent);
+        animation: techLineMove 4s ease-in-out infinite;
       }
     }
   }
@@ -637,7 +707,7 @@ export default {
           }
 
           // 验证码特殊样式
-          &.captcha-input-wrapper {
+          .input-wrapper.captcha-input-wrapper {
             .captcha-display {
               position: absolute;
               right: 12px;
@@ -686,12 +756,13 @@ export default {
               .captcha-info {
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 6px;
+                margin-left: 4px;
 
                 .captcha-refresh {
-                  width: 32px;
-                  height: 32px;
-                  border-radius: 8px;
+                  width: 28px;
+                  height: 28px;
+                  border-radius: 6px;
                   background: var(--bg-secondary);
                   border: 1px solid var(--border-color);
                   display: flex;
@@ -708,14 +779,18 @@ export default {
                   }
 
                   i {
-                    font-size: 16px;
+                    font-size: 14px;
                   }
                 }
 
                 .captcha-time {
                   font-size: 12px;
-                  color: var(--error-color);
-                  font-weight: 600;
+                  color: var(--text-light);
+                  font-weight: 500;
+                  background: var(--bg-secondary);
+                  padding: 2px 8px;
+                  border-radius: 4px;
+                  border: 1px solid var(--border-color);
                 }
               }
             }
@@ -860,16 +935,16 @@ export default {
             gap: 16px;
 
             .login-method {
-              width: 48px;
-              height: 48px;
-              border-radius: 12px;
+              width: 44px;
+              height: 44px;
+              border-radius: 10px;
               background: var(--bg-secondary);
               display: flex;
               align-items: center;
               justify-content: center;
               cursor: pointer;
               transition: all 0.3s ease;
-              border: 2px solid transparent;
+              border: 1px solid var(--border-color);
               position: relative;
               overflow: hidden;
 

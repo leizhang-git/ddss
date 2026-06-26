@@ -127,3 +127,21 @@ $login-warning-color: #f59e0b;
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
+
+// 动画：网格移动
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(60px, 60px); }
+}
+
+// 动画：光晕脉冲
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.2; transform: scale(1.1); }
+}
+
+// 动画：科技线条移动
+@keyframes techLineMove {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 0.8; }
+}

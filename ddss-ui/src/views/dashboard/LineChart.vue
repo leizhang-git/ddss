@@ -6,7 +6,7 @@
 import * as echarts from 'echarts'
 import resize from './mixins/resize'
 
-require('echarts/theme/macarons') // echarts theme
+require('echarts/theme/macarons')
 
 export default {
   mixins: [resize],
@@ -62,18 +62,27 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({expectedData, actualData} = {}) {
+    setOptions({expectedData, actualData, xAxisData} = {}) {
+      const labels = xAxisData || ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: labels,
           boundaryGap: false,
           axisTick: {
             show: false
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#dcdfe6'
+            }
+          },
+          axisLabel: {
+            color: '#909399'
           }
         },
         grid: {
           left: 10,
-          right: 10,
+          right: 20,
           bottom: 20,
           top: 30,
           containLabel: true
@@ -88,17 +97,29 @@ export default {
         yAxis: {
           axisTick: {
             show: false
+          },
+          axisLine: {
+            show: false
+          },
+          splitLine: {
+            lineStyle: {
+              color: '#f0f2f5'
+            }
           }
         },
         legend: {
-          data: ['expected', 'actual']
+          data: ['预期数据', '实际数据'],
+          textStyle: {
+            color: '#606266'
+          }
         },
         series: [{
-          name: 'expected', itemStyle: {
+          name: '预期数据',
+          itemStyle: {
             normal: {
-              color: '#FF005A',
+              color: '#409eff',
               lineStyle: {
-                color: '#FF005A',
+                color: '#409eff',
                 width: 2
               }
             }
@@ -109,26 +130,29 @@ export default {
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
-          {
-            name: 'actual',
-            smooth: true,
-            type: 'line',
-            itemStyle: {
-              normal: {
-                color: '#3888fa',
-                lineStyle: {
-                  color: '#3888fa',
-                  width: 2
-                },
-                areaStyle: {
-                  color: '#f3f8ff'
-                }
+        {
+          name: '实际数据',
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#67c23a',
+              lineStyle: {
+                color: '#67c23a',
+                width: 2
+              },
+              areaStyle: {
+                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                  {offset: 0, color: 'rgba(103, 194, 58, 0.2)'},
+                  {offset: 1, color: 'rgba(103, 194, 58, 0.02)'}
+                ])
               }
-            },
-            data: actualData,
-            animationDuration: 2800,
-            animationEasing: 'quadraticOut'
-          }]
+            }
+          },
+          data: actualData,
+          animationDuration: 2800,
+          animationEasing: 'quadraticOut'
+        }]
       })
     }
   }
