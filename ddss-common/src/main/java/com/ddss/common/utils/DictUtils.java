@@ -6,37 +6,54 @@ import com.ddss.common.core.domain.entity.SysDictData;
 import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.utils.spring.SpringUtils;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * 字典工具类
+ * 字典工具类（增强版）
  *
- * @author ruoyi
+ * @author ddss
  */
 public class DictUtils {
-    /**
-     * 分隔符
-     */
+
     public static final String SEPARATOR = ",";
 
-    /**
-     * 设置字典缓存
-     *
-     * @param key       参数键
-     * @param dictDatas 字典数据列表
-     */
+    /** 字典缓存过期时间：2 小时 */
+    private static final long DICT_CACHE_TTL = 7200;
+
     public static void setDictCache(String key, List<SysDictData> dictDatas) {
-        SpringUtils.getBean(RedisCache.class).setCacheObject(getCacheKey(key), dictDatas);
+        SpringUtils.getBean(RedisCache.class).setCacheObjectWithJitter(getCacheKey(key), dictDatas, DICT_CACHE_TTL);
     }
 
     /**
-     * 获取字典缓存
+     * 获取字典缓存（带穿透/击穿防护）
      *
-     * @param key 参数键
-     * @return dictDatas 字典数据列表
+     * @param key        字典类型
+     * @param supplier   数据库查询降级函数
+     */
+    public static List<SysDictData> getDictCache(String key, java.util.function.Supplier<List<SysDictData>> supplier) {
+        String cacheKey = getCacheKey(key);
+        RedisCache redisCache = SpringUtils.getBean(RedisCache.class);
+        JSONArray arrayCache = redisCache.getCacheObject(cacheKey);
+        if (StringUtils.isNotNull(arrayCache)) {
+            return arrayCache.toList(SysDictData.class);
+        }
+        // 缓存未命中，查库 + 回填
+        if (supplier != null) {
+            List<SysDictData> data = supplier.get();
+            if (data != null && !data.isEmpty()) {
+                redisCache.setCacheObjectWithJitter(cacheKey, data, DICT_CACHE_TTL);
+            } else {
+                redisCache.setNullCache(cacheKey);
+            }
+            return data;
+        }
+        return null;
+    }
+
+    /**
+     * 获取字典缓存（兼容旧调用，不自动回填）
      */
     public static List<SysDictData> getDictCache(String key) {
         JSONArray arrayCache = SpringUtils.getBean(RedisCache.class).getCacheObject(getCacheKey(key));
@@ -46,13 +63,6 @@ public class DictUtils {
         return null;
     }
 
-    /**
-     * 根据字典类型和字典值获取字典标签
-     *
-     * @param dictType  字典类型
-     * @param dictValue 字典值
-     * @return 字典标签
-     */
     public static String getDictLabel(String dictType, String dictValue) {
         if (StringUtils.isEmpty(dictValue)) {
             return StringUtils.EMPTY;
@@ -60,13 +70,6 @@ public class DictUtils {
         return getDictLabel(dictType, dictValue, SEPARATOR);
     }
 
-    /**
-     * 根据字典类型和字典标签获取字典值
-     *
-     * @param dictType  字典类型
-     * @param dictLabel 字典标签
-     * @return 字典值
-     */
     public static String getDictValue(String dictType, String dictLabel) {
         if (StringUtils.isEmpty(dictLabel)) {
             return StringUtils.EMPTY;
@@ -74,14 +77,6 @@ public class DictUtils {
         return getDictValue(dictType, dictLabel, SEPARATOR);
     }
 
-    /**
-     * 根据字典类型和字典值获取字典标签
-     *
-     * @param dictType  字典类型
-     * @param dictValue 字典值
-     * @param separator 分隔符
-     * @return 字典标签
-     */
     public static String getDictLabel(String dictType, String dictValue, String separator) {
         List<SysDictData> datas = getDictCache(dictType);
         if (StringUtils.isNull(datas) || StringUtils.isEmpty(dictValue)) {
@@ -100,14 +95,6 @@ public class DictUtils {
         return StringUtils.removeEnd(labelBuilder.toString(), separator);
     }
 
-    /**
-     * 根据字典类型和字典标签获取字典值
-     *
-     * @param dictType  字典类型
-     * @param dictLabel 字典标签
-     * @param separator 分隔符
-     * @return 字典值
-     */
     public static String getDictValue(String dictType, String dictLabel, String separator) {
         List<SysDictData> datas = getDictCache(dictType);
         if (StringUtils.isNull(datas) || StringUtils.isEmpty(dictLabel)) {
@@ -126,12 +113,6 @@ public class DictUtils {
         return StringUtils.removeEnd(valueBuilder.toString(), separator);
     }
 
-    /**
-     * 根据字典类型获取字典所有值
-     *
-     * @param dictType 字典类型
-     * @return 字典值
-     */
     public static String getDictValues(String dictType) {
         StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
@@ -144,12 +125,6 @@ public class DictUtils {
         return StringUtils.stripEnd(propertyString.toString(), SEPARATOR);
     }
 
-    /**
-     * 根据字典类型获取字典所有标签
-     *
-     * @param dictType 字典类型
-     * @return 字典值
-     */
     public static String getDictLabels(String dictType) {
         StringBuilder propertyString = new StringBuilder();
         List<SysDictData> datas = getDictCache(dictType);
@@ -162,29 +137,17 @@ public class DictUtils {
         return StringUtils.stripEnd(propertyString.toString(), SEPARATOR);
     }
 
-    /**
-     * 删除指定字典缓存
-     *
-     * @param key 字典键
-     */
     public static void removeDictCache(String key) {
         SpringUtils.getBean(RedisCache.class).deleteObject(getCacheKey(key));
     }
 
     /**
-     * 清空字典缓存
+     * 清空字典缓存（使用 scan 替代 keys，避免阻塞）
      */
     public static void clearDictCache() {
-        Collection<String> keys = SpringUtils.getBean(RedisCache.class).keys(CacheConstants.SYS_DICT_KEY + "*");
-        SpringUtils.getBean(RedisCache.class).deleteObject(keys);
+        SpringUtils.getBean(RedisCache.class).deleteByPattern(CacheConstants.SYS_DICT_KEY + "*");
     }
 
-    /**
-     * 设置cache key
-     *
-     * @param configKey 参数键
-     * @return 缓存键key
-     */
     public static String getCacheKey(String configKey) {
         return CacheConstants.SYS_DICT_KEY + configKey;
     }

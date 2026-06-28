@@ -2,6 +2,7 @@ package com.ddss.web.controller.monitor;
 
 import com.ddss.common.constant.CacheConstants;
 import com.ddss.common.core.domain.AjaxResult;
+import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.system.domain.SysCache;
 import org.springframework.data.redis.connection.RedisServerCommands;
@@ -16,14 +17,19 @@ import java.util.*;
 /**
  * 缓存监控
  *
- * @author ruoyi
+ * @author ddss
  */
 @RestController
 @RequestMapping("/monitor/cache")
 public class CacheController {
+
     private final static List<SysCache> caches = new ArrayList<>();
+
     @Resource
     private RedisTemplate<String, String> redisTemplate;
+
+    @Resource
+    private RedisCache redisCache;
 
     {
         caches.add(new SysCache(CacheConstants.LOGIN_TOKEN_KEY, "用户信息"));
@@ -68,7 +74,7 @@ public class CacheController {
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getKeys/{cacheName}")
     public AjaxResult getCacheKeys(@PathVariable String cacheName) {
-        Set<String> cacheKeys = redisTemplate.keys(cacheName + "*");
+        Set<String> cacheKeys = redisCache.scanKeys(cacheName + "*");
         return AjaxResult.success(new TreeSet<>(cacheKeys));
     }
 
@@ -83,8 +89,7 @@ public class CacheController {
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheName/{cacheName}")
     public AjaxResult clearCacheName(@PathVariable String cacheName) {
-        Collection<String> cacheKeys = redisTemplate.keys(cacheName + "*");
-        redisTemplate.delete(cacheKeys);
+        redisCache.deleteByPattern(cacheName + "*");
         return AjaxResult.success();
     }
 
@@ -98,8 +103,7 @@ public class CacheController {
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheAll")
     public AjaxResult clearCacheAll() {
-        Collection<String> cacheKeys = redisTemplate.keys("*");
-        redisTemplate.delete(cacheKeys);
+        redisCache.deleteByPattern("*");
         return AjaxResult.success();
     }
 }

@@ -38,7 +38,7 @@ public class SysUserOnlineController extends BaseController {
     @PreAuthorize("@ss.hasPermi('monitor:online:list')")
     @GetMapping("/list")
     public TableDataInfo list(String ipaddr, String userName) {
-        Collection<String> keys = redisCache.keys(CacheConstants.LOGIN_TOKEN_KEY + "*");
+        Collection<String> keys = redisCache.scanKeys(CacheConstants.LOGIN_TOKEN_KEY + "*");
         List<SysUserOnline> userOnlineList = new ArrayList<SysUserOnline>();
         for (String key : keys) {
             Object cacheObject = redisCache.getCacheObject(key);
