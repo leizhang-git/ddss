@@ -4,6 +4,7 @@ import com.ddss.common.strategy.StorageStrategy;
 import com.ddss.server.minio.util.MinioUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 @Component("minioStorageStrategy")
+@ConditionalOnProperty(name = "ddss.middleware.minio.enabled", havingValue = "true", matchIfMissing = true)
 public class MinioStorageStrategy implements StorageStrategy {
 
     @Autowired

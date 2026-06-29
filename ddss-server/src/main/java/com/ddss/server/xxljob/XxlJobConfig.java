@@ -2,14 +2,18 @@ package com.ddss.server.xxljob;
 
 import com.xxl.job.core.executor.impl.XxlJobSpringExecutor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * XXL-Job 配置（可通过 ddss.middleware.xxl-job.enabled 开关控制）
+ *
  * @Author zhanglei
  * @Date 2025/12/12 14:32
  */
 @Configuration
+@ConditionalOnProperty(name = "ddss.middleware.xxl-job.enabled", havingValue = "true", matchIfMissing = true)
 public class XxlJobConfig {
 
     @Value("${xxl.job.admin.addresses}")

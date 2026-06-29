@@ -9,6 +9,7 @@ import com.ddss.common.enums.BusinessType;
 import com.ddss.server.minio.util.MinioUtil;
 import io.minio.messages.Item;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/resource/minio")
+@ConditionalOnProperty(name = "ddss.middleware.minio.enabled", havingValue = "true", matchIfMissing = true)
 public class MinioResourceController extends BaseController {
 
     @Autowired

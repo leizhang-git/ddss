@@ -1,0 +1,2 @@
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  com.ddss.web.core.config.MiddlewareAutoConfigExcluder

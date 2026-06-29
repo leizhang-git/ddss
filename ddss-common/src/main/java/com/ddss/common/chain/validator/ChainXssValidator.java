@@ -5,11 +5,11 @@ import com.ddss.common.chain.ValidationResult;
 
 import java.lang.reflect.Field;
 
-public class XssValidator extends AbstractValidationHandler {
+public class ChainXssValidator extends AbstractValidationHandler {
     private final String fieldName;
     private final String errorMessage;
 
-    public XssValidator(String fieldName, String errorMessage) {
+    public ChainXssValidator(String fieldName, String errorMessage) {
         this.fieldName = fieldName;
         this.errorMessage = errorMessage;
     }

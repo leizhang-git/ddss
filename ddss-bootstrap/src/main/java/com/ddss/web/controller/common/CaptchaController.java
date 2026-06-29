@@ -43,6 +43,10 @@ public class CaptchaController {
     public AjaxResult getCode() {
         AjaxResult ajax = AjaxResult.success();
         boolean captchaEnabled = configService.selectCaptchaEnabled();
+        // Redis 不可用时无法存储验证码，强制关闭
+        if (captchaEnabled && redisCache.redisTemplate == null) {
+            captchaEnabled = false;
+        }
         ajax.put("captchaEnabled", captchaEnabled);
         if (!captchaEnabled) {
             return ajax;

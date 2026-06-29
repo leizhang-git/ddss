@@ -16,65 +16,70 @@ import com.ddss.framework.web.service.TokenService;
 import com.ddss.system.service.ISysConfigService;
 import com.ddss.system.service.ISysMenuService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
- * 登录验证
+ * 登录验证（支持无 MySQL 开发模式）
  *
- * @author ruoyi
+ * @author ddss
  */
 @RestController
 public class SysLoginController {
 
     @Autowired
     private SysLoginService loginService;
-
     @Autowired
     private ISysMenuService menuService;
-
     @Autowired
     private SysPermissionService permissionService;
-
     @Autowired
     private TokenService tokenService;
-
     @Autowired
     private ISysConfigService configService;
 
+    @Value("${ddss.middleware.mysql.enabled:true}")
+    private boolean mysqlEnabled;
+
     /**
-     * 登录方法
-     *
-     * @param loginBody 登录信息
-     * @return 结果
+     * 登录方法（MySQL 关闭时自动放行）
      */
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody) {
+        if (!mysqlEnabled) return devLogin();
         AjaxResult ajax = AjaxResult.success();
-        // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(), loginBody.getUuid());
         ajax.put(SystemConstants.TOKEN, token);
         return ajax;
     }
 
-    /**
-     * 获取用户信息
-     *
-     * @return 用户信息
-     */
+    /** 开发模式：跳过密码验证，直接生成 admin token */
+    private AjaxResult devLogin() {
+        SysUser user = new SysUser();
+        user.setUserId(1L);
+        user.setDeptId(103L);
+        user.setUserName("admin");
+        user.setNickName("开发者");
+        user.setDept(null);
+        Set<String> perms = new HashSet<>(Collections.singletonList(SystemConstants.ALL_PERMISSION));
+        LoginUser loginUser = new LoginUser(user.getUserId(), user.getDeptId(), user, perms);
+        String token = tokenService.createToken(loginUser);
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put(SystemConstants.TOKEN, token);
+        return ajax;
+    }
+
     @GetMapping("getInfo")
     public AjaxResult getInfo() {
+        if (!mysqlEnabled) return devGetInfo();
         LoginUser loginUser = SecurityUtils.getLoginUser();
         SysUser user = loginUser.getUser();
-        // 角色集合
         Set<String> roles = permissionService.getRolePermission(user);
-        // 权限集合
         Set<String> permissions = permissionService.getMenuPermission(user);
         if (!loginUser.getPermissions().equals(permissions)) {
             loginUser.setPermissions(permissions);
@@ -89,34 +94,42 @@ public class SysLoginController {
         return ajax;
     }
 
-    /**
-     * 获取路由信息
-     *
-     * @return 路由信息
-     */
+    private AjaxResult devGetInfo() {
+        SysUser user = new SysUser();
+        user.setUserId(1L);
+        user.setDeptId(103L);
+        user.setUserName("admin");
+        user.setNickName("开发者");
+        user.setDept(null);
+        Set<String> roles = new HashSet<>(Collections.singletonList("admin"));
+        Set<String> permissions = new HashSet<>(Collections.singletonList(SystemConstants.ALL_PERMISSION));
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("user", user);
+        ajax.put("roles", roles);
+        ajax.put("permissions", permissions);
+        ajax.put("isDefaultModifyPwd", false);
+        ajax.put("isPasswordExpired", false);
+        return ajax;
+    }
+
     @GetMapping("getRouters")
     public AjaxResult getRouters() {
+        if (!mysqlEnabled) return AjaxResult.success(Collections.emptyList());
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return AjaxResult.success(menuService.buildMenus(menus));
     }
 
-    // 检查初始密码是否提醒修改
     public boolean initPasswordIsModify(Date pwdUpdateDate) {
         Integer initPasswordModify = Convert.toInt(configService.selectConfigByKey("sys.account.initPasswordModify"));
         return initPasswordModify != null && initPasswordModify == 1 && pwdUpdateDate == null;
     }
 
-    // 检查密码是否过期
     public boolean passwordIsExpiration(Date pwdUpdateDate) {
         Integer passwordValidateDays = Convert.toInt(configService.selectConfigByKey("sys.account.passwordValidateDays"));
         if (passwordValidateDays != null && passwordValidateDays > 0) {
-            if (StringUtils.isNull(pwdUpdateDate)) {
-                // 如果从未修改过初始密码，直接提醒过期
-                return true;
-            }
-            Date nowDate = DateUtils.getNowDate();
-            return DateUtils.differentDaysByMillisecond(nowDate, pwdUpdateDate) > passwordValidateDays;
+            if (StringUtils.isNull(pwdUpdateDate)) return true;
+            return DateUtils.differentDaysByMillisecond(DateUtils.getNowDate(), pwdUpdateDate) > passwordValidateDays;
         }
         return false;
     }

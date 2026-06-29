@@ -1,6 +1,7 @@
 package com.ddss.server.kafka;
 
 import com.ddss.server.domain.KafkaMessage;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 @Component
 @Configuration
+@ConditionalOnProperty(name = "ddss.middleware.kafka.enabled", havingValue = "true", matchIfMissing = true)
 public class KafkaMessagePool {
 
     private Queue<KafkaMessage> messageQueue;
@@ -23,18 +25,10 @@ public class KafkaMessagePool {
         messageQueue = new ConcurrentLinkedQueue<>();
     }
 
-    /**
-     * 入队
-     * @param message
-     */
     public void sendMessages(KafkaMessage message) {
         messageQueue.add(message);
     }
 
-    /**
-     * 出队
-     * @return
-     */
     public KafkaMessage getMessages() {
         return messageQueue.poll();
     }

@@ -11,6 +11,7 @@ import com.ddss.server.service.DdssResourceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +24,11 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * 资源管理Controller
+ * 资源管理Controller（MinIO 关闭时，下载功能降级返回错误提示）
  */
 @RestController
 @RequestMapping("/video/resource")
+@ConditionalOnProperty(name = "ddss.middleware.minio.enabled", havingValue = "true", matchIfMissing = true)
 public class ResourceController extends BaseController {
 
     private static final Logger log = LoggerFactory.getLogger(ResourceController.class);

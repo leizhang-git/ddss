@@ -10,6 +10,7 @@ import com.xxl.job.core.handler.annotation.XxlJob;
 import io.minio.messages.Item;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  * @Date 2025/12/12 14:34
  */
 @Component
+@ConditionalOnProperty(name = "ddss.middleware.xxl-job.enabled", havingValue = "true", matchIfMissing = true)
 public class TestJob {
 
     private static final Logger log = LoggerFactory.getLogger(TestJob.class);

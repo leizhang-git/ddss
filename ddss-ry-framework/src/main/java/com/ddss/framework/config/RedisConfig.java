@@ -1,7 +1,6 @@
 package com.ddss.framework.config;
 
-import org.springframework.cache.annotation.CachingConfigurerSupport;
-import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -10,13 +9,13 @@ import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 /**
- * redis配置
+ * Redis 配置（可通过 ddss.middleware.redis.enabled 开关控制）
  *
- * @author ruoyi
+ * @author ddss
  */
 @Configuration
-@EnableCaching
-public class RedisConfig extends CachingConfigurerSupport {
+@ConditionalOnProperty(name = "ddss.middleware.redis.enabled", havingValue = "true", matchIfMissing = true)
+public class RedisConfig {
     @Bean
     @SuppressWarnings(value = {"unchecked", "rawtypes"})
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory connectionFactory) {

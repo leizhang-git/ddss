@@ -83,6 +83,8 @@ public class SysLoginService {
             String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.nvl(uuid, "");
             String captcha = redisCache.getCacheObject(verifyKey);
             if (captcha == null) {
+                // Redis 不可用时自动跳过验证码校验
+                if (redisCache.redisTemplate == null) return;
                 eventPublisher.publishLoginEvent(username, SystemConstants.LOGIN_FAIL,
                         DDSSMessageUtils.message("user.jcaptcha.expire"));
                 throw new CaptchaExpireException();

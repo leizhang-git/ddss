@@ -5,6 +5,7 @@ import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.system.domain.SysCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.RedisServerCommands;
 import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,7 +26,7 @@ public class CacheController {
 
     private final static List<SysCache> caches = new ArrayList<>();
 
-    @Resource
+    @Autowired(required = false)
     private RedisTemplate<String, String> redisTemplate;
 
     @Resource
@@ -44,6 +45,7 @@ public class CacheController {
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping()
     public AjaxResult getInfo() throws Exception {
+        if (redisTemplate == null) return AjaxResult.error("Redis 缓存未启用");
         Properties info = (Properties) redisTemplate.execute((RedisCallback<Object>) RedisServerCommands::info);
         Properties commandStats = (Properties) redisTemplate.execute((RedisCallback<Object>) connection -> connection.info("commandstats"));
         Object dbSize = redisTemplate.execute((RedisCallback<Object>) RedisServerCommands::dbSize);
@@ -52,16 +54,17 @@ public class CacheController {
         result.put("info", info);
         result.put("dbSize", dbSize);
 
-        List<Map<String, String>> pieList = new ArrayList<>();
-        assert commandStats != null;
-        commandStats.stringPropertyNames().forEach(key -> {
-            Map<String, String> data = new HashMap<>(2);
-            String property = commandStats.getProperty(key);
-            data.put("name", StringUtils.removeStart(key, "cmdstat_"));
-            data.put("value", StringUtils.substringBetween(property, "calls=", ",usec"));
-            pieList.add(data);
-        });
-        result.put("commandStats", pieList);
+        if (commandStats != null) {
+            List<Map<String, String>> pieList = new ArrayList<>();
+            commandStats.stringPropertyNames().forEach(key -> {
+                Map<String, String> data = new HashMap<>(2);
+                String property = commandStats.getProperty(key);
+                data.put("name", StringUtils.removeStart(key, "cmdstat_"));
+                data.put("value", StringUtils.substringBetween(property, "calls=", ",usec"));
+                pieList.add(data);
+            });
+            result.put("commandStats", pieList);
+        }
         return AjaxResult.success(result);
     }
 
@@ -81,7 +84,7 @@ public class CacheController {
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @GetMapping("/getValue/{cacheName}/{cacheKey}")
     public AjaxResult getCacheValue(@PathVariable String cacheName, @PathVariable String cacheKey) {
-        String cacheValue = redisTemplate.opsForValue().get(cacheKey);
+        String cacheValue = redisTemplate != null ? redisTemplate.opsForValue().get(cacheKey) : null;
         SysCache sysCache = new SysCache(cacheName, cacheKey, cacheValue);
         return AjaxResult.success(sysCache);
     }
@@ -96,7 +99,7 @@ public class CacheController {
     @PreAuthorize("@ss.hasPermi('monitor:cache:list')")
     @DeleteMapping("/clearCacheKey/{cacheKey}")
     public AjaxResult clearCacheKey(@PathVariable String cacheKey) {
-        redisTemplate.delete(cacheKey);
+        if (redisTemplate != null) redisTemplate.delete(cacheKey);
         return AjaxResult.success();
     }
 

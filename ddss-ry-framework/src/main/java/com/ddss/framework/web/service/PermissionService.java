@@ -6,6 +6,7 @@ import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.utils.SecurityUtils;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.framework.security.context.PermissionContextHolder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -24,7 +25,11 @@ public class PermissionService {
      * @param permission 权限字符串
      * @return 用户是否具备某权限
      */
+    @Value("${ddss.middleware.mysql.enabled:true}")
+    private boolean mysqlEnabled;
+
     public boolean hasPermi(String permission) {
+        if (!mysqlEnabled) return true;
         if (StringUtils.isEmpty(permission)) {
             return false;
         }

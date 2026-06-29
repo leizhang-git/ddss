@@ -1,28 +1,46 @@
+# ==================== 中间件开关（本地配置，不可放 Nacos） ====================
+# false=关闭，true=开启
+ddss:
+  middleware:
+    nacos:
+      enabled: false       # Nacos 开关 ← 这个必须在本地，不能放 Nacos
+    redis:
+      enabled: false       # Redis 开关
+    kafka:
+      enabled: false       # Kafka 开关
+    minio:
+      enabled: false       # MinIO 开关
+    mysql:
+      enabled: false       # MySQL 开关（false → 自动切 H2 内存数据库）
+    xxl-job:
+      enabled: false       # XXL-Job 开关
+
 spring:
   application:
     name: ddss-server
   config:
     import:
-      - nacos:ddss-server.yaml
-      - nacos:ddss-server-druid.yaml
+      - optional:nacos:ddss-server.yaml
+      - optional:nacos:ddss-server-druid.yaml
   cloud:
     nacos:
       config:
+        enabled: ${ddss.middleware.nacos.enabled:true}
         server-addr: 192.168.52.100:8848
         file-extension: yaml
         namespace: 996
         group: DDSS_GROUP
         refresh-enabled: true
       discovery:
+        enabled: ${ddss.middleware.nacos.enabled:true}
         server-addr: ${spring.cloud.nacos.config.server-addr}
         namespace: 996
         group: DDSS_GROUP
   profiles:
     active: druid
+    include: local     # application-local.yml 作为本地兜底（Nacos 覆盖它的值）
 
 logging:
   level:
     root: INFO
-    com.alibaba.nacos: DEBUG
-    org.springframework.cloud.alibaba.nacos: DEBUG
-    com.ddss: DEBUG  # 添加你的应用包名
+    com.ddss: DEBUG

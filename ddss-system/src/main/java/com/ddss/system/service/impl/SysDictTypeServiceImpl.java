@@ -10,6 +10,7 @@ import com.ddss.system.mapper.SysDictDataMapper;
 import com.ddss.system.mapper.SysDictTypeMapper;
 import com.ddss.system.service.ISysDictTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  * @author ddss
  */
 @Service
+@DependsOn("h2DataInitializer")
 public class SysDictTypeServiceImpl implements ISysDictTypeService {
 
     @Autowired

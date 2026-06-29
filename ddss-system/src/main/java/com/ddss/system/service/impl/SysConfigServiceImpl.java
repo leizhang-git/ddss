@@ -12,6 +12,7 @@ import com.ddss.system.domain.SysConfig;
 import com.ddss.system.mapper.SysConfigMapper;
 import com.ddss.system.service.ISysConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author ddss
  */
 @Service
+@DependsOn("h2DataInitializer")
 public class SysConfigServiceImpl implements ISysConfigService {
 
     /** 配置缓存过期时间：1 小时 */
