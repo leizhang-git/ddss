@@ -4,11 +4,10 @@ import com.alibaba.fastjson2.JSON;
 import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.core.domain.AjaxResult;
 import com.ddss.common.core.domain.model.LoginUser;
+import com.ddss.framework.event.EventPublisher;
 import com.ddss.common.utils.DDSSMessageUtils;
 import com.ddss.common.utils.ServletUtils;
 import com.ddss.common.utils.StringUtils;
-import com.ddss.framework.manager.AsyncManager;
-import com.ddss.framework.manager.factory.AsyncFactory;
 import com.ddss.framework.web.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +29,9 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
     @Autowired
     private TokenService tokenService;
 
+    @Autowired
+    private EventPublisher eventPublisher;
+
     /**
      * 退出处理
      *
@@ -43,8 +45,8 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
             String userName = loginUser.getUsername();
             // 删除用户缓存记录
             tokenService.delLoginUser(loginUser.getToken());
-            // 记录用户退出日志
-            AsyncManager.me().execute(AsyncFactory.recordLogininfor(userName, SystemConstants.LOGOUT, DDSSMessageUtils.message("user.logout.success")));
+            // 记录用户退出日志（Spring Event 异步）
+            eventPublisher.publishLoginEvent(userName, SystemConstants.LOGOUT, DDSSMessageUtils.message("user.logout.success"));
         }
         ServletUtils.renderString(response, JSON.toJSONString(AjaxResult.success(DDSSMessageUtils.message("user.logout.success"))));
     }

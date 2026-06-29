@@ -12,8 +12,7 @@ import com.ddss.common.utils.DateUtils;
 import com.ddss.common.utils.DDSSMessageUtils;
 import com.ddss.common.utils.SecurityUtils;
 import com.ddss.common.utils.StringUtils;
-import com.ddss.framework.manager.AsyncManager;
-import com.ddss.framework.manager.factory.AsyncFactory;
+import com.ddss.framework.event.EventPublisher;
 import com.ddss.system.service.ISysConfigService;
 import com.ddss.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,9 @@ public class SysRegisterService {
 
     @Autowired
     private RedisCache redisCache;
+
+    @Autowired
+    private EventPublisher eventPublisher;
 
     /**
      * 注册
@@ -69,7 +71,7 @@ public class SysRegisterService {
             if (!regFlag) {
                 msg = "注册失败,请联系系统管理人员";
             } else {
-                AsyncManager.me().execute(AsyncFactory.recordLogininfor(username, SystemConstants.REGISTER, DDSSMessageUtils.message("user.register.success")));
+                eventPublisher.publishLoginEvent(username, SystemConstants.REGISTER, DDSSMessageUtils.message("user.register.success"));
             }
         }
         return msg;

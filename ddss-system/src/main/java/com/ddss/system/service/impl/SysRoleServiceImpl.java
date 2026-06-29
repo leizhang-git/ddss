@@ -1,9 +1,11 @@
 package com.ddss.system.service.impl;
 
 import com.ddss.common.annotation.DataScope;
+import com.ddss.common.constant.CacheConstants;
 import com.ddss.common.constant.UserConstants;
 import com.ddss.common.core.domain.entity.SysRole;
 import com.ddss.common.core.domain.entity.SysUser;
+import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.exception.ServiceException;
 import com.ddss.common.utils.SecurityUtils;
 import com.ddss.common.utils.StringUtils;
@@ -23,12 +25,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- * 角色 业务层处理
+ * 角色 业务层处理（带 Redis 缓存）
  *
- * @author ruoyi
+ * @author ddss
  */
 @Service
 public class SysRoleServiceImpl implements ISysRoleService {
+
+    private static final long ROLE_CACHE_TTL = 1800; // 30 分钟
+
     @Autowired
     private SysRoleMapper roleMapper;
 
@@ -40,6 +45,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
 
     @Autowired
     private SysRoleDeptMapper roleDeptMapper;
+
+    @Autowired
+    private RedisCache redisCache;
 
     /**
      * 根据条件分页查询角色数据
@@ -82,14 +90,17 @@ public class SysRoleServiceImpl implements ISysRoleService {
      */
     @Override
     public Set<String> selectRolePermissionByUserId(Long userId) {
-        List<SysRole> perms = roleMapper.selectRolePermissionByUserId(userId);
-        Set<String> permsSet = new HashSet<>();
-        for (SysRole perm : perms) {
-            if (StringUtils.isNotNull(perm)) {
-                permsSet.addAll(Arrays.asList(perm.getRoleKey().trim().split(",")));
+        String cacheKey = CacheConstants.ROLE_PERMS_KEY + "userId:" + userId;
+        return redisCache.getOrSetWithLock(cacheKey, () -> {
+            List<SysRole> perms = roleMapper.selectRolePermissionByUserId(userId);
+            Set<String> permsSet = new HashSet<>();
+            for (SysRole perm : perms) {
+                if (StringUtils.isNotNull(perm)) {
+                    permsSet.addAll(Arrays.asList(perm.getRoleKey().trim().split(",")));
+                }
             }
-        }
-        return permsSet;
+            return permsSet;
+        }, ROLE_CACHE_TTL);
     }
 
     /**
@@ -199,7 +210,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
     public int insertRole(SysRole role) {
         // 新增角色信息
         roleMapper.insertRole(role);
-        return insertRoleMenu(role);
+        int rows = insertRoleMenu(role);
+        clearRoleCache();
+        return rows;
     }
 
     /**
@@ -215,7 +228,9 @@ public class SysRoleServiceImpl implements ISysRoleService {
         roleMapper.updateRole(role);
         // 删除角色与菜单关联
         roleMenuMapper.deleteRoleMenuByRoleId(role.getRoleId());
-        return insertRoleMenu(role);
+        int rows = insertRoleMenu(role);
+        clearRoleCache();
+        return rows;
     }
 
     /**
@@ -354,5 +369,13 @@ public class SysRoleServiceImpl implements ISysRoleService {
             list.add(ur);
         }
         return userRoleMapper.batchUserRole(list);
+    }
+
+    /**
+     * 清除所有角色/权限相关缓存
+     */
+    private void clearRoleCache() {
+        redisCache.deleteByPattern(CacheConstants.ROLE_PERMS_KEY + "*");
+        redisCache.deleteByPattern(CacheConstants.MENU_PERMS_KEY + "*");
     }
 }

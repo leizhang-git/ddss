@@ -1,11 +1,13 @@
 package com.ddss.system.service.impl;
 
+import com.ddss.common.constant.CacheConstants;
 import com.ddss.common.constant.SystemConstants;
 import com.ddss.common.constant.UserConstants;
 import com.ddss.common.core.domain.TreeSelect;
 import com.ddss.common.core.domain.entity.SysMenu;
 import com.ddss.common.core.domain.entity.SysRole;
 import com.ddss.common.core.domain.entity.SysUser;
+import com.ddss.common.core.redis.RedisCache;
 import com.ddss.common.utils.SecurityUtils;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.system.domain.vo.MetaVo;
@@ -21,13 +23,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 菜单 业务层处理
+ * 菜单 业务层处理（带 Redis 缓存）
  *
- * @author ruoyi
+ * @author ddss
  */
 @Service
 public class SysMenuServiceImpl implements ISysMenuService {
     public static final String PREMISSION_STRING = "perms[\"{0}\"]";
+
+    private static final long MENU_CACHE_TTL = 1800; // 30 分钟
 
     @Autowired
     private SysMenuMapper menuMapper;
@@ -37,6 +41,9 @@ public class SysMenuServiceImpl implements ISysMenuService {
 
     @Autowired
     private SysRoleMenuMapper roleMenuMapper;
+
+    @Autowired
+    private RedisCache redisCache;
 
     /**
      * 根据用户查询系统菜单列表
@@ -76,14 +83,17 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public Set<String> selectMenuPermsByUserId(Long userId) {
-        List<String> perms = menuMapper.selectMenuPermsByUserId(userId);
-        Set<String> permsSet = new HashSet<>();
-        for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+        String cacheKey = CacheConstants.MENU_PERMS_KEY + "userId:" + userId;
+        return redisCache.getOrSetWithLock(cacheKey, () -> {
+            List<String> perms = menuMapper.selectMenuPermsByUserId(userId);
+            Set<String> permsSet = new HashSet<>();
+            for (String perm : perms) {
+                if (StringUtils.isNotEmpty(perm)) {
+                    permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+                }
             }
-        }
-        return permsSet;
+            return permsSet;
+        }, MENU_CACHE_TTL);
     }
 
     /**
@@ -94,14 +104,17 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public Set<String> selectMenuPermsByRoleId(Long roleId) {
-        List<String> perms = menuMapper.selectMenuPermsByRoleId(roleId);
-        Set<String> permsSet = new HashSet<>();
-        for (String perm : perms) {
-            if (StringUtils.isNotEmpty(perm)) {
-                permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+        String cacheKey = CacheConstants.MENU_PERMS_KEY + "roleId:" + roleId;
+        return redisCache.getOrSetWithLock(cacheKey, () -> {
+            List<String> perms = menuMapper.selectMenuPermsByRoleId(roleId);
+            Set<String> permsSet = new HashSet<>();
+            for (String perm : perms) {
+                if (StringUtils.isNotEmpty(perm)) {
+                    permsSet.addAll(Arrays.asList(perm.trim().split(",")));
+                }
             }
-        }
-        return permsSet;
+            return permsSet;
+        }, MENU_CACHE_TTL);
     }
 
     /**
@@ -263,7 +276,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int insertMenu(SysMenu menu) {
-        return menuMapper.insertMenu(menu);
+        int row = menuMapper.insertMenu(menu);
+        if (row > 0) {
+            clearMenuCache();
+        }
+        return row;
     }
 
     /**
@@ -274,7 +291,11 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int updateMenu(SysMenu menu) {
-        return menuMapper.updateMenu(menu);
+        int row = menuMapper.updateMenu(menu);
+        if (row > 0) {
+            clearMenuCache();
+        }
+        return row;
     }
 
     /**
@@ -285,7 +306,19 @@ public class SysMenuServiceImpl implements ISysMenuService {
      */
     @Override
     public int deleteMenuById(Long menuId) {
-        return menuMapper.deleteMenuById(menuId);
+        int row = menuMapper.deleteMenuById(menuId);
+        if (row > 0) {
+            clearMenuCache();
+        }
+        return row;
+    }
+
+    /**
+     * 清除所有菜单相关缓存
+     */
+    private void clearMenuCache() {
+        redisCache.deleteByPattern(CacheConstants.MENU_PERMS_KEY + "*");
+        redisCache.deleteByPattern(CacheConstants.MENU_TREE_KEY + "*");
     }
 
     /**

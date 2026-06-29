@@ -7,14 +7,13 @@ import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.core.text.Convert;
 import com.ddss.common.enums.BusinessStatus;
 import com.ddss.common.enums.HttpMethod;
+import com.ddss.framework.event.EventPublisher;
 import com.ddss.common.filter.PropertyPreExcludeFilter;
 import com.ddss.common.utils.ExceptionUtil;
 import com.ddss.common.utils.SecurityUtils;
 import com.ddss.common.utils.ServletUtils;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.common.utils.ip.IpUtils;
-import com.ddss.framework.manager.AsyncManager;
-import com.ddss.framework.manager.factory.AsyncFactory;
 import com.ddss.system.domain.SysOperLog;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.JoinPoint;
@@ -24,6 +23,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
@@ -56,6 +56,9 @@ public class LogAspect {
      * 参数最大长度限制
      */
     private static final int PARAM_MAX_LENGTH = 2000;
+
+    @Autowired
+    private EventPublisher eventPublisher;
 
     /**
      * 处理请求前执行
@@ -120,8 +123,8 @@ public class LogAspect {
             getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
             // 设置消耗时间
             operLog.setCostTime(System.currentTimeMillis() - TIME_THREADLOCAL.get());
-            // 保存数据库
-            AsyncManager.me().execute(AsyncFactory.recordOper(operLog));
+            // 保存数据库（Spring Event 异步）
+            eventPublisher.publishOperLogEvent(operLog);
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("异常信息:{}", exp.getMessage());

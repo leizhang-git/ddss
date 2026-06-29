@@ -52,7 +52,7 @@ public class RedisCache {
         return redisTemplate.getExpire(key);
     }
 
-    public Boolean hasdKey(String key) {
+    public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
