@@ -3,17 +3,17 @@
 ddss:
   middleware:
     nacos:
-      enabled: false       # Nacos 开关 ← 这个必须在本地，不能放 Nacos
+      enabled: true       # Nacos 开关 ← 这个必须在本地，不能放 Nacos
     redis:
-      enabled: false       # Redis 开关
+      enabled: true       # Redis 开关
     kafka:
-      enabled: false       # Kafka 开关
+      enabled: true       # Kafka 开关
     minio:
-      enabled: false       # MinIO 开关
+      enabled: true       # MinIO 开关
     mysql:
-      enabled: false       # MySQL 开关（false → 自动切 H2 内存数据库）
+      enabled: true       # MySQL 开关（false → 自动切 H2 内存数据库）
     xxl-job:
-      enabled: false       # XXL-Job 开关
+      enabled: true       # XXL-Job 开关
 
 spring:
   application:
