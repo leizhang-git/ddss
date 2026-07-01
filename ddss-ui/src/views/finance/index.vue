@@ -20,7 +20,7 @@
     <div class="table-wrapper">
     <el-table ref="table" v-loading="loading" :data="sortedList" border stripe size="small"
       max-height="500" show-summary :summary-method="getSummaries"
-      @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'loanAmount',order:'descending'}">
+      @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'repaymentDay',order:'ascending'}">
       <el-table-column type="selection" width="40"/>
       <el-table-column label="名称" prop="creditorName" width="140" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
       <el-table-column label="便宜" width="100" sortable="custom" align="right" v-if="vis('cheap')">
@@ -32,12 +32,12 @@
         <template slot-scope="s">{{ totalRepay(s.row) }}</template>
       </el-table-column>
       <el-table-column label="日期" prop="repaymentStartDate" width="105" sortable="custom" align="center" v-if="vis('date')"/>
+      <el-table-column label="几号" prop="repaymentDay" width="75" sortable="custom" align="center" v-if="vis('day')"/>
       <el-table-column v-for="m in months" :key="m" :label="m" width="85" align="center" v-if="vis('months')">
         <template slot-scope="s">
           <span :class="getCellVal(s.row,m)>0?'val':'zero'" @dblclick="startEdit(s.row,m)">{{ getCellVal(s.row,m)||0 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="已还" prop="paidAmount" width="110" sortable="custom" align="right" v-if="vis('paid')"/>
       <el-table-column label="剩余" prop="remainingAmount" width="110" sortable="custom" align="right" v-if="vis('remain')"/>
       <el-table-column label="状态" width="70" align="center" fixed="right" v-if="vis('status')">
         <template slot-scope="s">
@@ -63,7 +63,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="90px">
         <el-row :gutter="20">
           <el-col :span="12"><el-form-item label="名称" prop="creditorName"><el-input v-model="form.creditorName"/></el-form-item></el-col>
-          <el-col :span="12"><el-form-item label="总额" prop="loanAmount"><el-input-number v-model="form.loanAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="总额"><el-input-number v-model="form.loanAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8"><el-form-item label="提前结清"><el-input-number v-model="form.earlySettlementAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
@@ -99,18 +99,17 @@ export default {
   data() {
     return {
       loading: false, formOpen: false, formTitle: '',
-      financeList: [], ids: [], single: true, multiple: true, months: [], sortProp: '', sortOrder: '',
+      financeList: [], ids: [], single: true, multiple: true, months: [], sortProp: 'repaymentDay', sortOrder: 'ascending',
       cellEdit: { open: false, row: null, month: '', val: 0 },
       allCols: [
         {key:'name',label:'名称'},{key:'cheap',label:'便宜'},{key:'early',label:'提前结清'},
-        {key:'total',label:'总额'},{key:'repayTotal',label:'总还'},{key:'date',label:'日期'},
-        {key:'months',label:'月份列'},{key:'paid',label:'已还'},{key:'remain',label:'剩余'},{key:'status',label:'状态'}
+        {key:'total',label:'总额'},{key:'repayTotal',label:'总还'},{key:'date',label:'日期'},{key:'day',label:'几号'},
+        {key:'months',label:'月份列'},{key:'remain',label:'剩余'},{key:'status',label:'状态'}
       ],
-      visibleCols: ['name','cheap','early','total','repayTotal','date','months','paid','remain','status'],
+      visibleCols: ['name','cheap','early','total','repayTotal','date','day','months','remain','status'],
       form: {},
       rules: {
         creditorName: [{ required: true, message: '必填', trigger: 'blur' }],
-        loanAmount: [{ required: true, message: '必填', trigger: 'blur' }],
         status: [{ required: true, message: '必填', trigger: 'change' }]
       }
     }
@@ -160,7 +159,7 @@ export default {
       row.paidAmount = totalPaid.toFixed(2)
       row.remainingAmount = Math.max(0, (Number(row.loanAmount)||0) - totalPaid).toFixed(2)
       this.cellEdit.open=false
-      updateFinance(row).catch(()=>{})
+      updateFinance(row).then(() => { this.$forceUpdate() }).catch(()=>{})
     },
     handleSort({prop,order}) { this.sortProp=prop; this.sortOrder=order },
     getList() {
@@ -185,20 +184,20 @@ export default {
       sums[idx++]=data.reduce((s,r)=>s+(Number(r.loanAmount)||0),0).toFixed(2)
       sums[idx++]=data.reduce((s,r)=>s+(Number(r.monthlyPayment)||0)*(r.loanTerm||0),0).toFixed(2)
       idx++ // date
+      idx++ // day
       this.months.forEach(m=>{t=0;data.forEach(r=>{t+=this.getCellVal(r,m)});sums[idx++]=t>0?t.toFixed(2):''})
-      sums[idx++]=data.reduce((s,r)=>s+(Number(r.paidAmount)||0),0).toFixed(2)
       sums[idx++]=data.reduce((s,r)=>s+(Number(r.remainingAmount)||0),0).toFixed(2)
       return sums
     },
     handleSelectionChange(sel){this.ids=sel.map(i=>i.financeId);this.single=sel.length!==1;this.multiple=!sel.length},
-    handleAdd(){this.form={status:'0'};this.formOpen=true;this.formTitle='新增';this.$nextTick(()=>{if(this.$refs.form)this.$refs.form.resetFields()})},
+    handleAdd(){this.form={status:'0'};this.formOpen=true;this.formTitle='新增';this.$nextTick(()=>{if(this.$refs.form)this.$refs.form.clearValidate()})},
     handleUpdate(){
       if(!this.ids.length){this.$message.warning('请先选中一条');return}
-      this.form={status:'0'};getFinance(this.ids[0]).then(res=>{this.form=res.data;this.formOpen=true;this.formTitle='修改'})
+      getFinance(this.ids[0]).then(res=>{this.form=res.data;this.formOpen=true;this.formTitle='修改'})
     },
     onFormOpened(){if(this.$refs.form)this.$refs.form.clearValidate()},
     submitForm(){
-      this.$refs.form.validate(v=>{if(!v)return;const act=this.form.financeId?updateFinance:addFinance;act(this.form).then(()=>{this.$message.success('成功');this.formOpen=false;this.getList()})})
+      this.$refs.form.validate(v=>{if(!v)return;const act=this.form.financeId?updateFinance:addFinance;act(this.form).then(()=>{this.$message.success('成功');this.formOpen=false;this.$nextTick(()=>this.getList())})})
     },
     handleDelete(){
       if(!this.ids.length){this.$message.warning('请先选中');return}
