@@ -681,3 +681,36 @@ CREATE TABLE `sys_video_resource`  (
 
 -- ----------------------------
 -- ----------------------------
+-- ----------------------------
+-- 财务管理�?-- ----------------------------
+DROP TABLE IF EXISTS `sys_finance`;
+CREATE TABLE `sys_finance` (
+  `finance_id` bigint NOT NULL AUTO_INCREMENT COMMENT '记录ID',
+  `creditor_name` varchar(100) NOT NULL COMMENT '欠款方名�?,
+  `loan_amount` decimal(12,2) DEFAULT NULL COMMENT '借款总额',
+  `loan_date` date DEFAULT NULL COMMENT '借款日期',
+  `repayment_start_date` date DEFAULT NULL COMMENT '还款开始日�?,
+  `repayment_end_date` date DEFAULT NULL COMMENT '还款结束日期',
+  `loan_term` int DEFAULT NULL COMMENT '借款期限(�?',
+  `repayment_day` int DEFAULT NULL COMMENT '每月还款�?几号)',
+  `monthly_payment` decimal(12,2) DEFAULT NULL COMMENT '月还款额',
+  `interest_rate` decimal(5,2) DEFAULT NULL COMMENT '利率(%)',
+  `interest_amount` decimal(12,2) DEFAULT NULL COMMENT '利息总额',
+  `early_settlement_amount` decimal(12,2) DEFAULT NULL COMMENT '提前结清金额',
+  `remaining_amount` decimal(12,2) DEFAULT NULL COMMENT '剩余未还金额',
+  `paid_amount` decimal(12,2) DEFAULT NULL COMMENT '已还金额',
+  `status` char(1) DEFAULT '0' COMMENT '状�?0还款�?1已结�?2逾期)',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建�?,
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新�?,
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`finance_id`),
+  INDEX `idx_creditor_name`(`creditor_name`),
+  INDEX `idx_status`(`status`)
+) COMMENT='财务管理�?;
+
+-- ----------------------------
+-- 菜单: 财务管理
+-- ----------------------------
+
