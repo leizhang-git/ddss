@@ -21,8 +21,8 @@
     <el-table ref="table" v-loading="loading" :data="sortedList" border stripe size="small"
       max-height="500" show-summary :summary-method="getSummaries"
       @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'loanAmount',order:'descending'}">
-      <el-table-column type="selection" width="36" fixed="left"/>
-      <el-table-column label="名称" prop="creditorName" width="120" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
+      <el-table-column type="selection" width="40"/>
+      <el-table-column label="名称" prop="creditorName" width="140" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
       <el-table-column label="便宜" width="100" sortable="custom" align="right" v-if="vis('cheap')">
         <template slot-scope="s">{{ cheap(s.row) }}</template>
       </el-table-column>
@@ -154,6 +154,11 @@ export default {
       if(!row._monthData[m]) row._monthData[m]={}
       row._monthData[m].amt=v
       row.monthData=JSON.stringify(row._monthData)
+      // 同步更新行数据：已还 = 所有月份金额之和，剩余 = 总额 - 已还
+      let totalPaid = 0
+      this.months.forEach(mm => { totalPaid += this.getCellVal(row, mm) })
+      row.paidAmount = totalPaid.toFixed(2)
+      row.remainingAmount = Math.max(0, (Number(row.loanAmount)||0) - totalPaid).toFixed(2)
       this.cellEdit.open=false
       updateFinance(row).catch(()=>{})
     },
