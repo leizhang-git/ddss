@@ -88,6 +88,10 @@ public class SysFinance {
     @TableField(value = "paid_months")
     private String paidMonths;
 
+    /** 月度明细 JSON：{"7月":{"amt":5000},"8月":{"amt":5000}} */
+    @TableField(value = "month_data")
+    private String monthData;
+
     @TableField(value = "create_by")
     private String createBy;
 

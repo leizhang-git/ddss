@@ -14,9 +14,9 @@
 
     <!-- 展开式月还款表 -->
     <div class="table-wrapper">
-    <el-table v-loading="loading" :data="financeList" border stripe size="small"
-      show-summary :summary-method="getSummaries" max-height="500"
-      @selection-change="handleSelectionChange" highlight-current-row>
+    <el-table ref="table" v-loading="loading" :data="financeList" border stripe size="small"
+      max-height="500" @selection-change="handleSelectionChange" highlight-current-row
+      show-summary :summary-method="getSummaries">
       <el-table-column type="selection" width="40" align="center" fixed="left"/>
       <el-table-column label="名称" prop="creditorName" width="140" fixed="left"/>
       <el-table-column label="便宜" width="110" align="right" fixed="left">
@@ -29,17 +29,17 @@
       <el-table-column label="日期" prop="repaymentStartDate" width="110" align="center"/>
       <el-table-column v-for="m in months" :key="m" :label="m" width="90" align="center">
         <template slot-scope="s">
-          <span v-if="!isPaid(s.row, m) && payThisMonth(s.row, m) > 0"
-            style="cursor:pointer;color:#f56c6c;font-weight:bold"
-            :title="'点击标记已还'"
-            @click="togglePay(s.row, m)">
-            {{ Number(payThisMonth(s.row, m)).toFixed(2) }}
+          <span v-if="s.row._editing === m" style="display:flex;gap:2px;align-items:center">
+            <el-input-number v-model="s.row._editVal" :min="0" :precision="2" size="mini" controls-position="right" style="width:75px" @keyup.enter.native="saveCell(s.row, m)"/>
+            <el-button icon="el-icon-check" size="mini" type="success" circle @click="saveCell(s.row, m)"/>
           </span>
-          <span v-else-if="isPaid(s.row, m) && payThisMonth(s.row, m) > 0"
-            style="cursor:pointer;color:#c0c4cc"
-            title="已还，点击撤回"
-            @click="togglePay(s.row, m)">
-            -
+          <span v-else-if="getCellVal(s.row, m) > 0"
+            style="cursor:pointer"
+            :style="{textDecoration:isPaid(s.row, m)?'line-through':'none',color:isPaid(s.row, m)?'#909399':'#f56c6c'}"
+            :title="isPaid(s.row,m)?'已还 (双击编辑)':'未还 (双击标记/编辑)'"
+            @click="togglePay(s.row, m)"
+            @dblclick.stop="startEdit(s.row, m)">
+            {{ getCellVal(s.row, m).toFixed(2) }}
           </span>
           <span v-else style="color:#e8eaed">-</span>
         </template>
@@ -179,7 +179,7 @@ export default {
     cheap(row) {
       const a = Number(row.loanAmount) || 0
       const b = Number(row.earlySettlementAmount) || 0
-      return a && b ? (a - b >= 0 ? (a - b).toFixed(2) : '0') : ''
+      return Math.max(0, a - b).toFixed(2)
     },
     totalRepay(row) {
       const m = Number(row.monthlyPayment) || 0
@@ -187,25 +187,19 @@ export default {
       return m && t ? (m * t).toFixed(2) : ''
     },
     /** 汇总行 */
-    getSummaries(param) {
-      const { columns, data } = param
-      const sums = new Array(columns.length).fill('')
+    getSummaries({ columns, data }) {
+      const sums = columns.map(() => '')
       sums[1] = '合计'
-      columns.forEach((col, i) => {
-        if (i <= 1) return
-        if (col.label && /^\d+月$/.test(col.label)) {
-          let t = 0; data.forEach(r => { t += Number(this.payThisMonth(r, col.label)) || 0 })
-          if (t > 0) sums[i] = t.toFixed(2)
-        } else if (col.label === '便宜') {
-          let t = 0; data.forEach(r => { const a = Number(r.loanAmount)||0; const b = Number(r.earlySettlementAmount)||0; t += a-b })
-          sums[i] = t.toFixed(2)
-        } else if (col.label === '总') {
-          let t = 0; data.forEach(r => { const v = Number(this.totalRepay(r))||0; t += v })
-          sums[i] = t.toFixed(2)
-        } else if (col.label === '提前结清' || col.label === '剩余') {
-          const total = data.reduce((s, r) => s + (Number(r[col.property]) || 0), 0)
-          sums[i] = total.toFixed(2)
-        }
+      let idx = 2, t = 0
+      // 便宜
+      data.forEach(r => t += Math.max(0, (Number(r.loanAmount)||0) - (Number(r.earlySettlementAmount)||0)))
+      sums[idx++] = t.toFixed(2)
+      sums[idx++] = data.reduce((s, r) => s + (Number(r.earlySettlementAmount)||0), 0).toFixed(2) // 提前结清
+      sums[idx++] = data.reduce((s, r) => s + (Number(r.monthlyPayment)||0) * (r.loanTerm||0), 0).toFixed(2) // 总
+      idx++ // 日期
+      this.months.forEach(m => {
+        t = 0; data.forEach(r => { if (!(r._paidSet || new Set()).has(m)) t += this.getCellVal(r, m) })
+        sums[idx++] = t > 0 ? t.toFixed(2) : ''
       })
       return sums
     },
@@ -232,54 +226,72 @@ export default {
     getList() {
       this.loading = true
       listFinance({ pageNum: 1, pageSize: 999 }).then(res => {
-        this.financeList = (res.rows || []).map(r => ({
-          ...r,
-          _paidSet: new Set((r.paidMonths || '').split(',').filter(Boolean))
-        }))
+        this.financeList = (res.rows || []).map(r => {
+          let md = {}
+          try { md = JSON.parse(r.monthData || '{}') } catch(e) {}
+          return { ...r, _paidSet: new Set((r.paidMonths || '').split(',').filter(Boolean)), _monthData: md, _editing: null, _editVal: 0 }
+        })
         this.buildMonths()
         this.loading = false
       })
     },
+    /** 取某月金额：优先 monthData，否则月还款额 */
+    getCellVal(row, m) {
+      const md = row._monthData[m] || {}
+      if (md.amt != null) return Number(md.amt)
+      return Number(this.payThisMonth(row, m)) || 0
+    },
+    startEdit(row, m) {
+      this.$set(row, '_editing', m)
+      this.$set(row, '_editVal', this.getCellVal(row, m))
+    },
+    saveCell(row, m) {
+      const v = Number(row._editVal) || 0
+      if (!row._monthData[m]) row._monthData[m] = {}
+      row._monthData[m].amt = v
+      row.monthData = JSON.stringify(row._monthData)
+      row._editing = null
+      updateFinance(row).catch(() => {})
+    },
     isPaid(row, m) { return row._paidSet && row._paidSet.has(m) },
     canPay(row, m) {
-      // 必须按顺序还款：前面的月份全部还了，当前月才能还
-      const amount = Number(this.payThisMonth(row, m))
-      if (!amount) return false
+      if (!(this.getCellVal(row, m) > 0)) return false
       const months = this.months
       for (let i = 0; i < months.length; i++) {
         if (months[i] === m) return true // 到了当前月，前面的都没问题
-        const famt = Number(this.payThisMonth(row, months[i]))
-        if (famt > 0 && !row._paidSet.has(months[i])) return false // 前面有未还的
-        if (famt > 0 && row._paidSet.has(months[i])) continue
+        const famt = this.getCellVal(row, months[i])
+        if (famt > 0 && !row._paidSet.has(months[i])) return false
       }
       return true
     },
     togglePay(row, m) {
-      const amount = Number(this.payThisMonth(row, m))
-      if (!amount) return
+      if (row._editing) return
       if (row._paidSet.has(m)) {
-        this.$modal.confirm(`撤销 ${m} 的还款（¥${amount.toFixed(2)}）？`).then(() => {
+        this.$modal.confirm('撤销' + m + '还款？').then(() => {
           row._paidSet.delete(m)
-          this.savePay(row, amount)
+          row.paidMonths = [...row._paidSet].join(',')
+          this.recalcRow(row)
+          updateFinance(row).catch(() => {})
         }).catch(() => {})
       } else {
-        if (!this.canPay(row, m)) {
-          this.$message.warning('请按顺序还款，前面的月份还未还完')
-          return
-        }
-        this.$modal.confirm(`确认已还 ${m} 还款 ¥${amount.toFixed(2)}？`).then(() => {
+        if (!this.canPay(row, m)) { this.$message.warning('请按顺序还款'); return }
+        this.$modal.confirm('确认已还' + m + '？').then(() => {
           row._paidSet.add(m)
-          this.savePay(row, amount)
+          row.paidMonths = [...row._paidSet].join(',')
+          this.recalcRow(row)
+          updateFinance(row).catch(() => {})
         }).catch(() => {})
       }
     },
-    savePay(row, amount) {
-      row.paidMonths = [...row._paidSet].join(',')
-      const count = row._paidSet.size
-      row.paidAmount = (count * Number(row.monthlyPayment)).toFixed(2)
-      row.remainingAmount = Math.max(0, (Number(row.loanAmount) || 0) - Number(row.paidAmount)).toFixed(2)
-      updateFinance(row).catch(() => {})
+    recalcRow(row) {
+      let totalPaid = 0
+      row._paidSet.forEach(m => {
+        totalPaid += this.getCellVal(row, m)
+      })
+      row.paidAmount = totalPaid.toFixed(2)
+      row.remainingAmount = Math.max(0, (Number(row.loanAmount) || 0) - totalPaid).toFixed(2)
     },
+    savePay() {}, // 保留旧方法签名兼容
     buildMonths() {
       const now = new Date()
       let maxDate = new Date(now.getFullYear(), now.getMonth() + 6, 1) // 至少未来6个月
