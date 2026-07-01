@@ -1,150 +1,92 @@
 <template>
   <div class="app-container">
+    <!-- 工具栏 -->
     <el-row :gutter="10" class="mb8">
+      <el-col :span="1.5"><el-button v-hasPermi="['finance:add']" icon="el-icon-plus" plain size="mini" type="primary" @click="handleAdd">新增</el-button></el-col>
+      <el-col :span="1.5"><el-button v-hasPermi="['finance:edit']" :disabled="single" icon="el-icon-edit" plain size="mini" type="success" @click="handleUpdate">修改</el-button></el-col>
+      <el-col :span="1.5"><el-button v-hasPermi="['finance:remove']" :disabled="multiple" icon="el-icon-delete" plain size="mini" type="danger" @click="handleDelete">删除</el-button></el-col>
       <el-col :span="1.5">
-        <el-button v-hasPermi="['finance:add']" icon="el-icon-plus" plain size="mini" type="primary" @click="handleAdd">新增</el-button>
+        <el-popover placement="bottom" width="200" trigger="click">
+          <el-checkbox-group v-model="visibleCols">
+            <el-checkbox v-for="c in allCols" :key="c.key" :label="c.key" style="display:block;margin:4px 0">{{ c.label }}</el-checkbox>
+          </el-checkbox-group>
+          <el-button slot="reference" icon="el-icon-menu" plain size="mini">列</el-button>
+        </el-popover>
       </el-col>
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['finance:edit']" icon="el-icon-edit" plain size="mini" type="success" @click="handleUpdate()">修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button v-hasPermi="['finance:remove']" icon="el-icon-delete" plain size="mini" type="danger" @click="handleDelete()">删除</el-button>
-      </el-col>
+      <el-col :span="1.5"><el-button icon="el-icon-refresh" plain size="mini" @click="getList">刷新</el-button></el-col>
     </el-row>
 
-    <!-- 展开式月还款表 -->
+    <!-- 表格 -->
     <div class="table-wrapper">
-    <el-table ref="table" v-loading="loading" :data="financeList" border stripe size="small"
-      max-height="500" @selection-change="handleSelectionChange" highlight-current-row
-      show-summary :summary-method="getSummaries">
-      <el-table-column type="selection" width="40" align="center" fixed="left"/>
-      <el-table-column label="名称" prop="creditorName" width="140" fixed="left"/>
-      <el-table-column label="便宜" width="110" align="right" fixed="left">
+    <el-table ref="table" v-loading="loading" :data="sortedList" border stripe size="small"
+      max-height="500" show-summary :summary-method="getSummaries"
+      @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'loanAmount',order:'descending'}">
+      <el-table-column type="selection" width="36" fixed="left"/>
+      <el-table-column label="名称" prop="creditorName" width="120" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
+      <el-table-column label="便宜" width="100" sortable="custom" align="right" v-if="vis('cheap')">
         <template slot-scope="s">{{ cheap(s.row) }}</template>
       </el-table-column>
-      <el-table-column label="提前结清" prop="earlySettlementAmount" width="110" align="right"/>
-      <el-table-column label="总" width="110" align="right">
+      <el-table-column label="提前结清" prop="earlySettlementAmount" width="110" sortable="custom" align="right" v-if="vis('early')"/>
+      <el-table-column label="总额" prop="loanAmount" width="110" sortable="custom" align="right" v-if="vis('total')"/>
+      <el-table-column label="总还" width="100" sortable="custom" align="right" v-if="vis('repayTotal')">
         <template slot-scope="s">{{ totalRepay(s.row) }}</template>
       </el-table-column>
-      <el-table-column label="日期" prop="repaymentStartDate" width="110" align="center"/>
-      <el-table-column v-for="m in months" :key="m" :label="m" width="90" align="center">
+      <el-table-column label="日期" prop="repaymentStartDate" width="105" sortable="custom" align="center" v-if="vis('date')"/>
+      <el-table-column v-for="m in months" :key="m" :label="m" width="85" align="center" v-if="vis('months')">
         <template slot-scope="s">
-          <span v-if="s.row._editing === m" style="display:flex;gap:2px;align-items:center">
-            <el-input-number v-model="s.row._editVal" :min="0" :precision="2" size="mini" controls-position="right" style="width:75px" @keyup.enter.native="saveCell(s.row, m)"/>
-            <el-button icon="el-icon-check" size="mini" type="success" circle @click="saveCell(s.row, m)"/>
-          </span>
-          <span v-else-if="getCellVal(s.row, m) > 0"
-            style="cursor:pointer"
-            :style="{textDecoration:isPaid(s.row, m)?'line-through':'none',color:isPaid(s.row, m)?'#909399':'#f56c6c'}"
-            :title="isPaid(s.row,m)?'已还 (双击编辑)':'未还 (双击标记/编辑)'"
-            @click="togglePay(s.row, m)"
-            @dblclick.stop="startEdit(s.row, m)">
-            {{ getCellVal(s.row, m).toFixed(2) }}
-          </span>
-          <span v-else style="color:#e8eaed">-</span>
+          <span :class="getCellVal(s.row,m)>0?'val':'zero'" @dblclick="startEdit(s.row,m)">{{ getCellVal(s.row,m)||0 }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="剩余" prop="remainingAmount" width="110" align="right" fixed="right"/>
-      <el-table-column label="状态" width="80" align="center" fixed="right">
+      <el-table-column label="已还" prop="paidAmount" width="110" sortable="custom" align="right" v-if="vis('paid')"/>
+      <el-table-column label="剩余" prop="remainingAmount" width="110" sortable="custom" align="right" v-if="vis('remain')"/>
+      <el-table-column label="状态" width="70" align="center" fixed="right" v-if="vis('status')">
         <template slot-scope="s">
-          <el-tag v-if="s.row.status==='0'" type="warning" size="small">还款中</el-tag>
-          <el-tag v-else-if="s.row.status==='1'" type="success" size="small">结清</el-tag>
-          <el-tag v-else-if="s.row.status==='2'" type="danger" size="small">逾期</el-tag>
+          <el-tag v-if="s.row.status==='0'" type="warning" size="small">中</el-tag>
+          <el-tag v-else-if="s.row.status==='1'" type="success" size="small">结</el-tag>
+          <el-tag v-else-if="s.row.status==='2'" type="danger" size="small">逾</el-tag>
         </template>
       </el-table-column>
     </el-table>
     </div>
 
-    <!-- 弹窗表单 -->
-    <el-dialog :title="title" :visible.sync="open" width="780px" append-to-body :close-on-click-modal="false">
-      <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="名称" prop="creditorName">
-              <el-input v-model="form.creditorName" placeholder="欠款方"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="提前结清">
-              <el-input-number v-model="form.earlySettlementAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="12">
-            <el-form-item label="总借款额" prop="loanAmount">
-              <el-input-number v-model="form.loanAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="便宜多少">
-              <el-input :value="formatSaving" readonly style="font-weight:bold;color:#67c23a"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-form-item label="还款开始">
-              <el-date-picker v-model="form.repaymentStartDate" type="date" placeholder="选择" value-format="yyyy-MM-dd" style="width:100%" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="几号还">
-              <el-input-number v-model="form.repaymentDay" :min="1" :max="31" style="width:100%" controls-position="right"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="期限(月)">
-              <el-input-number v-model="form.loanTerm" :min="0" style="width:100%" controls-position="right" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-form-item label="月还">
-              <el-input-number v-model="form.monthlyPayment" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="利率(%)">
-              <el-input-number v-model="form.interestRate" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="已还">
-              <el-input-number v-model="form.paidAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row :gutter="20">
-          <el-col :span="8">
-            <el-form-item label="利息总额">
-              <el-input-number v-model="form.interestAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="剩余未还">
-              <el-input-number v-model="form.remainingAmount" :min="0" :precision="2" style="width:100%" controls-position="right"/>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="状态" prop="status">
-              <el-select v-model="form.status" style="width:100%">
-                <el-option label="还款中" value="0"/>
-                <el-option label="已结清" value="1"/>
-                <el-option label="逾期" value="2"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item label="备注">
-          <el-input v-model="form.remark" type="textarea" :rows="2"/>
-        </el-form-item>
+    <!-- 单元格编辑弹窗 -->
+    <el-dialog title="编辑金额" :visible.sync="cellEdit.open" width="300px" append-to-body>
+      <el-form label-width="70px" @submit.native.prevent="saveCell">
+        <el-form-item label="月份"><el-input :value="cellEdit.month" readonly/></el-form-item>
+        <el-form-item label="金额"><el-input-number v-model="cellEdit.val" :min="0" :precision="2" style="width:100%" controls-position="right" ref="cellInput"/></el-form-item>
       </el-form>
-      <div slot="footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
-      </div>
+      <div slot="footer"><el-button type="primary" @click="saveCell">保存</el-button><el-button @click="cellEdit.open=false">取消</el-button></div>
+    </el-dialog>
+
+    <!-- 新增/修改弹窗 -->
+    <el-dialog :title="formTitle" :visible.sync="formOpen" width="750px" append-to-body :close-on-click-modal="false" @opened="onFormOpened">
+      <el-form ref="form" :model="form" :rules="rules" label-width="90px">
+        <el-row :gutter="20">
+          <el-col :span="12"><el-form-item label="名称" prop="creditorName"><el-input v-model="form.creditorName"/></el-form-item></el-col>
+          <el-col :span="12"><el-form-item label="总额" prop="loanAmount"><el-input-number v-model="form.loanAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8"><el-form-item label="提前结清"><el-input-number v-model="form.earlySettlementAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="便宜"><el-input :value="cheap(form)" readonly style="font-weight:bold;color:#67c23a"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="月还款" prop="monthlyPayment"><el-input-number v-model="form.monthlyPayment" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8"><el-form-item label="开始日期"><el-date-picker v-model="form.repaymentStartDate" type="date" value-format="yyyy-MM-dd" style="width:100%" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="几号还"><el-input-number v-model="form.repaymentDay" :min="1" :max="31" style="width:100%" controls-position="right"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="期限(月)"><el-input-number v-model="form.loanTerm" :min="0" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8"><el-form-item label="利率(%)"><el-input-number v-model="form.interestRate" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="利息总额"><el-input-number v-model="form.interestAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="已还"><el-input-number v-model="form.paidAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8"><el-form-item label="剩余未还"><el-input-number v-model="form.remainingAmount" :min="0" :precision="2" style="width:100%" controls-position="right"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="状态" prop="status"><el-select v-model="form.status" style="width:100%"><el-option label="还款中" value="0"/><el-option label="已结清" value="1"/><el-option label="逾期" value="2"/></el-select></el-form-item></el-col>
+        </el-row>
+        <el-form-item label="备注"><el-input v-model="form.remark" type="textarea" :rows="2"/></el-form-item>
+      </el-form>
+      <div slot="footer"><el-button type="primary" @click="submitForm">确定</el-button><el-button @click="formOpen=false">取消</el-button></div>
     </el-dialog>
   </div>
 </template>
@@ -155,10 +97,16 @@ import { listFinance, getFinance, addFinance, updateFinance, delFinance } from '
 export default {
   name: 'Finance',
   data() {
-    const months = []
     return {
-      loading: false, open: false, title: '',
-      financeList: [], ids: [], single: true, multiple: true, months,
+      loading: false, formOpen: false, formTitle: '',
+      financeList: [], ids: [], single: true, multiple: true, months: [], sortProp: '', sortOrder: '',
+      cellEdit: { open: false, row: null, month: '', val: 0 },
+      allCols: [
+        {key:'name',label:'名称'},{key:'cheap',label:'便宜'},{key:'early',label:'提前结清'},
+        {key:'total',label:'总额'},{key:'repayTotal',label:'总还'},{key:'date',label:'日期'},
+        {key:'months',label:'月份列'},{key:'paid',label:'已还'},{key:'remain',label:'剩余'},{key:'status',label:'状态'}
+      ],
+      visibleCols: ['name','cheap','early','total','repayTotal','date','months','paid','remain','status'],
       form: {},
       rules: {
         creditorName: [{ required: true, message: '必填', trigger: 'blur' }],
@@ -167,196 +115,105 @@ export default {
       }
     }
   },
-  created() { this.getList() },
   computed: {
-    formatSaving() {
-      const a = Number(this.form.loanAmount) || 0
-      const b = Number(this.form.earlySettlementAmount) || 0
-      return a && b ? '¥' + (a - b >= 0 ? (a - b).toFixed(2) : '0.00') : ''
+    sortedList() {
+      if (!this.sortProp) return this.financeList
+      const list = [...this.financeList]
+      const p = this.sortProp, o = this.sortOrder === 'ascending' ? 1 : -1
+      return list.sort((a,b) => {
+        let va = p==='cheap' ? Number(this.cheap(a)) : p==='repayTotal' ? Number(this.totalRepay(a)) : (Number(a[p])||0)
+        let vb = p==='cheap' ? Number(this.cheap(b)) : p==='repayTotal' ? Number(this.totalRepay(b)) : (Number(b[p])||0)
+        return (va - vb) * o
+      })
     }
   },
+  created() { this.getList() },
   methods: {
-    cheap(row) {
-      const a = Number(row.loanAmount) || 0
-      const b = Number(row.earlySettlementAmount) || 0
-      return Math.max(0, a - b).toFixed(2)
+    vis(k) { return this.visibleCols.includes(k) },
+    cheap(row) { const a=Number(row.loanAmount)||0,b=Number(row.earlySettlementAmount)||0; return Math.max(0,a-b).toFixed(2) },
+    totalRepay(row) { const m=Number(row.monthlyPayment)||0,t=row.loanTerm||0; return m&&t?(m*t).toFixed(2):'0' },
+    getCellVal(row, m) {
+      const md = row._monthData||{}
+      if (md[m]&&md[m].amt!=null) return Number(md[m].amt)
+      return Number(this.payThisMonth(row,m))||0
     },
-    totalRepay(row) {
-      const m = Number(row.monthlyPayment) || 0
-      const t = row.loanTerm || 0
-      return m && t ? (m * t).toFixed(2) : ''
+    payThisMonth(row, m) {
+      const start=row.repaymentStartDate,day=row.repaymentDay,amt=row.monthlyPayment
+      if(!start||!day||!amt) return 0
+      const mon=parseInt(m); if(!mon) return 0
+      const now=new Date(); const cy=now.getFullYear(),cm=now.getMonth()+1
+      const tY=mon>=cm?cy:cy+1; const target=new Date(tY,mon-1,day)
+      const sd=new Date(start),ed=new Date(start); ed.setMonth(ed.getMonth()+(row.loanTerm||0))
+      return target>=sd&&target<=ed?Number(amt):0
     },
-    /** 汇总行 */
-    getSummaries({ columns, data }) {
-      const sums = columns.map(() => '')
-      sums[1] = '合计'
-      let idx = 2, t = 0
-      // 便宜
-      data.forEach(r => t += Math.max(0, (Number(r.loanAmount)||0) - (Number(r.earlySettlementAmount)||0)))
-      sums[idx++] = t.toFixed(2)
-      sums[idx++] = data.reduce((s, r) => s + (Number(r.earlySettlementAmount)||0), 0).toFixed(2) // 提前结清
-      sums[idx++] = data.reduce((s, r) => s + (Number(r.monthlyPayment)||0) * (r.loanTerm||0), 0).toFixed(2) // 总
-      idx++ // 日期
-      this.months.forEach(m => {
-        t = 0; data.forEach(r => { if (!(r._paidSet || new Set()).has(m)) t += this.getCellVal(r, m) })
-        sums[idx++] = t > 0 ? t.toFixed(2) : ''
+    startEdit(row, m) { this.cellEdit = { open:true, row, month:m, val:this.getCellVal(row,m) }; this.$nextTick(()=>{ const i=this.$refs.cellInput; if(i)i.focus() }) },
+    saveCell() {
+      const {row,month:m,val}=this.cellEdit
+      const v=Number(val)||0
+      if(!row._monthData) row._monthData={}
+      if(!row._monthData[m]) row._monthData[m]={}
+      row._monthData[m].amt=v
+      row.monthData=JSON.stringify(row._monthData)
+      this.cellEdit.open=false
+      updateFinance(row).catch(()=>{})
+    },
+    handleSort({prop,order}) { this.sortProp=prop; this.sortOrder=order },
+    getList() {
+      this.loading=true
+      listFinance({pageNum:1,pageSize:999}).then(res=>{
+        this.financeList=(res.rows||[]).map(r=>{let md={};try{md=JSON.parse(r.monthData||'{}')}catch(e){};return{...r,_monthData:md}})
+        this.buildMonths(); this.loading=false
       })
+    },
+    buildMonths() {
+      const now=new Date(); let max=new Date(now.getFullYear(),now.getMonth()+6,1)
+      this.financeList.forEach(r=>{if(!r.repaymentStartDate||!r.loanTerm)return;const e=new Date(r.repaymentStartDate);e.setMonth(e.getMonth()+r.loanTerm);if(e>max)max=e})
+      const ms=[]; const cur=new Date(now.getFullYear(),now.getMonth(),1)
+      while(cur<=max){ms.push((cur.getMonth()+1)+'月');cur.setMonth(cur.getMonth()+1)}
+      this.months=ms
+    },
+    getSummaries({columns,data}) {
+      const sums=columns.map(()=>''); sums[1]='合计'
+      let idx=2,t=0
+      data.forEach(r=>t+=Math.max(0,(Number(r.loanAmount)||0)-(Number(r.earlySettlementAmount)||0))); sums[idx++]=t.toFixed(2)
+      sums[idx++]=data.reduce((s,r)=>s+(Number(r.earlySettlementAmount)||0),0).toFixed(2)
+      sums[idx++]=data.reduce((s,r)=>s+(Number(r.loanAmount)||0),0).toFixed(2)
+      sums[idx++]=data.reduce((s,r)=>s+(Number(r.monthlyPayment)||0)*(r.loanTerm||0),0).toFixed(2)
+      idx++ // date
+      this.months.forEach(m=>{t=0;data.forEach(r=>{t+=this.getCellVal(r,m)});sums[idx++]=t>0?t.toFixed(2):''})
+      sums[idx++]=data.reduce((s,r)=>s+(Number(r.paidAmount)||0),0).toFixed(2)
+      sums[idx++]=data.reduce((s,r)=>s+(Number(r.remainingAmount)||0),0).toFixed(2)
       return sums
     },
-    /** 判断某月是否需要还款，返回金额 */
-    payThisMonth(row, monthLabel) {
-      const start = row.repaymentStartDate
-      const day = row.repaymentDay
-      const amount = row.monthlyPayment
-      if (!start || !day || !amount) return 0
-      const m = parseInt(monthLabel)
-      if (!m) return 0
-      // 确定月份对应的年份：从当前月开始，简单处理为超过12的是次年
-      const now = new Date()
-      const curMon = now.getMonth() + 1
-      const curYr = now.getFullYear()
-      const targetYr = m >= curMon ? curYr : curYr + 1
-      const target = new Date(targetYr, m - 1, day)
-      const startDate = new Date(start)
-      const endDate = new Date(start)
-      endDate.setMonth(endDate.getMonth() + (row.loanTerm || 0))
-      if (target >= startDate && target <= endDate) return Number(amount).toFixed(2)
-      return 0
+    handleSelectionChange(sel){this.ids=sel.map(i=>i.financeId);this.single=sel.length!==1;this.multiple=!sel.length},
+    handleAdd(){this.form={status:'0'};this.formOpen=true;this.formTitle='新增';this.$nextTick(()=>{if(this.$refs.form)this.$refs.form.resetFields()})},
+    handleUpdate(){
+      if(!this.ids.length){this.$message.warning('请先选中一条');return}
+      this.form={status:'0'};getFinance(this.ids[0]).then(res=>{this.form=res.data;this.formOpen=true;this.formTitle='修改'})
     },
-    getList() {
-      this.loading = true
-      listFinance({ pageNum: 1, pageSize: 999 }).then(res => {
-        this.financeList = (res.rows || []).map(r => {
-          let md = {}
-          try { md = JSON.parse(r.monthData || '{}') } catch(e) {}
-          return { ...r, _paidSet: new Set((r.paidMonths || '').split(',').filter(Boolean)), _monthData: md, _editing: null, _editVal: 0 }
-        })
-        this.buildMonths()
-        this.loading = false
-      })
+    onFormOpened(){if(this.$refs.form)this.$refs.form.clearValidate()},
+    submitForm(){
+      this.$refs.form.validate(v=>{if(!v)return;const act=this.form.financeId?updateFinance:addFinance;act(this.form).then(()=>{this.$message.success('成功');this.formOpen=false;this.getList()})})
     },
-    /** 取某月金额：优先 monthData，否则月还款额 */
-    getCellVal(row, m) {
-      const md = row._monthData[m] || {}
-      if (md.amt != null) return Number(md.amt)
-      return Number(this.payThisMonth(row, m)) || 0
+    handleDelete(){
+      if(!this.ids.length){this.$message.warning('请先选中');return}
+      this.$modal.confirm('确认删除？').then(()=>delFinance(this.ids.join(','))).then(()=>{this.getList();this.$message.success('已删除')})
     },
-    startEdit(row, m) {
-      this.$set(row, '_editing', m)
-      this.$set(row, '_editVal', this.getCellVal(row, m))
-    },
-    saveCell(row, m) {
-      const v = Number(row._editVal) || 0
-      if (!row._monthData[m]) row._monthData[m] = {}
-      row._monthData[m].amt = v
-      row.monthData = JSON.stringify(row._monthData)
-      row._editing = null
-      updateFinance(row).catch(() => {})
-    },
-    isPaid(row, m) { return row._paidSet && row._paidSet.has(m) },
-    canPay(row, m) {
-      if (!(this.getCellVal(row, m) > 0)) return false
-      const months = this.months
-      for (let i = 0; i < months.length; i++) {
-        if (months[i] === m) return true // 到了当前月，前面的都没问题
-        const famt = this.getCellVal(row, months[i])
-        if (famt > 0 && !row._paidSet.has(months[i])) return false
-      }
-      return true
-    },
-    togglePay(row, m) {
-      if (row._editing) return
-      if (row._paidSet.has(m)) {
-        this.$modal.confirm('撤销' + m + '还款？').then(() => {
-          row._paidSet.delete(m)
-          row.paidMonths = [...row._paidSet].join(',')
-          this.recalcRow(row)
-          updateFinance(row).catch(() => {})
-        }).catch(() => {})
-      } else {
-        if (!this.canPay(row, m)) { this.$message.warning('请按顺序还款'); return }
-        this.$modal.confirm('确认已还' + m + '？').then(() => {
-          row._paidSet.add(m)
-          row.paidMonths = [...row._paidSet].join(',')
-          this.recalcRow(row)
-          updateFinance(row).catch(() => {})
-        }).catch(() => {})
-      }
-    },
-    recalcRow(row) {
-      let totalPaid = 0
-      row._paidSet.forEach(m => {
-        totalPaid += this.getCellVal(row, m)
-      })
-      row.paidAmount = totalPaid.toFixed(2)
-      row.remainingAmount = Math.max(0, (Number(row.loanAmount) || 0) - totalPaid).toFixed(2)
-    },
-    savePay() {}, // 保留旧方法签名兼容
-    buildMonths() {
-      const now = new Date()
-      let maxDate = new Date(now.getFullYear(), now.getMonth() + 6, 1) // 至少未来6个月
-      this.financeList.forEach(r => {
-        if (!r.repaymentStartDate || !r.loanTerm) return
-        const end = new Date(r.repaymentStartDate)
-        end.setMonth(end.getMonth() + r.loanTerm)
-        if (end > maxDate) maxDate = end
-      })
-      const months = []
-      const cur = new Date(now.getFullYear(), now.getMonth(), 1)
-      while (cur <= maxDate) {
-        months.push((cur.getMonth() + 1) + '月')
-        cur.setMonth(cur.getMonth() + 1)
-      }
-      this.months = months
-    },
-    handleSelectionChange(sel) { this.ids = sel.map(i => i.financeId); this.single = sel.length !== 1; this.multiple = !sel.length },
-    handleAdd() { this.form = { status: '0' }; this.open = true; this.title = '新增'; if (this.$refs.form) this.$refs.form.resetFields() },
-    handleUpdate() {
-      const id = this.ids[0]
-      if (!id) { this.$message.warning('请先选中一条'); return }
-      this.form = { status: '0' }
-      getFinance(id).then(res => { this.form = res.data; this.open = true; this.title = '修改' })
-    },
-    submitForm() {
-      this.$refs.form.validate(valid => {
-        if (!valid) return
-        const act = this.form.financeId ? updateFinance : addFinance
-        act(this.form).then(() => { this.$modal.msgSuccess('成功'); this.open = false; this.getList() })
-      })
-    },
-    handleDelete() {
-      const ids = this.ids
-      if (!ids.length) { this.$message.warning('请先选中'); return }
-      this.$modal.confirm('确认删除？').then(() => delFinance(ids.join(','))).then(() => { this.getList(); this.$modal.msgSuccess('已删除') })
-    },
-    cancel() { this.open = false },
-    autoCalc() {
-      const f = this.form
-      const L = Number(f.loanAmount) || 0; const P = Number(f.paidAmount) || 0
-      const R = Number(f.interestRate) || 0; const T = f.loanTerm || 0
-      const M = Number(f.monthlyPayment) || 0; const I = Number(f.interestAmount) || 0
-      if (L && P) f.remainingAmount = (L - P >= 0 ? L - P : 0).toFixed(2)
-      if (L && R && T) f.interestAmount = (L * (R / 100) * (T / 12)).toFixed(2)
-      if (L && I && T) f.monthlyPayment = Number(((L + I) / T).toFixed(2))
-      if (M && T && L && !I) f.interestAmount = (M * T - L > 0 ? M * T - L : 0).toFixed(2)
-      if (f.repaymentStartDate && T) {
-        const d = new Date(f.repaymentStartDate); d.setMonth(d.getMonth() + T)
-        f.repaymentEndDate = d.toISOString().slice(0, 10)
-      }
-    },
-    /** 打开编辑时从 paidMonths 反推已还金额 */
-    syncPaidFromMonths(row) {
-      if (!row.paidMonths || !row.monthlyPayment) return
-      const months = row.paidMonths.split(',').filter(Boolean)
-      row.paidAmount = (months.length * Number(row.monthlyPayment)).toFixed(2)
-      row.remainingAmount = Math.max(0, (Number(row.loanAmount) || 0) - Number(row.paidAmount)).toFixed(2)
+    autoCalc(){
+      const f=this.form;const L=Number(f.loanAmount)||0,P=Number(f.paidAmount)||0,R=Number(f.interestRate)||0,T=f.loanTerm||0,M=Number(f.monthlyPayment)||0,I=Number(f.interestAmount)||0
+      if(L&&P)f.remainingAmount=Math.max(0,L-P).toFixed(2)
+      if(L&&R&&T)f.interestAmount=(L*(R/100)*(T/12)).toFixed(1)
+      if(L&&I&&T)f.monthlyPayment=Number(((L+I)/T).toFixed(2))
+      if(M&&T&&L&&!I)f.interestAmount=(M*T-L>0?M*T-L:0).toFixed(1)
+      if(f.repaymentStartDate&&T){const d=new Date(f.repaymentStartDate);d.setMonth(d.getMonth()+T);f.repaymentEndDate=d.toISOString().slice(0,10)}
     }
   }
 }
 </script>
 
 <style scoped>
-.table-wrapper { overflow-x: auto }
-::v-deep .el-table__footer-wrapper td { font-weight: 600; font-size: 13px; background: #f5f7fa; color: #303133 }
-::v-deep .el-table__footer-wrapper .cell { padding: 6px 10px }
+.table-wrapper{overflow-x:auto}
+::v-deep .el-table__footer-wrapper td{font-weight:600;font-size:13px;background:#f5f7fa;color:#303133}
+.val{cursor:pointer;color:#303133}.val:hover{color:#409eff;text-decoration:underline}
+.zero{cursor:pointer;color:#dcdfe6}.zero:hover{color:#409eff}
 </style>
