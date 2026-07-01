@@ -17,7 +17,7 @@
 
     <div class="table-wrapper">
     <el-table ref="table" v-loading="loading" :data="sortedList" border stripe size="small"
-      max-height="500" show-summary :summary-method="getSummaries"
+      max-height="600" show-summary :summary-method="getSummaries"
       @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'repaymentDay',order:'ascending'}">
       <el-table-column type="selection" width="40"/>
       <el-table-column label="名称" prop="creditorName" width="140" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
@@ -109,13 +109,15 @@ export default {
     vis(k) { return this.visibleCols.includes(k) },
     cheap(row) { const t=Number(this.totalRepay(row))||0,e=Number(row.earlySettlementAmount)||0; return t&&e?Math.max(0,t-e).toFixed(2):'0' },
     totalRepay(row) {
+      if (row._cachedTotal!=null) return row._cachedTotal
       let s=0; this.months.forEach(m=>{ s+=this.getCellVal(row,m) })
-      return s>0?s.toFixed(2):(Number(row.monthlyPayment)||0)*(row.loanTerm||0)>0?((Number(row.monthlyPayment)||0)*(row.loanTerm||0)).toFixed(2):'0'
+      const def=(Number(row.monthlyPayment)||0)*(row.loanTerm||0)
+      row._cachedTotal=(s>0?s:def>0?def:0).toFixed(2)
+      return row._cachedTotal
     },
     getCellVal(row, m) {
       const md = row._monthData||{}
       if (md[m]&&md[m].amt!=null) return Number(md[m].amt)
-      // 兼容旧格式 (不带年份前缀的 key)
       const parts=m.split('-'), label=parts[parts.length-1]
       if (md[label]&&md[label].amt!=null) return Number(md[label].amt)
       return Number(this.payThisMonth(row,label))||0
@@ -140,6 +142,7 @@ export default {
       let tp=0; this.months.forEach(mm=>{tp+=this.getCellVal(row,mm)})
       row.paidAmount=tp.toFixed(2)
       row.remainingAmount=Math.max(0,(Number(row.loanAmount)||0)-tp).toFixed(2)
+      row._cachedTotal=null
       this.cellEdit.open=false
       if(idx>=0) this.$set(this.financeList, idx, {...row})
       updateFinance(row).catch(()=>{})
@@ -160,13 +163,20 @@ export default {
       this.months=ms
     },
     getSummaries({columns,data}) {
-      const sums=columns.map(()=>''); sums[1]='合计'; let idx=2,t=0
-      data.forEach(r=>{const t=Number(this.totalRepay(r))||0,e=Number(r.earlySettlementAmount)||0;if(t&&e)t+=Math.max(0,t-e)}); sums[idx++]=t.toFixed(2)
+      const sums=columns.map(()=>''); sums[1]='合计'; let idx=2
+      // 便宜
+      let cheapSum=0; data.forEach(r=>{const tr=Number(this.totalRepay(r))||0,es=Number(r.earlySettlementAmount)||0;if(tr&&es)cheapSum+=Math.max(0,tr-es)}); sums[idx++]=cheapSum.toFixed(2)
+      // 提前结清
       sums[idx++]=data.reduce((s,r)=>s+(Number(r.earlySettlementAmount)||0),0).toFixed(2)
-      t=0; data.forEach(r=>t+=Number(this.totalRepay(r))||0); sums[idx++]=t.toFixed(2)
-      idx++ // date
-      idx++ // day
-      this.months.forEach(m=>{t=0;data.forEach(r=>{t+=this.getCellVal(r,m)});sums[idx++]=t>0?t.toFixed(2):''})
+      // 总额
+      let totalSum=0; data.forEach(r=>totalSum+=Number(this.totalRepay(r))||0); sums[idx++]=totalSum.toFixed(2)
+      // 日期
+      idx++
+      // 几号
+      idx++
+      // 月份列
+      this.months.forEach(m=>{let mt=0;data.forEach(r=>{mt+=this.getCellVal(r,m)});sums[idx++]=mt>0?mt.toFixed(2):''})
+      // 剩余
       sums[idx++]=data.reduce((s,r)=>s+(Number(r.remainingAmount)||0),0).toFixed(2)
       return sums
     },
