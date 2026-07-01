@@ -1,7 +1,3 @@
-CREATE database if NOT EXISTS `ddss` default character set utf8mb4 collate utf8mb4_unicode_ci;
-use `ddss`;
-
-SET NAMES utf8mb4;
 /*
  Navicat Premium Dump SQL
 
@@ -15,7 +11,7 @@ SET NAMES utf8mb4;
  Target Server Version : 80034 (8.0.34)
  File Encoding         : 65001
 
- Date: 24/06/2026 09:37:55
+ Date: 01/07/2026 14:09:04
 */
 
 SET NAMES utf8mb4;
@@ -26,83 +22,50 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `ddss_resource`;
 CREATE TABLE `ddss_resource`  (
-  `resource_id` bigint NOT NULL AUTO_INCREMENT COMMENT '璧勬簮ID',
-  `resource_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璧勬簮鍚嶇О',
-  `file_size` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏂囦欢澶у皬',
-  `file_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏂囦欢绫诲瀷',
-  `file_path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏂囦欢璺緞',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '鏇存柊鏃堕棿',
+  `resource_id` bigint NOT NULL AUTO_INCREMENT COMMENT '资源ID',
+  `resource_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '资源名称',
+  `file_size` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件大小',
+  `file_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件类型',
+  `file_path` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件路径',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`resource_id`) USING BTREE,
   INDEX `idx_resource_name`(`resource_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '璧勬簮绠＄悊琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '资源管理表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ddss_resource
 -- ----------------------------
+INSERT INTO `ddss_resource` VALUES (1, '【哲风壁纸】8k-风景.png', '5.9 MB', 'png', '【哲风壁纸】8k-风景.png', '0', NULL, 'system', '2026-06-24 17:10:06', '', '2026-06-24 17:10:06');
 
 -- ----------------------------
 -- Table structure for ddss_video
 -- ----------------------------
 DROP TABLE IF EXISTS `ddss_video`;
 CREATE TABLE `ddss_video`  (
-  `video_id` bigint NOT NULL AUTO_INCREMENT COMMENT '瑙嗛ID',
-  `video_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙嗛鍚嶇О',
-  `video_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙嗛URL',
-  `cover_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '灏侀潰鍥綰RL',
-  `duration` int NULL DEFAULT NULL COMMENT '鏃堕暱(绉?',
-  `file_size` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏂囦欢澶у皬',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '鏇存柊鏃堕棿',
+  `video_id` bigint NOT NULL AUTO_INCREMENT COMMENT '视频ID',
+  `video_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '视频名称',
+  `video_url` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '视频URL',
+  `cover_image` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '封面图URL',
+  `duration` int NULL DEFAULT NULL COMMENT '时长(秒)',
+  `file_size` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件大小',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`video_id`) USING BTREE,
   INDEX `idx_video_name`(`video_name` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瑙嗛绠＄悊琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '视频管理表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of ddss_video
 -- ----------------------------
-
--- ----------------------------
--- 璐㈠姟绠＄悊琛?-- ----------------------------
-DROP TABLE IF EXISTS `sys_finance`;
-CREATE TABLE `sys_finance` (
-  `finance_id` bigint NOT NULL AUTO_INCREMENT COMMENT '璁板綍ID',
-  `creditor_name` varchar(100) NOT NULL COMMENT '娆犳鏂瑰悕绉?,
-  `loan_amount` decimal(12,2) DEFAULT NULL COMMENT '鍊熸鎬婚',
-  `loan_date` date DEFAULT NULL COMMENT '鍊熸鏃ユ湡',
-  `repayment_start_date` date DEFAULT NULL COMMENT '杩樻寮€濮嬫棩鏈?,
-  `repayment_end_date` date DEFAULT NULL COMMENT '杩樻缁撴潫鏃ユ湡',
-  `loan_term` int DEFAULT NULL COMMENT '鍊熸鏈熼檺(鏈?',
-  `repayment_day` int DEFAULT NULL COMMENT '姣忔湀杩樻鏃?鍑犲彿)',
-  `monthly_payment` decimal(12,2) DEFAULT NULL COMMENT '鏈堣繕娆鹃',
-  `interest_rate` decimal(5,2) DEFAULT NULL COMMENT '鍒╃巼(%)',
-  `interest_amount` decimal(12,2) DEFAULT NULL COMMENT '鍒╂伅鎬婚',
-  `early_settlement_amount` decimal(12,2) DEFAULT NULL COMMENT '鎻愬墠缁撴竻閲戦',
-  `remaining_amount` decimal(12,2) DEFAULT NULL COMMENT '鍓╀綑鏈繕閲戦',
-  `paid_amount` decimal(12,2) DEFAULT NULL COMMENT '宸茶繕閲戦',
-  `status` char(1) DEFAULT '0' COMMENT '鐘舵€?0杩樻涓?1宸茬粨娓?2閫炬湡)',
-  `remark` varchar(500) DEFAULT NULL COMMENT '澶囨敞',
-  `create_by` varchar(64) DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '鏇存柊鏃堕棿',
-  PRIMARY KEY (`finance_id`),
-  INDEX `idx_creditor_name`(`creditor_name`),
-  INDEX `idx_status`(`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='璐㈠姟绠＄悊琛?;
-
--- ----------------------------
--- 鑿滃崟: 璐㈠姟绠＄悊
--- ----------------------------
-
 INSERT INTO `ddss_video` VALUES (1, '1', '2', NULL, NULL, NULL, '0', NULL, 'admin', '2026-06-23 19:08:19', '', '2026-06-23 19:08:19');
 
 -- ----------------------------
@@ -110,29 +73,29 @@ INSERT INTO `ddss_video` VALUES (1, '1', '2', NULL, NULL, NULL, '0', NULL, 'admi
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table`;
 CREATE TABLE `gen_table`  (
-  `table_id` bigint NOT NULL AUTO_INCREMENT COMMENT '缂栧彿',
-  `table_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '琛ㄥ悕绉?,
-  `table_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '琛ㄦ弿杩?,
-  `sub_table_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鍏宠仈瀛愯〃鐨勮〃鍚?,
-  `sub_table_fk_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '瀛愯〃鍏宠仈鐨勫閿悕',
-  `class_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀹炰綋绫诲悕绉?,
-  `tpl_category` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'crud' COMMENT '浣跨敤鐨勬ā鏉匡紙crud鍗曡〃鎿嶄綔 tree鏍戣〃鎿嶄綔锛?,
-  `tpl_web_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍓嶇妯℃澘绫诲瀷锛坋lement-ui妯＄増 element-plus妯＄増锛?,
-  `package_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鐢熸垚鍖呰矾寰?,
-  `module_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鐢熸垚妯″潡鍚?,
-  `business_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鐢熸垚涓氬姟鍚?,
-  `function_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鐢熸垚鍔熻兘鍚?,
-  `function_author` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鐢熸垚鍔熻兘浣滆€?,
-  `gen_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐢熸垚浠ｇ爜鏂瑰紡锛?zip鍘嬬缉鍖?1鑷畾涔夎矾寰勶級',
-  `gen_path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '/' COMMENT '鐢熸垚璺緞锛堜笉濉粯璁ら」鐩矾寰勶級',
-  `options` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鍏跺畠鐢熸垚閫夐」',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `table_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `table_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '表名称',
+  `table_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '表描述',
+  `sub_table_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '关联子表的表名',
+  `sub_table_fk_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '子表关联的外键名',
+  `class_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '实体类名称',
+  `tpl_category` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
+  `tpl_web_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '前端模板类型（element-ui模版 element-plus模版）',
+  `package_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成包路径',
+  `module_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成模块名',
+  `business_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成业务名',
+  `function_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成功能名',
+  `function_author` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '生成功能作者',
+  `gen_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
+  `gen_path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
+  `options` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '其它生成选项',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '浠ｇ爜鐢熸垚涓氬姟琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table
@@ -143,30 +106,30 @@ CREATE TABLE `gen_table`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table_column`;
 CREATE TABLE `gen_table_column`  (
-  `column_id` bigint NOT NULL AUTO_INCREMENT COMMENT '缂栧彿',
-  `table_id` bigint NULL DEFAULT NULL COMMENT '褰掑睘琛ㄧ紪鍙?,
-  `column_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鍒楀悕绉?,
-  `column_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鍒楁弿杩?,
-  `column_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鍒楃被鍨?,
-  `java_type` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'JAVA绫诲瀷',
-  `java_field` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'JAVA瀛楁鍚?,
-  `is_pk` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁涓婚敭锛?鏄級',
-  `is_increment` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁鑷锛?鏄級',
-  `is_required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁蹇呭～锛?鏄級',
-  `is_insert` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁涓烘彃鍏ュ瓧娈碉紙1鏄級',
-  `is_edit` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁缂栬緫瀛楁锛?鏄級',
-  `is_list` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁鍒楄〃瀛楁锛?鏄級',
-  `is_query` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁鏌ヨ瀛楁锛?鏄級',
-  `query_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'EQ' COMMENT '鏌ヨ鏂瑰紡锛堢瓑浜庛€佷笉绛変簬銆佸ぇ浜庛€佸皬浜庛€佽寖鍥达級',
-  `html_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄剧ず绫诲瀷锛堟枃鏈銆佹枃鏈煙銆佷笅鎷夋銆佸閫夋銆佸崟閫夋銆佹棩鏈熸帶浠讹級',
-  `dict_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀛楀吀绫诲瀷',
-  `sort` int NULL DEFAULT NULL COMMENT '鎺掑簭',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
+  `column_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `table_id` bigint NULL DEFAULT NULL COMMENT '归属表编号',
+  `column_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '列名称',
+  `column_comment` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '列描述',
+  `column_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '列类型',
+  `java_type` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'JAVA类型',
+  `java_field` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'JAVA字段名',
+  `is_pk` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否主键（1是）',
+  `is_increment` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否自增（1是）',
+  `is_required` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否必填（1是）',
+  `is_insert` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否为插入字段（1是）',
+  `is_edit` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否编辑字段（1是）',
+  `is_list` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否列表字段（1是）',
+  `is_query` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否查询字段（1是）',
+  `query_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
+  `html_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
+  `dict_type` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '字典类型',
+  `sort` int NULL DEFAULT NULL COMMENT '排序',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '浠ｇ爜鐢熸垚涓氬姟琛ㄥ瓧娈? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '代码生成业务表字段' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of gen_table_column
@@ -177,13 +140,13 @@ CREATE TABLE `gen_table_column`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_blob_triggers`;
 CREATE TABLE `qrtz_blob_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_name鐨勫閿?,
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_group鐨勫閿?,
-  `blob_data` blob NULL COMMENT '瀛樻斁鎸佷箙鍖朤rigger瀵硅薄',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `blob_data` blob NULL COMMENT '存放持久化Trigger对象',
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_blob_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Blob绫诲瀷鐨勮Е鍙戝櫒琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Blob类型的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_blob_triggers
@@ -194,11 +157,11 @@ CREATE TABLE `qrtz_blob_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_calendars`;
 CREATE TABLE `qrtz_calendars`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鏃ュ巻鍚嶇О',
-  `calendar` blob NOT NULL COMMENT '瀛樻斁鎸佷箙鍖朿alendar瀵硅薄',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '日历名称',
+  `calendar` blob NOT NULL COMMENT '存放持久化calendar对象',
   PRIMARY KEY (`sched_name`, `calendar_name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鏃ュ巻淇℃伅琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '日历信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_calendars
@@ -209,14 +172,14 @@ CREATE TABLE `qrtz_calendars`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_cron_triggers`;
 CREATE TABLE `qrtz_cron_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_name鐨勫閿?,
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_group鐨勫閿?,
-  `cron_expression` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'cron琛ㄨ揪寮?,
-  `time_zone_id` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏃跺尯',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `cron_expression` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'cron表达式',
+  `time_zone_id` varchar(80) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '时区',
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_cron_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Cron绫诲瀷鐨勮Е鍙戝櫒琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = 'Cron类型的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_cron_triggers
@@ -227,21 +190,21 @@ CREATE TABLE `qrtz_cron_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_fired_triggers`;
 CREATE TABLE `qrtz_fired_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `entry_id` varchar(95) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍣ㄥ疄渚媔d',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_name鐨勫閿?,
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_group鐨勫閿?,
-  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍣ㄥ疄渚嬪悕',
-  `fired_time` bigint NOT NULL COMMENT '瑙﹀彂鐨勬椂闂?,
-  `sched_time` bigint NOT NULL COMMENT '瀹氭椂鍣ㄥ埗瀹氱殑鏃堕棿',
-  `priority` int NOT NULL COMMENT '浼樺厛绾?,
-  `state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鐘舵€?,
-  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '浠诲姟鍚嶇О',
-  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '浠诲姟缁勫悕',
-  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁骞跺彂',
-  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏄惁鎺ュ彈鎭㈠鎵ц',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `entry_id` varchar(95) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度器实例id',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度器实例名',
+  `fired_time` bigint NOT NULL COMMENT '触发的时间',
+  `sched_time` bigint NOT NULL COMMENT '定时器制定的时间',
+  `priority` int NOT NULL COMMENT '优先级',
+  `state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态',
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务名称',
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '任务组名',
+  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否并发',
+  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '是否接受恢复执行',
   PRIMARY KEY (`sched_name`, `entry_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宸茶Е鍙戠殑瑙﹀彂鍣ㄨ〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '已触发的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_fired_triggers
@@ -252,18 +215,18 @@ CREATE TABLE `qrtz_fired_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_job_details`;
 CREATE TABLE `qrtz_job_details`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '浠诲姟鍚嶇О',
-  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '浠诲姟缁勫悕',
-  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鐩稿叧浠嬬粛',
-  `job_class_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鎵ц浠诲姟绫诲悕绉?,
-  `is_durable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鏄惁鎸佷箙鍖?,
-  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鏄惁骞跺彂',
-  `is_update_data` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鏄惁鏇存柊鏁版嵁',
-  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鏄惁鎺ュ彈鎭㈠鎵ц',
-  `job_data` blob NULL COMMENT '瀛樻斁鎸佷箙鍖杍ob瀵硅薄',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '任务名称',
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '任务组名',
+  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '相关介绍',
+  `job_class_name` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '执行任务类名称',
+  `is_durable` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '是否持久化',
+  `is_nonconcurrent` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '是否并发',
+  `is_update_data` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '是否更新数据',
+  `requests_recovery` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '是否接受恢复执行',
+  `job_data` blob NULL COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`, `job_name`, `job_group`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '浠诲姟璇︾粏淇℃伅琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '任务详细信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_job_details
@@ -274,10 +237,10 @@ CREATE TABLE `qrtz_job_details`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_locks`;
 CREATE TABLE `qrtz_locks`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `lock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鎮茶閿佸悕绉?,
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `lock_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '悲观锁名称',
   PRIMARY KEY (`sched_name`, `lock_name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瀛樺偍鐨勬偛瑙傞攣淇℃伅琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '存储的悲观锁信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_locks
@@ -288,10 +251,10 @@ CREATE TABLE `qrtz_locks`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_paused_trigger_grps`;
 CREATE TABLE `qrtz_paused_trigger_grps`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_group鐨勫閿?,
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   PRIMARY KEY (`sched_name`, `trigger_group`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鏆傚仠鐨勮Е鍙戝櫒琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '暂停的触发器表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_paused_trigger_grps
@@ -302,12 +265,12 @@ CREATE TABLE `qrtz_paused_trigger_grps`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_scheduler_state`;
 CREATE TABLE `qrtz_scheduler_state`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瀹炰緥鍚嶇О',
-  `last_checkin_time` bigint NOT NULL COMMENT '涓婃妫€鏌ユ椂闂?,
-  `checkin_interval` bigint NOT NULL COMMENT '妫€鏌ラ棿闅旀椂闂?,
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `instance_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '实例名称',
+  `last_checkin_time` bigint NOT NULL COMMENT '上次检查时间',
+  `checkin_interval` bigint NOT NULL COMMENT '检查间隔时间',
   PRIMARY KEY (`sched_name`, `instance_name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '璋冨害鍣ㄧ姸鎬佽〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '调度器状态表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_scheduler_state
@@ -318,15 +281,15 @@ CREATE TABLE `qrtz_scheduler_state`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simple_triggers`;
 CREATE TABLE `qrtz_simple_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_name鐨勫閿?,
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_group鐨勫閿?,
-  `repeat_count` bigint NOT NULL COMMENT '閲嶅鐨勬鏁扮粺璁?,
-  `repeat_interval` bigint NOT NULL COMMENT '閲嶅鐨勯棿闅旀椂闂?,
-  `times_triggered` bigint NOT NULL COMMENT '宸茬粡瑙﹀彂鐨勬鏁?,
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `repeat_count` bigint NOT NULL COMMENT '重复的次数统计',
+  `repeat_interval` bigint NOT NULL COMMENT '重复的间隔时间',
+  `times_triggered` bigint NOT NULL COMMENT '已经触发的次数',
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_simple_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '绠€鍗曡Е鍙戝櫒鐨勪俊鎭〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '简单触发器的信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_simple_triggers
@@ -337,23 +300,23 @@ CREATE TABLE `qrtz_simple_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_simprop_triggers`;
 CREATE TABLE `qrtz_simprop_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_name鐨勫閿?,
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers琛╰rigger_group鐨勫閿?,
-  `str_prop_1` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'String绫诲瀷鐨則rigger鐨勭涓€涓弬鏁?,
-  `str_prop_2` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'String绫诲瀷鐨則rigger鐨勭浜屼釜鍙傛暟',
-  `str_prop_3` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'String绫诲瀷鐨則rigger鐨勭涓変釜鍙傛暟',
-  `int_prop_1` int NULL DEFAULT NULL COMMENT 'int绫诲瀷鐨則rigger鐨勭涓€涓弬鏁?,
-  `int_prop_2` int NULL DEFAULT NULL COMMENT 'int绫诲瀷鐨則rigger鐨勭浜屼釜鍙傛暟',
-  `long_prop_1` bigint NULL DEFAULT NULL COMMENT 'long绫诲瀷鐨則rigger鐨勭涓€涓弬鏁?,
-  `long_prop_2` bigint NULL DEFAULT NULL COMMENT 'long绫诲瀷鐨則rigger鐨勭浜屼釜鍙傛暟',
-  `dec_prop_1` decimal(13, 4) NULL DEFAULT NULL COMMENT 'decimal绫诲瀷鐨則rigger鐨勭涓€涓弬鏁?,
-  `dec_prop_2` decimal(13, 4) NULL DEFAULT NULL COMMENT 'decimal绫诲瀷鐨則rigger鐨勭浜屼釜鍙傛暟',
-  `bool_prop_1` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Boolean绫诲瀷鐨則rigger鐨勭涓€涓弬鏁?,
-  `bool_prop_2` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Boolean绫诲瀷鐨則rigger鐨勭浜屼釜鍙傛暟',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
+  `str_prop_1` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'String类型的trigger的第一个参数',
+  `str_prop_2` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'String类型的trigger的第二个参数',
+  `str_prop_3` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'String类型的trigger的第三个参数',
+  `int_prop_1` int NULL DEFAULT NULL COMMENT 'int类型的trigger的第一个参数',
+  `int_prop_2` int NULL DEFAULT NULL COMMENT 'int类型的trigger的第二个参数',
+  `long_prop_1` bigint NULL DEFAULT NULL COMMENT 'long类型的trigger的第一个参数',
+  `long_prop_2` bigint NULL DEFAULT NULL COMMENT 'long类型的trigger的第二个参数',
+  `dec_prop_1` decimal(13, 4) NULL DEFAULT NULL COMMENT 'decimal类型的trigger的第一个参数',
+  `dec_prop_2` decimal(13, 4) NULL DEFAULT NULL COMMENT 'decimal类型的trigger的第二个参数',
+  `bool_prop_1` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Boolean类型的trigger的第一个参数',
+  `bool_prop_2` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT 'Boolean类型的trigger的第二个参数',
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   CONSTRAINT `qrtz_simprop_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `qrtz_triggers` (`sched_name`, `trigger_name`, `trigger_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鍚屾鏈哄埗鐨勮閿佽〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '同步机制的行锁表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_simprop_triggers
@@ -364,26 +327,26 @@ CREATE TABLE `qrtz_simprop_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `qrtz_triggers`;
 CREATE TABLE `qrtz_triggers`  (
-  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冨害鍚嶇О',
-  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙﹀彂鍣ㄧ殑鍚嶅瓧',
-  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙﹀彂鍣ㄦ墍灞炵粍鐨勫悕瀛?,
-  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_job_details琛╦ob_name鐨勫閿?,
-  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_job_details琛╦ob_group鐨勫閿?,
-  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鐩稿叧浠嬬粛',
-  `next_fire_time` bigint NULL DEFAULT NULL COMMENT '涓婁竴娆¤Е鍙戞椂闂达紙姣锛?,
-  `prev_fire_time` bigint NULL DEFAULT NULL COMMENT '涓嬩竴娆¤Е鍙戞椂闂达紙榛樿涓?1琛ㄧず涓嶈Е鍙戯級',
-  `priority` int NULL DEFAULT NULL COMMENT '浼樺厛绾?,
-  `trigger_state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙﹀彂鍣ㄧ姸鎬?,
-  `trigger_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙﹀彂鍣ㄧ殑绫诲瀷',
-  `start_time` bigint NOT NULL COMMENT '寮€濮嬫椂闂?,
-  `end_time` bigint NULL DEFAULT NULL COMMENT '缁撴潫鏃堕棿',
-  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏃ョ▼琛ㄥ悕绉?,
-  `misfire_instr` smallint NULL DEFAULT NULL COMMENT '琛ュ伩鎵ц鐨勭瓥鐣?,
-  `job_data` blob NULL COMMENT '瀛樻斁鎸佷箙鍖杍ob瀵硅薄',
+  `sched_name` varchar(120) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调度名称',
+  `trigger_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '触发器的名字',
+  `trigger_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '触发器所属组的名字',
+  `job_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
+  `job_group` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
+  `description` varchar(250) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '相关介绍',
+  `next_fire_time` bigint NULL DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
+  `prev_fire_time` bigint NULL DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
+  `priority` int NULL DEFAULT NULL COMMENT '优先级',
+  `trigger_state` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '触发器状态',
+  `trigger_type` varchar(8) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '触发器的类型',
+  `start_time` bigint NOT NULL COMMENT '开始时间',
+  `end_time` bigint NULL DEFAULT NULL COMMENT '结束时间',
+  `calendar_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '日程表名称',
+  `misfire_instr` smallint NULL DEFAULT NULL COMMENT '补偿执行的策略',
+  `job_data` blob NULL COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`, `trigger_name`, `trigger_group`) USING BTREE,
   INDEX `sched_name`(`sched_name` ASC, `job_name` ASC, `job_group` ASC) USING BTREE,
   CONSTRAINT `qrtz_triggers_ibfk_1` FOREIGN KEY (`sched_name`, `job_name`, `job_group`) REFERENCES `qrtz_job_details` (`sched_name`, `job_name`, `job_group`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瑙﹀彂鍣ㄨ缁嗕俊鎭〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '触发器详细信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of qrtz_triggers
@@ -394,197 +357,234 @@ CREATE TABLE `qrtz_triggers`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config`  (
-  `config_id` int NOT NULL AUTO_INCREMENT COMMENT '鍙傛暟涓婚敭',
-  `config_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍙傛暟鍚嶇О',
-  `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍙傛暟閿悕',
-  `config_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍙傛暟閿€?,
-  `config_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N' COMMENT '绯荤粺鍐呯疆锛圷鏄?N鍚︼級',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `config_id` int NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+  `config_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '参数名称',
+  `config_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '参数键名',
+  `config_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '参数键值',
+  `config_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`config_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鍙傛暟閰嶇疆琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '参数配置表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_config
 -- ----------------------------
-INSERT INTO `sys_config` VALUES (1, '涓绘鏋堕〉-榛樿鐨偆鏍峰紡鍚嶇О', 'sys.index.skinName', 'skin-blue', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '钃濊壊 skin-blue銆佺豢鑹?skin-green銆佺传鑹?skin-purple銆佺孩鑹?skin-red銆侀粍鑹?skin-yellow');
-INSERT INTO `sys_config` VALUES (2, '鐢ㄦ埛绠＄悊-璐﹀彿鍒濆瀵嗙爜', 'sys.user.initPassword', '123456', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '鍒濆鍖栧瘑鐮?123456');
-INSERT INTO `sys_config` VALUES (3, '涓绘鏋堕〉-渚ц竟鏍忎富棰?, 'sys.index.sideTheme', 'theme-dark', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '娣辫壊涓婚theme-dark锛屾祬鑹蹭富棰榯heme-light');
-INSERT INTO `sys_config` VALUES (4, '璐﹀彿鑷姪-楠岃瘉鐮佸紑鍏?, 'sys.account.captchaEnabled', 'true', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '鏄惁寮€鍚獙璇佺爜鍔熻兘锛坱rue寮€鍚紝false鍏抽棴锛?);
-INSERT INTO `sys_config` VALUES (5, '璐﹀彿鑷姪-鏄惁寮€鍚敤鎴锋敞鍐屽姛鑳?, 'sys.account.registerUser', 'false', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '鏄惁寮€鍚敞鍐岀敤鎴峰姛鑳斤紙true寮€鍚紝false鍏抽棴锛?);
-INSERT INTO `sys_config` VALUES (6, '鐢ㄦ埛鐧诲綍-榛戝悕鍗曞垪琛?, 'sys.login.blackIPList', '', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '璁剧疆鐧诲綍IP榛戝悕鍗曢檺鍒讹紝澶氫釜鍖归厤椤逛互;鍒嗛殧锛屾敮鎸佸尮閰嶏紙*閫氶厤銆佺綉娈碉級');
-INSERT INTO `sys_config` VALUES (7, '鐢ㄦ埛绠＄悊-鍒濆瀵嗙爜淇敼绛栫暐', 'sys.account.initPasswordModify', '1', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '0锛氬垵濮嬪瘑鐮佷慨鏀圭瓥鐣ュ叧闂紝娌℃湁浠讳綍鎻愮ず锛?锛氭彁閱掔敤鎴凤紝濡傛灉鏈慨鏀瑰垵濮嬪瘑鐮侊紝鍒欏湪鐧诲綍鏃跺氨浼氭彁閱掍慨鏀瑰瘑鐮佸璇濇');
-INSERT INTO `sys_config` VALUES (8, '鐢ㄦ埛绠＄悊-璐﹀彿瀵嗙爜鏇存柊鍛ㄦ湡', 'sys.account.passwordValidateDays', '0', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '瀵嗙爜鏇存柊鍛ㄦ湡锛堝～鍐欐暟瀛楋紝鏁版嵁鍒濆鍖栧€间负0涓嶉檺鍒讹紝鑻ヤ慨鏀瑰繀椤讳负澶т簬0灏忎簬365鐨勬鏁存暟锛夛紝濡傛灉瓒呰繃杩欎釜鍛ㄦ湡鐧诲綍绯荤粺鏃讹紝鍒欏湪鐧诲綍鏃跺氨浼氭彁閱掍慨鏀瑰瘑鐮佸璇濇');
+INSERT INTO `sys_config` VALUES (1, '主框架页-默认皮肤样式名称', 'sys.index.skinName', 'skin-blue', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow');
+INSERT INTO `sys_config` VALUES (2, '用户管理-账号初始密码', 'sys.user.initPassword', '123456', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '初始化密码 123456');
+INSERT INTO `sys_config` VALUES (3, '主框架页-侧边栏主题', 'sys.index.sideTheme', 'theme-dark', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '深色主题theme-dark，浅色主题theme-light');
+INSERT INTO `sys_config` VALUES (4, '账号自助-验证码开关', 'sys.account.captchaEnabled', 'true', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '是否开启验证码功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES (5, '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'false', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '是否开启注册用户功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES (6, '用户登录-黑名单列表', 'sys.login.blackIPList', '', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '设置登录IP黑名单限制，多个匹配项以;分隔，支持匹配（*通配、网段）');
+INSERT INTO `sys_config` VALUES (7, '用户管理-初始密码修改策略', 'sys.account.initPasswordModify', '1', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '0：初始密码修改策略关闭，没有任何提示，1：提醒用户，如果未修改初始密码，则在登录时就会提醒修改密码对话框');
+INSERT INTO `sys_config` VALUES (8, '用户管理-账号密码更新周期', 'sys.account.passwordValidateDays', '0', 'Y', 'admin', '2026-06-14 21:43:55', '', NULL, '密码更新周期（填写数字，数据初始化值为0不限制，若修改必须为大于0小于365的正整数），如果超过这个周期登录系统时，则在登录时就会提醒修改密码对话框');
 
 -- ----------------------------
 -- Table structure for sys_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept`  (
-  `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '閮ㄩ棬id',
-  `parent_id` bigint NULL DEFAULT 0 COMMENT '鐖堕儴闂╥d',
-  `ancestors` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '绁栫骇鍒楄〃',
-  `dept_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '閮ㄩ棬鍚嶇О',
-  `order_num` int NULL DEFAULT 0 COMMENT '鏄剧ず椤哄簭',
-  `leader` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '璐熻矗浜?,
-  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鑱旂郴鐢佃瘽',
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '閭',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '閮ㄩ棬鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鍒犻櫎鏍囧織锛?浠ｈ〃瀛樺湪 2浠ｈ〃鍒犻櫎锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
+  `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '部门id',
+  `parent_id` bigint NULL DEFAULT 0 COMMENT '父部门id',
+  `ancestors` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '祖级列表',
+  `dept_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '部门名称',
+  `order_num` int NULL DEFAULT 0 COMMENT '显示顺序',
+  `leader` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '负责人',
+  `phone` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 200 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '閮ㄩ棬琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 200 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '部门表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (100, 0, '0', 'DDSS绉戞妧', 0, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
-INSERT INTO `sys_dept` VALUES (101, 100, '0,100', '娣卞湷鎬诲叕鍙?, 1, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
-INSERT INTO `sys_dept` VALUES (102, 100, '0,100', '闀挎矙鍒嗗叕鍙?, 2, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
-INSERT INTO `sys_dept` VALUES (103, 101, '0,100,101', '鐮斿彂閮ㄩ棬', 1, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
-INSERT INTO `sys_dept` VALUES (104, 101, '0,100,101', '甯傚満閮ㄩ棬', 2, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
-INSERT INTO `sys_dept` VALUES (105, 101, '0,100,101', '娴嬭瘯閮ㄩ棬', 3, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
-INSERT INTO `sys_dept` VALUES (106, 101, '0,100,101', '璐㈠姟閮ㄩ棬', 4, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
-INSERT INTO `sys_dept` VALUES (107, 101, '0,100,101', '杩愮淮閮ㄩ棬', 5, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL);
-INSERT INTO `sys_dept` VALUES (108, 102, '0,100,102', '甯傚満閮ㄩ棬', 1, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL);
-INSERT INTO `sys_dept` VALUES (109, 102, '0,100,102', '璐㈠姟閮ㄩ棬', 2, 'DDSS', '15888888888', 'admin@ddss.com', '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL);
+INSERT INTO `sys_dept` VALUES (100, 0, '0', '若依科技', 0, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
+INSERT INTO `sys_dept` VALUES (101, 100, '0,100', '深圳总公司', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
+INSERT INTO `sys_dept` VALUES (102, 100, '0,100', '长沙分公司', 2, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
+INSERT INTO `sys_dept` VALUES (103, 101, '0,100,101', '研发部门', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
+INSERT INTO `sys_dept` VALUES (104, 101, '0,100,101', '市场部门', 2, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
+INSERT INTO `sys_dept` VALUES (105, 101, '0,100,101', '测试部门', 3, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
+INSERT INTO `sys_dept` VALUES (106, 101, '0,100,101', '财务部门', 4, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:53', '', NULL);
+INSERT INTO `sys_dept` VALUES (107, 101, '0,100,101', '运维部门', 5, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL);
+INSERT INTO `sys_dept` VALUES (108, 102, '0,100,102', '市场部门', 1, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL);
+INSERT INTO `sys_dept` VALUES (109, 102, '0,100,102', '财务部门', 2, '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL);
 
 -- ----------------------------
 -- Table structure for sys_dict_data
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_data`;
 CREATE TABLE `sys_dict_data`  (
-  `dict_code` bigint NOT NULL AUTO_INCREMENT COMMENT '瀛楀吀缂栫爜',
-  `dict_sort` int NULL DEFAULT 0 COMMENT '瀛楀吀鎺掑簭',
-  `dict_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀛楀吀鏍囩',
-  `dict_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀛楀吀閿€?,
-  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀛楀吀绫诲瀷',
-  `css_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏍峰紡灞炴€э紙鍏朵粬鏍峰紡鎵╁睍锛?,
-  `list_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '琛ㄦ牸鍥炴樉鏍峰紡',
-  `is_default` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N' COMMENT '鏄惁榛樿锛圷鏄?N鍚︼級',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `dict_code` bigint NOT NULL AUTO_INCREMENT COMMENT '字典编码',
+  `dict_sort` int NULL DEFAULT 0 COMMENT '字典排序',
+  `dict_label` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '字典标签',
+  `dict_value` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '字典键值',
+  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '字典类型',
+  `css_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
+  `list_class` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '表格回显样式',
+  `is_default` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT 'N' COMMENT '是否默认（Y是 N否）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瀛楀吀鏁版嵁琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典数据表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_data
 -- ----------------------------
-INSERT INTO `sys_dict_data` VALUES (1, 1, '鐢?, '0', 'sys_user_sex', '', '', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鎬у埆鐢?);
-INSERT INTO `sys_dict_data` VALUES (2, 2, '濂?, '1', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鎬у埆濂?);
-INSERT INTO `sys_dict_data` VALUES (3, 3, '鏈煡', '2', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鎬у埆鏈煡');
-INSERT INTO `sys_dict_data` VALUES (4, 1, '鏄剧ず', '0', 'sys_show_hide', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鏄剧ず鑿滃崟');
-INSERT INTO `sys_dict_data` VALUES (5, 2, '闅愯棌', '1', 'sys_show_hide', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '闅愯棌鑿滃崟');
-INSERT INTO `sys_dict_data` VALUES (6, 1, '姝ｅ父', '0', 'sys_normal_disable', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '姝ｅ父鐘舵€?);
-INSERT INTO `sys_dict_data` VALUES (7, 2, '鍋滅敤', '1', 'sys_normal_disable', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鍋滅敤鐘舵€?);
-INSERT INTO `sys_dict_data` VALUES (8, 1, '姝ｅ父', '0', 'sys_job_status', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '姝ｅ父鐘舵€?);
-INSERT INTO `sys_dict_data` VALUES (9, 2, '鏆傚仠', '1', 'sys_job_status', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鍋滅敤鐘舵€?);
-INSERT INTO `sys_dict_data` VALUES (10, 1, '榛樿', 'DEFAULT', 'sys_job_group', '', '', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '榛樿鍒嗙粍');
-INSERT INTO `sys_dict_data` VALUES (11, 2, '绯荤粺', 'SYSTEM', 'sys_job_group', '', '', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '绯荤粺鍒嗙粍');
-INSERT INTO `sys_dict_data` VALUES (12, 1, '鏄?, 'Y', 'sys_yes_no', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '绯荤粺榛樿鏄?);
-INSERT INTO `sys_dict_data` VALUES (13, 2, '鍚?, 'N', 'sys_yes_no', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '绯荤粺榛樿鍚?);
-INSERT INTO `sys_dict_data` VALUES (14, 1, '閫氱煡', '1', 'sys_notice_type', '', 'warning', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '閫氱煡');
-INSERT INTO `sys_dict_data` VALUES (15, 2, '鍏憡', '2', 'sys_notice_type', '', 'success', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鍏憡');
-INSERT INTO `sys_dict_data` VALUES (16, 1, '姝ｅ父', '0', 'sys_notice_status', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '姝ｅ父鐘舵€?);
-INSERT INTO `sys_dict_data` VALUES (17, 2, '鍏抽棴', '1', 'sys_notice_status', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鍏抽棴鐘舵€?);
-INSERT INTO `sys_dict_data` VALUES (18, 99, '鍏朵粬', '0', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鍏朵粬鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (19, 1, '鏂板', '1', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鏂板鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (20, 2, '淇敼', '2', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '淇敼鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (21, 3, '鍒犻櫎', '3', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鍒犻櫎鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (22, 4, '鎺堟潈', '4', 'sys_oper_type', '', 'primary', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鎺堟潈鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (23, 5, '瀵煎嚭', '5', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '瀵煎嚭鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (24, 6, '瀵煎叆', '6', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '瀵煎叆鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (25, 7, '寮洪€€', '7', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '寮洪€€鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (26, 8, '鐢熸垚浠ｇ爜', '8', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鐢熸垚鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (27, 9, '娓呯┖鏁版嵁', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '娓呯┖鎿嶄綔');
-INSERT INTO `sys_dict_data` VALUES (28, 1, '鎴愬姛', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '姝ｅ父鐘舵€?);
-INSERT INTO `sys_dict_data` VALUES (29, 2, '澶辫触', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鍋滅敤鐘舵€?);
+INSERT INTO `sys_dict_data` VALUES (1, 1, '男', '0', 'sys_user_sex', '', '', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '性别男');
+INSERT INTO `sys_dict_data` VALUES (2, 2, '女', '1', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '性别女');
+INSERT INTO `sys_dict_data` VALUES (3, 3, '未知', '2', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '性别未知');
+INSERT INTO `sys_dict_data` VALUES (4, 1, '显示', '0', 'sys_show_hide', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '显示菜单');
+INSERT INTO `sys_dict_data` VALUES (5, 2, '隐藏', '1', 'sys_show_hide', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '隐藏菜单');
+INSERT INTO `sys_dict_data` VALUES (6, 1, '正常', '0', 'sys_normal_disable', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '正常状态');
+INSERT INTO `sys_dict_data` VALUES (7, 2, '停用', '1', 'sys_normal_disable', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '停用状态');
+INSERT INTO `sys_dict_data` VALUES (8, 1, '正常', '0', 'sys_job_status', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '正常状态');
+INSERT INTO `sys_dict_data` VALUES (9, 2, '暂停', '1', 'sys_job_status', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '停用状态');
+INSERT INTO `sys_dict_data` VALUES (10, 1, '默认', 'DEFAULT', 'sys_job_group', '', '', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '默认分组');
+INSERT INTO `sys_dict_data` VALUES (11, 2, '系统', 'SYSTEM', 'sys_job_group', '', '', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '系统分组');
+INSERT INTO `sys_dict_data` VALUES (12, 1, '是', 'Y', 'sys_yes_no', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '系统默认是');
+INSERT INTO `sys_dict_data` VALUES (13, 2, '否', 'N', 'sys_yes_no', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '系统默认否');
+INSERT INTO `sys_dict_data` VALUES (14, 1, '通知', '1', 'sys_notice_type', '', 'warning', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '通知');
+INSERT INTO `sys_dict_data` VALUES (15, 2, '公告', '2', 'sys_notice_type', '', 'success', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '公告');
+INSERT INTO `sys_dict_data` VALUES (16, 1, '正常', '0', 'sys_notice_status', '', 'primary', 'Y', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '正常状态');
+INSERT INTO `sys_dict_data` VALUES (17, 2, '关闭', '1', 'sys_notice_status', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '关闭状态');
+INSERT INTO `sys_dict_data` VALUES (18, 99, '其他', '0', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '其他操作');
+INSERT INTO `sys_dict_data` VALUES (19, 1, '新增', '1', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '新增操作');
+INSERT INTO `sys_dict_data` VALUES (20, 2, '修改', '2', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '修改操作');
+INSERT INTO `sys_dict_data` VALUES (21, 3, '删除', '3', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '删除操作');
+INSERT INTO `sys_dict_data` VALUES (22, 4, '授权', '4', 'sys_oper_type', '', 'primary', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '授权操作');
+INSERT INTO `sys_dict_data` VALUES (23, 5, '导出', '5', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '导出操作');
+INSERT INTO `sys_dict_data` VALUES (24, 6, '导入', '6', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '导入操作');
+INSERT INTO `sys_dict_data` VALUES (25, 7, '强退', '7', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '强退操作');
+INSERT INTO `sys_dict_data` VALUES (26, 8, '生成代码', '8', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '生成操作');
+INSERT INTO `sys_dict_data` VALUES (27, 9, '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '清空操作');
+INSERT INTO `sys_dict_data` VALUES (28, 1, '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '正常状态');
+INSERT INTO `sys_dict_data` VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '停用状态');
 
 -- ----------------------------
 -- Table structure for sys_dict_type
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type`  (
-  `dict_id` bigint NOT NULL AUTO_INCREMENT COMMENT '瀛楀吀涓婚敭',
-  `dict_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀛楀吀鍚嶇О',
-  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀛楀吀绫诲瀷',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `dict_id` bigint NOT NULL AUTO_INCREMENT COMMENT '字典主键',
+  `dict_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '字典名称',
+  `dict_type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '字典类型',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`) USING BTREE,
   UNIQUE INDEX `dict_type`(`dict_type` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瀛楀吀绫诲瀷琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '字典类型表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_dict_type
 -- ----------------------------
-INSERT INTO `sys_dict_type` VALUES (1, '鐢ㄦ埛鎬у埆', 'sys_user_sex', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鐢ㄦ埛鎬у埆鍒楄〃');
-INSERT INTO `sys_dict_type` VALUES (2, '鑿滃崟鐘舵€?, 'sys_show_hide', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鑿滃崟鐘舵€佸垪琛?);
-INSERT INTO `sys_dict_type` VALUES (3, '绯荤粺寮€鍏?, 'sys_normal_disable', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '绯荤粺寮€鍏冲垪琛?);
-INSERT INTO `sys_dict_type` VALUES (4, '浠诲姟鐘舵€?, 'sys_job_status', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '浠诲姟鐘舵€佸垪琛?);
-INSERT INTO `sys_dict_type` VALUES (5, '浠诲姟鍒嗙粍', 'sys_job_group', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '浠诲姟鍒嗙粍鍒楄〃');
-INSERT INTO `sys_dict_type` VALUES (6, '绯荤粺鏄惁', 'sys_yes_no', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '绯荤粺鏄惁鍒楄〃');
-INSERT INTO `sys_dict_type` VALUES (7, '閫氱煡绫诲瀷', 'sys_notice_type', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '閫氱煡绫诲瀷鍒楄〃');
-INSERT INTO `sys_dict_type` VALUES (8, '閫氱煡鐘舵€?, 'sys_notice_status', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '閫氱煡鐘舵€佸垪琛?);
-INSERT INTO `sys_dict_type` VALUES (9, '鎿嶄綔绫诲瀷', 'sys_oper_type', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鎿嶄綔绫诲瀷鍒楄〃');
-INSERT INTO `sys_dict_type` VALUES (10, '绯荤粺鐘舵€?, 'sys_common_status', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '鐧诲綍鐘舵€佸垪琛?);
+INSERT INTO `sys_dict_type` VALUES (1, '用户性别', 'sys_user_sex', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '用户性别列表');
+INSERT INTO `sys_dict_type` VALUES (2, '菜单状态', 'sys_show_hide', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '菜单状态列表');
+INSERT INTO `sys_dict_type` VALUES (3, '系统开关', 'sys_normal_disable', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '系统开关列表');
+INSERT INTO `sys_dict_type` VALUES (4, '任务状态', 'sys_job_status', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '任务状态列表');
+INSERT INTO `sys_dict_type` VALUES (5, '任务分组', 'sys_job_group', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '任务分组列表');
+INSERT INTO `sys_dict_type` VALUES (6, '系统是否', 'sys_yes_no', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '系统是否列表');
+INSERT INTO `sys_dict_type` VALUES (7, '通知类型', 'sys_notice_type', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '通知类型列表');
+INSERT INTO `sys_dict_type` VALUES (8, '通知状态', 'sys_notice_status', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '通知状态列表');
+INSERT INTO `sys_dict_type` VALUES (9, '操作类型', 'sys_oper_type', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '操作类型列表');
+INSERT INTO `sys_dict_type` VALUES (10, '系统状态', 'sys_common_status', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '登录状态列表');
+
+-- ----------------------------
+-- Table structure for sys_finance
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_finance`;
+CREATE TABLE `sys_finance`  (
+  `finance_id` bigint NOT NULL AUTO_INCREMENT COMMENT '记录ID',
+  `creditor_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '欠款方名称',
+  `loan_amount` decimal(12, 2) NULL DEFAULT NULL COMMENT '借款总额',
+  `loan_date` date NULL DEFAULT NULL COMMENT '借款日期',
+  `repayment_start_date` date NULL DEFAULT NULL COMMENT '还款开始日期',
+  `repayment_end_date` date NULL DEFAULT NULL COMMENT '还款结束日期',
+  `loan_term` int NULL DEFAULT NULL COMMENT '借款期限(月)',
+  `repayment_day` int NULL DEFAULT NULL COMMENT '每月还款日(几号)',
+  `monthly_payment` decimal(12, 2) NULL DEFAULT NULL COMMENT '月还款额',
+  `interest_rate` decimal(5, 2) NULL DEFAULT NULL COMMENT '利率(%)',
+  `interest_amount` decimal(12, 2) NULL DEFAULT NULL COMMENT '利息总额',
+  `early_settlement_amount` decimal(12, 2) NULL DEFAULT NULL COMMENT '提前结清金额',
+  `remaining_amount` decimal(12, 2) NULL DEFAULT NULL COMMENT '剩余未还金额',
+  `paid_amount` decimal(12, 2) NULL DEFAULT NULL COMMENT '已还金额',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态(0还款中 1已结清 2逾期)',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
+  `paid_months` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`finance_id`) USING BTREE,
+  INDEX `idx_creditor_name`(`creditor_name` ASC) USING BTREE,
+  INDEX `idx_status`(`status` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '财务管理表' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of sys_finance
+-- ----------------------------
+INSERT INTO `sys_finance` VALUES (1, '洋钱罐', 15884.00, '2026-02-09', '2026-03-09', '2027-03-09', 12, 9, 1324.00, NULL, 4.00, 8848.00, 15884.00, 0.00, '0', NULL, '', 'admin', '2026-07-01 13:01:11', 'admin', '2026-07-01 13:01:11');
+INSERT INTO `sys_finance` VALUES (2, '洋钱罐', 13200.00, '2026-06-16', '2026-07-16', '2027-07-16', 12, 16, 1246.00, NULL, 1752.00, 13329.00, 13200.00, 0.00, '0', NULL, NULL, 'admin', '2026-07-01 13:03:34', '', '2026-07-01 13:03:34');
 
 -- ----------------------------
 -- Table structure for sys_job
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job`  (
-  `job_id` bigint NOT NULL AUTO_INCREMENT COMMENT '浠诲姟ID',
-  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '浠诲姟鍚嶇О',
-  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '浠诲姟缁勫悕',
-  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冪敤鐩爣瀛楃涓?,
-  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT 'cron鎵ц琛ㄨ揪寮?,
-  `misfire_policy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '3' COMMENT '璁″垝鎵ц閿欒绛栫暐锛?绔嬪嵆鎵ц 2鎵ц涓€娆?3鏀惧純鎵ц锛?,
-  `concurrent` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1' COMMENT '鏄惁骞跺彂鎵ц锛?鍏佽 1绂佹锛?,
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐘舵€侊紙0姝ｅ父 1鏆傚仠锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '澶囨敞淇℃伅',
+  `job_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '任务名称',
+  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
+  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调用目标字符串',
+  `cron_expression` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT 'cron执行表达式',
+  `misfire_policy` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+  `concurrent` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1' COMMENT '是否并发执行（0允许 1禁止）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0正常 1暂停）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`job_id`, `job_name`, `job_group`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瀹氭椂浠诲姟璋冨害琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务调度表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_job
 -- ----------------------------
-INSERT INTO `sys_job` VALUES (1, '绯荤粺榛樿锛堟棤鍙傦級', 'DEFAULT', 'ryTask.ryNoParams', '0/10 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
-INSERT INTO `sys_job` VALUES (2, '绯荤粺榛樿锛堟湁鍙傦級', 'DEFAULT', 'ryTask.ryParams(\'ry\')', '0/15 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
-INSERT INTO `sys_job` VALUES (3, '绯荤粺榛樿锛堝鍙傦級', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)', '0/20 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
+INSERT INTO `sys_job` VALUES (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams', '0/10 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
+INSERT INTO `sys_job` VALUES (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')', '0/15 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
+INSERT INTO `sys_job` VALUES (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)', '0/20 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_job_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job_log`;
 CREATE TABLE `sys_job_log`  (
-  `job_log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '浠诲姟鏃ュ織ID',
-  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '浠诲姟鍚嶇О',
-  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '浠诲姟缁勫悕',
-  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '璋冪敤鐩爣瀛楃涓?,
-  `job_message` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏃ュ織淇℃伅',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鎵ц鐘舵€侊紙0姝ｅ父 1澶辫触锛?,
-  `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '寮傚父淇℃伅',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
+  `job_log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
+  `job_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '任务名称',
+  `job_group` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '任务组名',
+  `invoke_target` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '调用目标字符串',
+  `job_message` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '日志信息',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
+  `exception_info` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '异常信息',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瀹氭椂浠诲姟璋冨害鏃ュ織琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '定时任务调度日志表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -595,291 +595,357 @@ CREATE TABLE `sys_job_log`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_logininfor`;
 CREATE TABLE `sys_logininfor`  (
-  `info_id` bigint NOT NULL AUTO_INCREMENT COMMENT '璁块棶ID',
-  `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鐢ㄦ埛璐﹀彿',
-  `ipaddr` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鐧诲綍IP鍦板潃',
-  `login_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鐧诲綍鍦扮偣',
-  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '娴忚鍣ㄧ被鍨?,
-  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鎿嶄綔绯荤粺',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐧诲綍鐘舵€侊紙0鎴愬姛 1澶辫触锛?,
-  `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鎻愮ず娑堟伅',
-  `login_time` datetime NULL DEFAULT NULL COMMENT '璁块棶鏃堕棿',
+  `info_id` bigint NOT NULL AUTO_INCREMENT COMMENT '访问ID',
+  `user_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '用户账号',
+  `ipaddr` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '登录IP地址',
+  `login_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '登录地点',
+  `browser` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '浏览器类型',
+  `os` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '操作系统',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
+  `msg` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '提示消息',
+  `login_time` datetime NULL DEFAULT NULL COMMENT '访问时间',
   PRIMARY KEY (`info_id`) USING BTREE,
   INDEX `idx_sys_logininfor_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_logininfor_lt`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 115 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '绯荤粺璁块棶璁板綍' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 145 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '系统访问记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_logininfor
 -- ----------------------------
-INSERT INTO `sys_logininfor` VALUES (100, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-22 16:58:32');
-INSERT INTO `sys_logininfor` VALUES (101, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-22 18:11:14');
-INSERT INTO `sys_logininfor` VALUES (102, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-22 18:20:25');
-INSERT INTO `sys_logininfor` VALUES (103, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 10:48:23');
-INSERT INTO `sys_logininfor` VALUES (104, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 13:53:58');
-INSERT INTO `sys_logininfor` VALUES (105, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 18:09:38');
-INSERT INTO `sys_logininfor` VALUES (106, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 18:24:16');
-INSERT INTO `sys_logininfor` VALUES (107, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 18:30:09');
-INSERT INTO `sys_logininfor` VALUES (108, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '閫€鍑烘垚鍔?, '2026-06-23 18:54:40');
-INSERT INTO `sys_logininfor` VALUES (109, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 18:54:43');
-INSERT INTO `sys_logininfor` VALUES (110, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 19:01:23');
-INSERT INTO `sys_logininfor` VALUES (111, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '閫€鍑烘垚鍔?, '2026-06-23 19:04:06');
-INSERT INTO `sys_logininfor` VALUES (112, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-23 19:04:09');
-INSERT INTO `sys_logininfor` VALUES (113, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-24 08:35:39');
-INSERT INTO `sys_logininfor` VALUES (114, 'admin', '127.0.0.1', '鍐呯綉IP', 'Chrome 14', 'Windows 10', '0', '鐧诲綍鎴愬姛', '2026-06-24 09:16:18');
+INSERT INTO `sys_logininfor` VALUES (100, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-22 16:58:32');
+INSERT INTO `sys_logininfor` VALUES (101, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-22 18:11:14');
+INSERT INTO `sys_logininfor` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-22 18:20:25');
+INSERT INTO `sys_logininfor` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 10:48:23');
+INSERT INTO `sys_logininfor` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 13:53:58');
+INSERT INTO `sys_logininfor` VALUES (105, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 18:09:38');
+INSERT INTO `sys_logininfor` VALUES (106, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 18:24:16');
+INSERT INTO `sys_logininfor` VALUES (107, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 18:30:09');
+INSERT INTO `sys_logininfor` VALUES (108, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '退出成功', '2026-06-23 18:54:40');
+INSERT INTO `sys_logininfor` VALUES (109, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 18:54:43');
+INSERT INTO `sys_logininfor` VALUES (110, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 19:01:23');
+INSERT INTO `sys_logininfor` VALUES (111, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '退出成功', '2026-06-23 19:04:06');
+INSERT INTO `sys_logininfor` VALUES (112, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-23 19:04:09');
+INSERT INTO `sys_logininfor` VALUES (113, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-24 08:35:39');
+INSERT INTO `sys_logininfor` VALUES (114, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-24 09:16:18');
+INSERT INTO `sys_logininfor` VALUES (115, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-24 11:03:39');
+INSERT INTO `sys_logininfor` VALUES (116, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-24 12:22:50');
+INSERT INTO `sys_logininfor` VALUES (117, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-24 14:17:01');
+INSERT INTO `sys_logininfor` VALUES (118, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-24 17:10:18');
+INSERT INTO `sys_logininfor` VALUES (119, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-25 08:33:38');
+INSERT INTO `sys_logininfor` VALUES (120, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '1', '验证码已失效', '2026-06-25 12:15:35');
+INSERT INTO `sys_logininfor` VALUES (121, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '1', '验证码已失效', '2026-06-25 12:15:41');
+INSERT INTO `sys_logininfor` VALUES (122, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '1', '验证码已失效', '2026-06-25 12:17:27');
+INSERT INTO `sys_logininfor` VALUES (123, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-25 12:22:01');
+INSERT INTO `sys_logininfor` VALUES (124, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-25 16:20:42');
+INSERT INTO `sys_logininfor` VALUES (125, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '退出成功', '2026-06-25 16:25:27');
+INSERT INTO `sys_logininfor` VALUES (126, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-25 16:26:15');
+INSERT INTO `sys_logininfor` VALUES (127, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '退出成功', '2026-06-25 16:41:57');
+INSERT INTO `sys_logininfor` VALUES (128, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '1', '验证码错误', '2026-06-25 16:42:04');
+INSERT INTO `sys_logininfor` VALUES (129, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-25 16:42:08');
+INSERT INTO `sys_logininfor` VALUES (130, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '退出成功', '2026-06-25 16:42:30');
+INSERT INTO `sys_logininfor` VALUES (131, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '1', '验证码已失效', '2026-06-25 18:46:32');
+INSERT INTO `sys_logininfor` VALUES (132, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-25 18:46:36');
+INSERT INTO `sys_logininfor` VALUES (133, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 09:07:40');
+INSERT INTO `sys_logininfor` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 11:05:21');
+INSERT INTO `sys_logininfor` VALUES (135, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 12:59:49');
+INSERT INTO `sys_logininfor` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 12:59:56');
+INSERT INTO `sys_logininfor` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 15:37:05');
+INSERT INTO `sys_logininfor` VALUES (138, 'admin', '192.168.52.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 16:03:47');
+INSERT INTO `sys_logininfor` VALUES (139, 'admin', '192.168.52.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-28 17:13:11');
+INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '1', '验证码错误', '2026-06-28 17:57:35');
+INSERT INTO `sys_logininfor` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-28 17:57:40');
+INSERT INTO `sys_logininfor` VALUES (142, 'admin', '192.168.52.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 11:10:26');
+INSERT INTO `sys_logininfor` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 11:24:54');
+INSERT INTO `sys_logininfor` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 12:59:33');
 
 -- ----------------------------
 -- Table structure for sys_menu
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu`  (
-  `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '鑿滃崟ID',
-  `menu_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鑿滃崟鍚嶇О',
-  `parent_id` bigint NULL DEFAULT 0 COMMENT '鐖惰彍鍗旾D',
-  `order_num` int NULL DEFAULT 0 COMMENT '鏄剧ず椤哄簭',
-  `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '璺敱鍦板潃',
-  `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '缁勪欢璺緞',
-  `query` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '璺敱鍙傛暟',
-  `route_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '璺敱鍚嶇О',
-  `is_frame` int NULL DEFAULT 1 COMMENT '鏄惁涓哄閾撅紙0鏄?1鍚︼級',
-  `is_cache` int NULL DEFAULT 0 COMMENT '鏄惁缂撳瓨锛?缂撳瓨 1涓嶇紦瀛橈級',
-  `menu_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鑿滃崟绫诲瀷锛圡鐩綍 C鑿滃崟 F鎸夐挳锛?,
-  `visible` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鑿滃崟鐘舵€侊紙0鏄剧ず 1闅愯棌锛?,
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鑿滃崟鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `perms` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏉冮檺鏍囪瘑',
-  `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '#' COMMENT '鑿滃崟鍥炬爣',
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '澶囨敞',
+  `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `menu_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '菜单名称',
+  `parent_id` bigint NULL DEFAULT 0 COMMENT '父菜单ID',
+  `order_num` int NULL DEFAULT 0 COMMENT '显示顺序',
+  `path` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '路由地址',
+  `component` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '组件路径',
+  `query` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '路由参数',
+  `route_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '路由名称',
+  `is_frame` int NULL DEFAULT 1 COMMENT '是否为外链（0是 1否）',
+  `is_cache` int NULL DEFAULT 0 COMMENT '是否缓存（0缓存 1不缓存）',
+  `menu_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
+  `visible` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
+  `perms` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '权限标识',
+  `icon` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '#' COMMENT '菜单图标',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鑿滃崟鏉冮檺琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3006 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单权限表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1, '绯荤粺绠＄悊', 0, 1, 'system', NULL, '', '', 1, 0, 'M', '0', '0', '', 'system', 'admin', '2026-06-14 21:43:54', '', NULL, '绯荤粺绠＄悊鐩綍');
-INSERT INTO `sys_menu` VALUES (2, '绯荤粺鐩戞帶', 0, 2, 'monitor', NULL, '', '', 1, 0, 'M', '0', '0', '', 'monitor', 'admin', '2026-06-14 21:43:54', '', NULL, '绯荤粺鐩戞帶鐩綍');
-INSERT INTO `sys_menu` VALUES (3, '绯荤粺宸ュ叿', 0, 3, 'tool', NULL, '', '', 1, 0, 'M', '0', '0', '', 'tool', 'admin', '2026-06-14 21:43:54', '', NULL, '绯荤粺宸ュ叿鐩綍');
-INSERT INTO `sys_menu` VALUES (5, '瑙嗛绠＄悊', 0, 5, 'video', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'video', 'admin', '2026-06-23 18:58:10', '', NULL, '瑙嗛绠＄悊鐩綍');
-INSERT INTO `sys_menu` VALUES (100, '鐢ㄦ埛绠＄悊', 1, 1, 'user', 'system/user/index', '', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2026-06-14 21:43:54', '', NULL, '鐢ㄦ埛绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (101, '瑙掕壊绠＄悊', 1, 2, 'role', 'system/role/index', '', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2026-06-14 21:43:54', '', NULL, '瑙掕壊绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (102, '鑿滃崟绠＄悊', 1, 3, 'menu', 'system/menu/index', '', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', '2026-06-14 21:43:54', '', NULL, '鑿滃崟绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (103, '閮ㄩ棬绠＄悊', 1, 4, 'dept', 'system/dept/index', '', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', '2026-06-14 21:43:54', '', NULL, '閮ㄩ棬绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (104, '宀椾綅绠＄悊', 1, 5, 'post', 'system/post/index', '', '', 1, 0, 'C', '0', '0', 'system:post:list', 'post', 'admin', '2026-06-14 21:43:54', '', NULL, '宀椾綅绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (105, '瀛楀吀绠＄悊', 1, 6, 'dict', 'system/dict/index', '', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', '2026-06-14 21:43:54', '', NULL, '瀛楀吀绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (106, '鍙傛暟璁剧疆', 1, 7, 'config', 'system/config/index', '', '', 1, 0, 'C', '0', '0', 'system:config:list', 'edit', 'admin', '2026-06-14 21:43:54', '', NULL, '鍙傛暟璁剧疆鑿滃崟');
-INSERT INTO `sys_menu` VALUES (107, '閫氱煡鍏憡', 1, 8, 'notice', 'system/notice/index', '', '', 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'admin', '2026-06-14 21:43:54', '', NULL, '閫氱煡鍏憡鑿滃崟');
-INSERT INTO `sys_menu` VALUES (108, '鏃ュ織绠＄悊', 1, 9, 'log', '', '', '', 1, 0, 'M', '0', '0', '', 'log', 'admin', '2026-06-14 21:43:54', '', NULL, '鏃ュ織绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (109, '鍦ㄧ嚎鐢ㄦ埛', 2, 1, 'online', 'monitor/online/index', '', '', 1, 0, 'C', '0', '0', 'monitor:online:list', 'online', 'admin', '2026-06-14 21:43:54', '', NULL, '鍦ㄧ嚎鐢ㄦ埛鑿滃崟');
-INSERT INTO `sys_menu` VALUES (110, '瀹氭椂浠诲姟', 2, 2, 'job', 'monitor/job/index', '', '', 1, 0, 'C', '0', '0', 'monitor:job:list', 'job', 'admin', '2026-06-14 21:43:54', '', NULL, '瀹氭椂浠诲姟鑿滃崟');
-INSERT INTO `sys_menu` VALUES (111, '鏁版嵁鐩戞帶', 2, 3, 'druid', 'monitor/druid/index', '', '', 1, 0, 'C', '0', '0', 'monitor:druid:list', 'druid', 'admin', '2026-06-14 21:43:54', '', NULL, '鏁版嵁鐩戞帶鑿滃崟');
-INSERT INTO `sys_menu` VALUES (112, '鏈嶅姟鐩戞帶', 2, 4, 'server', 'monitor/server/index', '', '', 1, 0, 'C', '0', '0', 'monitor:server:list', 'server', 'admin', '2026-06-14 21:43:54', '', NULL, '鏈嶅姟鐩戞帶鑿滃崟');
-INSERT INTO `sys_menu` VALUES (113, '缂撳瓨鐩戞帶', 2, 5, 'cache', 'monitor/cache/index', '', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis', 'admin', '2026-06-14 21:43:54', '', NULL, '缂撳瓨鐩戞帶鑿滃崟');
-INSERT INTO `sys_menu` VALUES (114, '缂撳瓨鍒楄〃', 2, 6, 'cacheList', 'monitor/cache/list', '', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis-list', 'admin', '2026-06-14 21:43:54', '', NULL, '缂撳瓨鍒楄〃鑿滃崟');
-INSERT INTO `sys_menu` VALUES (115, '琛ㄥ崟鏋勫缓', 3, 1, 'build', 'tool/build/index', '', '', 1, 0, 'C', '0', '0', 'tool:build:list', 'build', 'admin', '2026-06-14 21:43:54', '', NULL, '琛ㄥ崟鏋勫缓鑿滃崟');
-INSERT INTO `sys_menu` VALUES (116, '浠ｇ爜鐢熸垚', 3, 2, 'gen', 'tool/gen/index', '', '', 1, 0, 'C', '0', '0', 'tool:gen:list', 'code', 'admin', '2026-06-14 21:43:54', '', NULL, '浠ｇ爜鐢熸垚鑿滃崟');
-INSERT INTO `sys_menu` VALUES (117, '绯荤粺鎺ュ彛', 3, 3, 'swagger', 'tool/swagger/index', '', '', 1, 0, 'C', '0', '0', 'tool:swagger:list', 'swagger', 'admin', '2026-06-14 21:43:54', '', NULL, '绯荤粺鎺ュ彛鑿滃崟');
-INSERT INTO `sys_menu` VALUES (500, '鎿嶄綔鏃ュ織', 108, 1, 'operlog', 'monitor/operlog/index', '', '', 1, 0, 'C', '0', '0', 'monitor:operlog:list', 'form', 'admin', '2026-06-14 21:43:54', '', NULL, '鎿嶄綔鏃ュ織鑿滃崟');
-INSERT INTO `sys_menu` VALUES (501, '鐧诲綍鏃ュ織', 108, 2, 'logininfor', 'monitor/logininfor/index', '', '', 1, 0, 'C', '0', '0', 'monitor:logininfor:list', 'logininfor', 'admin', '2026-06-14 21:43:54', '', NULL, '鐧诲綍鏃ュ織鑿滃崟');
-INSERT INTO `sys_menu` VALUES (1000, '鐢ㄦ埛鏌ヨ', 100, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1001, '鐢ㄦ埛鏂板', 100, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1002, '鐢ㄦ埛淇敼', 100, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1003, '鐢ㄦ埛鍒犻櫎', 100, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1004, '鐢ㄦ埛瀵煎嚭', 100, 5, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1005, '鐢ㄦ埛瀵煎叆', 100, 6, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:import', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1006, '閲嶇疆瀵嗙爜', 100, 7, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:resetPwd', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1007, '瑙掕壊鏌ヨ', 101, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1008, '瑙掕壊鏂板', 101, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1009, '瑙掕壊淇敼', 101, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1010, '瑙掕壊鍒犻櫎', 101, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1011, '瑙掕壊瀵煎嚭', 101, 5, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1012, '鑿滃崟鏌ヨ', 102, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1013, '鑿滃崟鏂板', 102, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1014, '鑿滃崟淇敼', 102, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1015, '鑿滃崟鍒犻櫎', 102, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1016, '閮ㄩ棬鏌ヨ', 103, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1017, '閮ㄩ棬鏂板', 103, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1018, '閮ㄩ棬淇敼', 103, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1019, '閮ㄩ棬鍒犻櫎', 103, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1020, '宀椾綅鏌ヨ', 104, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1021, '宀椾綅鏂板', 104, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1022, '宀椾綅淇敼', 104, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1023, '宀椾綅鍒犻櫎', 104, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1024, '宀椾綅瀵煎嚭', 104, 5, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1025, '瀛楀吀鏌ヨ', 105, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1026, '瀛楀吀鏂板', 105, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1027, '瀛楀吀淇敼', 105, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1028, '瀛楀吀鍒犻櫎', 105, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1029, '瀛楀吀瀵煎嚭', 105, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1030, '鍙傛暟鏌ヨ', 106, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1031, '鍙傛暟鏂板', 106, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1032, '鍙傛暟淇敼', 106, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1033, '鍙傛暟鍒犻櫎', 106, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1034, '鍙傛暟瀵煎嚭', 106, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1035, '鍏憡鏌ヨ', 107, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1036, '鍏憡鏂板', 107, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1037, '鍏憡淇敼', 107, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1038, '鍏憡鍒犻櫎', 107, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1039, '鎿嶄綔鏌ヨ', 500, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1040, '鎿嶄綔鍒犻櫎', 500, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1041, '鏃ュ織瀵煎嚭', 500, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1042, '鐧诲綍鏌ヨ', 501, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1043, '鐧诲綍鍒犻櫎', 501, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1044, '鏃ュ織瀵煎嚭', 501, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1045, '璐︽埛瑙ｉ攣', 501, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:unlock', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1046, '鍦ㄧ嚎鏌ヨ', 109, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:online:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1047, '鎵归噺寮洪€€', 109, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:online:batchLogout', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1048, '鍗曟潯寮洪€€', 109, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:online:forceLogout', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1049, '浠诲姟鏌ヨ', 110, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1050, '浠诲姟鏂板', 110, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1051, '浠诲姟淇敼', 110, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1052, '浠诲姟鍒犻櫎', 110, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1053, '鐘舵€佷慨鏀?, 110, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:changeStatus', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1054, '浠诲姟瀵煎嚭', 110, 6, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1055, '鐢熸垚鏌ヨ', 116, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1056, '鐢熸垚淇敼', 116, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1057, '鐢熸垚鍒犻櫎', 116, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1058, '瀵煎叆浠ｇ爜', 116, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:import', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1059, '棰勮浠ｇ爜', 116, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:preview', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (1060, '鐢熸垚浠ｇ爜', 116, 6, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2000, '瑙嗛鍒楄〃', 5, 1, 'list', 'video/index', NULL, '', 1, 0, 'C', '0', '0', 'video:list', 'list', 'admin', '2026-06-23 18:58:10', '', NULL, '瑙嗛鍒楄〃鑿滃崟');
-INSERT INTO `sys_menu` VALUES (2001, '瑙嗛鏌ヨ', 2000, 1, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:query', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2002, '瑙嗛鏂板', 2000, 2, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:add', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2003, '瑙嗛淇敼', 2000, 3, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:edit', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2004, '瑙嗛鍒犻櫎', 2000, 4, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:remove', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2005, '瑙嗛瀵煎嚭', 2000, 5, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:export', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2010, '璧勬簮绠＄悊', 5, 2, 'resource', 'video/resource', NULL, '', 1, 0, 'C', '0', '0', 'video:resource:list', 'folder', 'admin', '2026-06-24 09:01:27', '', NULL, '璧勬簮绠＄悊鑿滃崟');
-INSERT INTO `sys_menu` VALUES (2011, '璧勬簮鏌ヨ', 2010, 1, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:query', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2012, '璧勬簮鏂板', 2010, 2, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:add', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2013, '璧勬簮淇敼', 2010, 3, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:edit', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2014, '璧勬簮鍒犻櫎', 2010, 4, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:remove', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
-INSERT INTO `sys_menu` VALUES (2015, '璧勬簮瀵煎嚭', 2010, 5, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:export', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1, '系统管理', 0, 1, 'system', NULL, '', '', 1, 0, 'M', '0', '0', '', 'system', 'admin', '2026-06-14 21:43:54', '', NULL, '系统管理目录');
+INSERT INTO `sys_menu` VALUES (2, '系统监控', 0, 2, 'monitor', NULL, '', '', 1, 0, 'M', '0', '0', '', 'monitor', 'admin', '2026-06-14 21:43:54', '', NULL, '系统监控目录');
+INSERT INTO `sys_menu` VALUES (3, '系统工具', 0, 3, 'tool', NULL, '', '', 1, 0, 'M', '0', '0', '', 'tool', 'admin', '2026-06-14 21:43:54', '', NULL, '系统工具目录');
+INSERT INTO `sys_menu` VALUES (5, '视频管理', 0, 5, 'video', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'video', 'admin', '2026-06-23 18:58:10', '', NULL, '视频管理目录');
+INSERT INTO `sys_menu` VALUES (100, '用户管理', 1, 1, 'user', 'system/user/index', '', '', 1, 0, 'C', '0', '0', 'system:user:list', 'user', 'admin', '2026-06-14 21:43:54', '', NULL, '用户管理菜单');
+INSERT INTO `sys_menu` VALUES (101, '角色管理', 1, 2, 'role', 'system/role/index', '', '', 1, 0, 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2026-06-14 21:43:54', '', NULL, '角色管理菜单');
+INSERT INTO `sys_menu` VALUES (102, '菜单管理', 1, 3, 'menu', 'system/menu/index', '', '', 1, 0, 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', '2026-06-14 21:43:54', '', NULL, '菜单管理菜单');
+INSERT INTO `sys_menu` VALUES (103, '部门管理', 1, 4, 'dept', 'system/dept/index', '', '', 1, 0, 'C', '0', '0', 'system:dept:list', 'tree', 'admin', '2026-06-14 21:43:54', '', NULL, '部门管理菜单');
+INSERT INTO `sys_menu` VALUES (104, '岗位管理', 1, 5, 'post', 'system/post/index', '', '', 1, 0, 'C', '0', '0', 'system:post:list', 'post', 'admin', '2026-06-14 21:43:54', '', NULL, '岗位管理菜单');
+INSERT INTO `sys_menu` VALUES (105, '字典管理', 1, 6, 'dict', 'system/dict/index', '', '', 1, 0, 'C', '0', '0', 'system:dict:list', 'dict', 'admin', '2026-06-14 21:43:54', '', NULL, '字典管理菜单');
+INSERT INTO `sys_menu` VALUES (106, '参数设置', 1, 7, 'config', 'system/config/index', '', '', 1, 0, 'C', '0', '0', 'system:config:list', 'edit', 'admin', '2026-06-14 21:43:54', '', NULL, '参数设置菜单');
+INSERT INTO `sys_menu` VALUES (107, '通知公告', 1, 8, 'notice', 'system/notice/index', '', '', 1, 0, 'C', '0', '0', 'system:notice:list', 'message', 'admin', '2026-06-14 21:43:54', '', NULL, '通知公告菜单');
+INSERT INTO `sys_menu` VALUES (108, '日志管理', 1, 9, 'log', '', '', '', 1, 0, 'M', '0', '0', '', 'log', 'admin', '2026-06-14 21:43:54', '', NULL, '日志管理菜单');
+INSERT INTO `sys_menu` VALUES (109, '在线用户', 2, 1, 'online', 'monitor/online/index', '', '', 1, 0, 'C', '0', '0', 'monitor:online:list', 'online', 'admin', '2026-06-14 21:43:54', '', NULL, '在线用户菜单');
+INSERT INTO `sys_menu` VALUES (110, '定时任务', 2, 2, 'job', 'monitor/job/index', '', '', 1, 0, 'C', '0', '0', 'monitor:job:list', 'job', 'admin', '2026-06-14 21:43:54', '', NULL, '定时任务菜单');
+INSERT INTO `sys_menu` VALUES (111, '数据监控', 2, 3, 'druid', 'monitor/druid/index', '', '', 1, 0, 'C', '0', '0', 'monitor:druid:list', 'druid', 'admin', '2026-06-14 21:43:54', '', NULL, '数据监控菜单');
+INSERT INTO `sys_menu` VALUES (112, '服务监控', 2, 4, 'server', 'monitor/server/index', '', '', 1, 0, 'C', '0', '0', 'monitor:server:list', 'server', 'admin', '2026-06-14 21:43:54', '', NULL, '服务监控菜单');
+INSERT INTO `sys_menu` VALUES (113, '缓存监控', 2, 5, 'cache', 'monitor/cache/index', '', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis', 'admin', '2026-06-14 21:43:54', '', NULL, '缓存监控菜单');
+INSERT INTO `sys_menu` VALUES (114, '缓存列表', 2, 6, 'cacheList', 'monitor/cache/list', '', '', 1, 0, 'C', '0', '0', 'monitor:cache:list', 'redis-list', 'admin', '2026-06-14 21:43:54', '', NULL, '缓存列表菜单');
+INSERT INTO `sys_menu` VALUES (115, '表单构建', 3, 1, 'build', 'tool/build/index', '', '', 1, 0, 'C', '0', '0', 'tool:build:list', 'build', 'admin', '2026-06-14 21:43:54', '', NULL, '表单构建菜单');
+INSERT INTO `sys_menu` VALUES (116, '代码生成', 3, 2, 'gen', 'tool/gen/index', '', '', 1, 0, 'C', '0', '0', 'tool:gen:list', 'code', 'admin', '2026-06-14 21:43:54', '', NULL, '代码生成菜单');
+INSERT INTO `sys_menu` VALUES (117, '系统接口', 3, 3, 'swagger', 'tool/swagger/index', '', '', 1, 0, 'C', '0', '0', 'tool:swagger:list', 'swagger', 'admin', '2026-06-14 21:43:54', '', NULL, '系统接口菜单');
+INSERT INTO `sys_menu` VALUES (200, '财务管理', 5, 1, 'finance', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'money', 'admin', '2026-07-01 11:23:16', '', NULL, '财务管理目录');
+INSERT INTO `sys_menu` VALUES (201, '财务记录', 200, 1, 'index', 'finance/index', NULL, '', 1, 1, 'C', '0', '0', 'finance:list', 'list', 'admin', '2026-07-01 11:23:16', '', NULL, '财务记录菜单');
+INSERT INTO `sys_menu` VALUES (202, '财务统计', 200, 2, 'statistics', 'finance/statistics', NULL, '', 1, 1, 'C', '0', '0', 'finance:stat', 'chart', 'admin', '2026-07-01 11:23:16', '', NULL, '财务统计菜单');
+INSERT INTO `sys_menu` VALUES (203, '财务查询', 201, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:query', '#', 'admin', '2026-07-01 11:23:16', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (204, '财务新增', 201, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:add', '#', 'admin', '2026-07-01 11:23:16', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (205, '财务修改', 201, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:edit', '#', 'admin', '2026-07-01 11:23:16', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (206, '财务删除', 201, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:remove', '#', 'admin', '2026-07-01 11:23:16', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (207, '财务统计', 202, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:stat', '#', 'admin', '2026-07-01 11:23:16', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (500, '操作日志', 108, 1, 'operlog', 'monitor/operlog/index', '', '', 1, 0, 'C', '0', '0', 'monitor:operlog:list', 'form', 'admin', '2026-06-14 21:43:54', '', NULL, '操作日志菜单');
+INSERT INTO `sys_menu` VALUES (501, '登录日志', 108, 2, 'logininfor', 'monitor/logininfor/index', '', '', 1, 0, 'C', '0', '0', 'monitor:logininfor:list', 'logininfor', 'admin', '2026-06-14 21:43:54', '', NULL, '登录日志菜单');
+INSERT INTO `sys_menu` VALUES (1000, '用户查询', 100, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1001, '用户新增', 100, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1002, '用户修改', 100, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1003, '用户删除', 100, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1004, '用户导出', 100, 5, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1005, '用户导入', 100, 6, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:import', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1006, '重置密码', 100, 7, '', '', '', '', 1, 0, 'F', '0', '0', 'system:user:resetPwd', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1007, '角色查询', 101, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1008, '角色新增', 101, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1009, '角色修改', 101, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1010, '角色删除', 101, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1011, '角色导出', 101, 5, '', '', '', '', 1, 0, 'F', '0', '0', 'system:role:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1012, '菜单查询', 102, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1013, '菜单新增', 102, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1014, '菜单修改', 102, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1015, '菜单删除', 102, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:menu:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1016, '部门查询', 103, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1017, '部门新增', 103, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1018, '部门修改', 103, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1019, '部门删除', 103, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:dept:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1020, '岗位查询', 104, 1, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1021, '岗位新增', 104, 2, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1022, '岗位修改', 104, 3, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1023, '岗位删除', 104, 4, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1024, '岗位导出', 104, 5, '', '', '', '', 1, 0, 'F', '0', '0', 'system:post:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1025, '字典查询', 105, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1026, '字典新增', 105, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1027, '字典修改', 105, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1028, '字典删除', 105, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1029, '字典导出', 105, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:dict:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1030, '参数查询', 106, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1031, '参数新增', 106, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1032, '参数修改', 106, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1033, '参数删除', 106, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1034, '参数导出', 106, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:config:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1035, '公告查询', 107, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1036, '公告新增', 107, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1037, '公告修改', 107, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1038, '公告删除', 107, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'system:notice:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1039, '操作查询', 500, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1040, '操作删除', 500, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1041, '日志导出', 500, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:operlog:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1042, '登录查询', 501, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1043, '登录删除', 501, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1044, '日志导出', 501, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1045, '账户解锁', 501, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:logininfor:unlock', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1046, '在线查询', 109, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:online:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1047, '批量强退', 109, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:online:batchLogout', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1048, '单条强退', 109, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:online:forceLogout', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1049, '任务查询', 110, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1050, '任务新增', 110, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:add', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1051, '任务修改', 110, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1052, '任务删除', 110, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1053, '状态修改', 110, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:changeStatus', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1054, '任务导出', 110, 6, '#', '', '', '', 1, 0, 'F', '0', '0', 'monitor:job:export', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1055, '生成查询', 116, 1, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:query', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1056, '生成修改', 116, 2, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:edit', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1057, '生成删除', 116, 3, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:remove', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1058, '导入代码', 116, 4, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:import', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1059, '预览代码', 116, 5, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:preview', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (1060, '生成代码', 116, 6, '#', '', '', '', 1, 0, 'F', '0', '0', 'tool:gen:code', '#', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2000, '视频列表', 5, 1, 'list', 'video/index', NULL, '', 1, 0, 'C', '0', '0', 'video:list', 'list', 'admin', '2026-06-23 18:58:10', '', NULL, '视频列表菜单');
+INSERT INTO `sys_menu` VALUES (2001, '视频查询', 2000, 1, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:query', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2002, '视频新增', 2000, 2, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:add', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2003, '视频修改', 2000, 3, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:edit', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2004, '视频删除', 2000, 4, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:remove', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2005, '视频导出', 2000, 5, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:export', '#', 'admin', '2026-06-23 18:58:10', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2010, '资源管理', 5, 2, 'resource', 'video/resource', NULL, '', 1, 0, 'C', '0', '0', 'video:resource:list', 'folder', 'admin', '2026-06-24 09:01:27', '', NULL, '资源管理菜单');
+INSERT INTO `sys_menu` VALUES (2011, '资源查询', 2010, 1, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:query', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2012, '资源新增', 2010, 2, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:add', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2013, '资源修改', 2010, 3, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:edit', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2014, '资源删除', 2010, 4, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:remove', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (2015, '资源导出', 2010, 5, '#', NULL, NULL, '', 1, 0, 'F', '0', '0', 'video:resource:export', '#', 'admin', '2026-06-24 09:01:27', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_notice`;
 CREATE TABLE `sys_notice`  (
-  `notice_id` int NOT NULL AUTO_INCREMENT COMMENT '鍏憡ID',
-  `notice_title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鍏憡鏍囬',
-  `notice_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鍏憡绫诲瀷锛?閫氱煡 2鍏憡锛?,
-  `notice_content` longblob NULL COMMENT '鍏憡鍐呭',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鍏憡鐘舵€侊紙0姝ｅ父 1鍏抽棴锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `notice_id` int NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `notice_title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '公告标题',
+  `notice_type` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '公告类型（1通知 2公告）',
+  `notice_content` longblob NULL COMMENT '公告内容',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '公告状态（0正常 1关闭）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`notice_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '閫氱煡鍏憡琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '通知公告表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_notice
 -- ----------------------------
-INSERT INTO `sys_notice` VALUES (1, '娓╅Θ鎻愰啋锛欴DSS 绠＄悊绯荤粺鏂扮増鏈彂甯冨暒', '2', 0xE696B0E78988E69CACE58685E5AEB9, '0', 'admin', '2026-06-14 21:43:55', '', NULL, '绠＄悊鍛?);
-INSERT INTO `sys_notice` VALUES (2, '缁存姢閫氱煡锛欴DSS 绠＄悊绯荤粺鍑屾櫒缁存姢', '1', 0xE7BBB4E68AA4E58685E5AEB9, '0', 'admin', '2026-06-14 21:43:55', '', NULL, '绠＄悊鍛?);
+INSERT INTO `sys_notice` VALUES (1, '温馨提醒：2018-07-01 若依新版本发布啦', '2', 0xE696B0E78988E69CACE58685E5AEB9, '0', 'admin', '2026-06-14 21:43:55', '', NULL, '管理员');
+INSERT INTO `sys_notice` VALUES (2, '维护通知：2018-07-01 若依系统凌晨维护', '1', 0xE7BBB4E68AA4E58685E5AEB9, '0', 'admin', '2026-06-14 21:43:55', '', NULL, '管理员');
 
 -- ----------------------------
 -- Table structure for sys_oper_log
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_oper_log`;
 CREATE TABLE `sys_oper_log`  (
-  `oper_id` bigint NOT NULL AUTO_INCREMENT COMMENT '鏃ュ織涓婚敭',
-  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '妯″潡鏍囬',
-  `business_type` int NULL DEFAULT 0 COMMENT '涓氬姟绫诲瀷锛?鍏跺畠 1鏂板 2淇敼 3鍒犻櫎锛?,
-  `method` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏂规硶鍚嶇О',
-  `request_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '璇锋眰鏂瑰紡',
-  `operator_type` int NULL DEFAULT 0 COMMENT '鎿嶄綔绫诲埆锛?鍏跺畠 1鍚庡彴鐢ㄦ埛 2鎵嬫満绔敤鎴凤級',
-  `oper_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鎿嶄綔浜哄憳',
-  `dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '閮ㄩ棬鍚嶇О',
-  `oper_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '璇锋眰URL',
-  `oper_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '涓绘満鍦板潃',
-  `oper_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鎿嶄綔鍦扮偣',
-  `oper_param` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '璇锋眰鍙傛暟',
-  `json_result` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '杩斿洖鍙傛暟',
-  `status` int NULL DEFAULT 0 COMMENT '鎿嶄綔鐘舵€侊紙0姝ｅ父 1寮傚父锛?,
-  `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '閿欒娑堟伅',
-  `oper_time` datetime NULL DEFAULT NULL COMMENT '鎿嶄綔鏃堕棿',
-  `cost_time` bigint NULL DEFAULT 0 COMMENT '娑堣€楁椂闂?,
+  `oper_id` bigint NOT NULL AUTO_INCREMENT COMMENT '日志主键',
+  `title` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '模块标题',
+  `business_type` int NULL DEFAULT 0 COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `method` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '方法名称',
+  `request_method` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '请求方式',
+  `operator_type` int NULL DEFAULT 0 COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `oper_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '操作人员',
+  `dept_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '部门名称',
+  `oper_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '请求URL',
+  `oper_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '主机地址',
+  `oper_location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '操作地点',
+  `oper_param` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '请求参数',
+  `json_result` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '返回参数',
+  `status` int NULL DEFAULT 0 COMMENT '操作状态（0正常 1异常）',
+  `error_msg` varchar(2000) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '错误消息',
+  `oper_time` datetime NULL DEFAULT NULL COMMENT '操作时间',
+  `cost_time` bigint NULL DEFAULT 0 COMMENT '消耗时间',
   PRIMARY KEY (`oper_id`) USING BTREE,
   INDEX `idx_sys_oper_log_bt`(`business_type` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_s`(`status` ASC) USING BTREE,
   INDEX `idx_sys_oper_log_ot`(`oper_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 104 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鎿嶄綔鏃ュ織璁板綍' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 132 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '操作日志记录' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
-INSERT INTO `sys_oper_log` VALUES (100, '鑿滃崟绠＄悊', 1, 'com.ddss.web.controller.system.SysMenuController.add()', 'POST', 1, 'admin', '鐮斿彂閮ㄩ棬', '/system/menu', '127.0.0.1', '鍐呯綉IP', '{\"children\":[],\"createBy\":\"admin\",\"icon\":\"bug\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"瑙嗛绠＄悊\",\"menuType\":\"M\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"video\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"鎿嶄綔鎴愬姛\",\"code\":200}', 0, NULL, '2026-06-23 18:10:51', 37);
-INSERT INTO `sys_oper_log` VALUES (101, '瑙掕壊绠＄悊', 2, 'com.ddss.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', '鐮斿彂閮ㄩ棬', '/system/role', '127.0.0.1', '鍐呯綉IP', '{\"admin\":false,\"createTime\":\"2026-06-14 21:45:31\",\"dataScope\":\"2\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045,2,109,1046,1047,1048,110,1049,1050,1051,1052,1053,1054,111,112,113,114,3,115,116,1055,1056,1057,1058,1059,1060,117,4,2000],\"params\":{},\"remark\":\"鏅€氳鑹瞈",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"鏅€氳鑹瞈",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"鎿嶄綔鎴愬姛\",\"code\":200}', 0, NULL, '2026-06-23 18:57:05', 137);
-INSERT INTO `sys_oper_log` VALUES (102, '瑙嗛绠＄悊', 1, 'com.ddss.web.controller.video.VideoController.add()', 'POST', 1, 'admin', '鐮斿彂閮ㄩ棬', '/video', '127.0.0.1', '鍐呯綉IP', '{\"createBy\":\"admin\",\"status\":\"0\",\"videoId\":1,\"videoName\":\"1\",\"videoUrl\":\"2\"} ', '{\"msg\":\"鎿嶄綔鎴愬姛\",\"code\":200}', 0, NULL, '2026-06-23 19:08:19', 35);
-INSERT INTO `sys_oper_log` VALUES (103, '鑿滃崟绠＄悊', 3, 'com.ddss.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', '鐮斿彂閮ㄩ棬', '/system/menu/4', '127.0.0.1', '鍐呯綉IP', '4 ', '{\"msg\":\"鑿滃崟宸插垎閰?涓嶅厑璁稿垹闄",\"code\":601}', 0, NULL, '2026-06-24 08:55:15', 24);
+INSERT INTO `sys_oper_log` VALUES (100, '菜单管理', 1, 'com.ddss.web.controller.system.SysMenuController.add()', 'POST', 1, 'admin', '研发部门', '/system/menu', '127.0.0.1', '内网IP', '{\"children\":[],\"createBy\":\"admin\",\"icon\":\"bug\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"视频管理\",\"menuType\":\"M\",\"orderNum\":5,\"params\":{},\"parentId\":0,\"path\":\"video\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-06-23 18:10:51', 37);
+INSERT INTO `sys_oper_log` VALUES (101, '角色管理', 2, 'com.ddss.web.controller.system.SysRoleController.edit()', 'PUT', 1, 'admin', '研发部门', '/system/role', '127.0.0.1', '内网IP', '{\"admin\":false,\"createTime\":\"2026-06-14 21:45:31\",\"dataScope\":\"2\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045,2,109,1046,1047,1048,110,1049,1050,1051,1052,1053,1054,111,112,113,114,3,115,116,1055,1056,1057,1058,1059,1060,117,4,2000],\"params\":{},\"remark\":\"普通角色\",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-06-23 18:57:05', 137);
+INSERT INTO `sys_oper_log` VALUES (102, '视频管理', 1, 'com.ddss.web.controller.video.VideoController.add()', 'POST', 1, 'admin', '研发部门', '/video', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"status\":\"0\",\"videoId\":1,\"videoName\":\"1\",\"videoUrl\":\"2\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-06-23 19:08:19', 35);
+INSERT INTO `sys_oper_log` VALUES (103, '菜单管理', 3, 'com.ddss.web.controller.system.SysMenuController.remove()', 'DELETE', 1, 'admin', '研发部门', '/system/menu/4', '127.0.0.1', '内网IP', '4 ', '{\"msg\":\"菜单已分配,不允许删除\",\"code\":601}', 0, NULL, '2026-06-24 08:55:15', 24);
+INSERT INTO `sys_oper_log` VALUES (104, '用户头像', 2, 'com.ddss.web.controller.system.SysProfileController.avatar()', 'POST', 1, 'admin', '研发部门', '/system/user/profile/avatar', '127.0.0.1', '内网IP', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"/profile/avatar/2026/06/26/75e3b1cc4eb1460eb2d320c55a1662ea.png\",\"code\":200}', 0, NULL, '2026-06-26 13:00:35', 205);
+INSERT INTO `sys_oper_log` VALUES (105, '个人信息', 2, 'com.ddss.web.controller.system.SysProfileController.updateProfile()', 'PUT', 1, 'admin', '研发部门', '/system/user/profile', '127.0.0.1', '内网IP', '{\"admin\":false,\"email\":\"vip.p@live.com\",\"nickName\":\"DDSS管理员\",\"params\":{},\"phonenumber\":\"13888888888\",\"sex\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-06-26 13:00:36', 24);
+INSERT INTO `sys_oper_log` VALUES (106, '财务管理', 1, 'com.ddss.web.controller.finance.FinanceController.add()', 'POST', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"remainingAmount\":9265,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:01:12', 74);
+INSERT INTO `sys_oper_log` VALUES (107, '财务管理', 1, 'com.ddss.web.controller.finance.FinanceController.add()', 'POST', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":13329,\"financeId\":2,\"interestAmount\":1752,\"loanAmount\":13200,\"loanDate\":\"2026-06-16\",\"loanTerm\":12,\"monthlyPayment\":1246,\"paidAmount\":0,\"remainingAmount\":13200,\"repaymentDay\":16,\"repaymentEndDate\":\"2027-07-16\",\"repaymentStartDate\":\"2026-07-16\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:03:34', 15);
+INSERT INTO `sys_oper_log` VALUES (108, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":1324.00,\"remainingAmount\":14560.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:04', 66);
+INSERT INTO `sys_oper_log` VALUES (109, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":2648.00,\"remainingAmount\":13236.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:05', 7);
+INSERT INTO `sys_oper_log` VALUES (110, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":3972.00,\"remainingAmount\":11912.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:15', 9);
+INSERT INTO `sys_oper_log` VALUES (111, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":5296.00,\"remainingAmount\":10588.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:16', 17);
+INSERT INTO `sys_oper_log` VALUES (112, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":3972.00,\"remainingAmount\":11912.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:21', 7);
+INSERT INTO `sys_oper_log` VALUES (113, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":2648.00,\"remainingAmount\":13236.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:26', 8);
+INSERT INTO `sys_oper_log` VALUES (114, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":1324.00,\"remainingAmount\":14560.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:30', 6);
+INSERT INTO `sys_oper_log` VALUES (115, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":2648.00,\"remainingAmount\":13236.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:31', 7);
+INSERT INTO `sys_oper_log` VALUES (116, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":3972.00,\"remainingAmount\":11912.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:43', 6);
+INSERT INTO `sys_oper_log` VALUES (117, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":5296.00,\"remainingAmount\":10588.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:45', 7);
+INSERT INTO `sys_oper_log` VALUES (118, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":6620.00,\"remainingAmount\":9264.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:46', 8);
+INSERT INTO `sys_oper_log` VALUES (119, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":5296.00,\"remainingAmount\":10588.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:46', 8);
+INSERT INTO `sys_oper_log` VALUES (120, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":6620.00,\"remainingAmount\":9264.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:47', 12);
+INSERT INTO `sys_oper_log` VALUES (121, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":5296.00,\"remainingAmount\":10588.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:48', 7);
+INSERT INTO `sys_oper_log` VALUES (122, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":3972.00,\"remainingAmount\":11912.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:32:50', 10);
+INSERT INTO `sys_oper_log` VALUES (123, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":1324.00,\"remainingAmount\":14560.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:36:23', 9);
+INSERT INTO `sys_oper_log` VALUES (124, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":0.00,\"remainingAmount\":15884.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:36:25', 5);
+INSERT INTO `sys_oper_log` VALUES (125, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":1324.00,\"remainingAmount\":14560.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:36:26', 7);
+INSERT INTO `sys_oper_log` VALUES (126, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":2648.00,\"remainingAmount\":13236.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:36:26', 6);
+INSERT INTO `sys_oper_log` VALUES (127, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":1324.00,\"remainingAmount\":14560.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:36:28', 6);
+INSERT INTO `sys_oper_log` VALUES (128, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":0.00,\"remainingAmount\":15884.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:36:29', 14);
+INSERT INTO `sys_oper_log` VALUES (129, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":1324.00,\"remainingAmount\":14560.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:38:24', 7);
+INSERT INTO `sys_oper_log` VALUES (130, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":1324.00,\"paidMonths\":\"7月\",\"remainingAmount\":14560.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:43:08', 110);
+INSERT INTO `sys_oper_log` VALUES (131, '财务管理', 2, 'com.ddss.web.controller.finance.FinanceController.edit()', 'PUT', 1, 'admin', '研发部门', '/finance', '127.0.0.1', '内网IP', '{\"createBy\":\"admin\",\"createTime\":\"2026-07-01 13:01:11\",\"creditorName\":\"洋钱罐\",\"earlySettlementAmount\":8848,\"financeId\":1,\"interestAmount\":4,\"loanAmount\":15884,\"loanDate\":\"2026-02-09\",\"loanTerm\":12,\"monthlyPayment\":1324,\"paidAmount\":0.00,\"paidMonths\":\"\",\"remainingAmount\":15884.00,\"repaymentDay\":9,\"repaymentEndDate\":\"2027-03-09\",\"repaymentStartDate\":\"2026-03-09\",\"status\":\"0\",\"updateBy\":\"admin\",\"updateTime\":\"2026-07-01 13:01:11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2026-07-01 13:50:58', 10);
 
 -- ----------------------------
 -- Table structure for sys_post
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post`  (
-  `post_id` bigint NOT NULL AUTO_INCREMENT COMMENT '宀椾綅ID',
-  `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '宀椾綅缂栫爜',
-  `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '宀椾綅鍚嶇О',
-  `post_sort` int NOT NULL COMMENT '鏄剧ず椤哄簭',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `post_id` bigint NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+  `post_code` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位编码',
+  `post_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '岗位名称',
+  `post_sort` int NOT NULL COMMENT '显示顺序',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`post_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '宀椾綅淇℃伅琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '岗位信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_post
 -- ----------------------------
-INSERT INTO `sys_post` VALUES (1, 'ceo', '钁ｄ簨闀?, 1, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_post` VALUES (2, 'se', '椤圭洰缁忕悊', 2, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_post` VALUES (3, 'hr', '浜哄姏璧勬簮', 3, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
-INSERT INTO `sys_post` VALUES (4, 'user', '鏅€氬憳宸?, 4, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_post` VALUES (1, 'ceo', '董事长', 1, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_post` VALUES (2, 'se', '项目经理', 2, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_post` VALUES (3, 'hr', '人力资源', 3, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
+INSERT INTO `sys_post` VALUES (4, 'user', '普通员工', 4, '0', 'admin', '2026-06-14 21:43:54', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role`  (
-  `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '瑙掕壊ID',
-  `role_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙掕壊鍚嶇О',
-  `role_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙掕壊鏉冮檺瀛楃涓?,
-  `role_sort` int NOT NULL COMMENT '鏄剧ず椤哄簭',
-  `data_scope` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1' COMMENT '鏁版嵁鑼冨洿锛?锛氬叏閮ㄦ暟鎹潈闄?2锛氳嚜瀹氭暟鎹潈闄?3锛氭湰閮ㄩ棬鏁版嵁鏉冮檺 4锛氭湰閮ㄩ棬鍙婁互涓嬫暟鎹潈闄愶級',
-  `menu_check_strictly` tinyint(1) NULL DEFAULT 1 COMMENT '鑿滃崟鏍戦€夋嫨椤规槸鍚﹀叧鑱旀樉绀?,
-  `dept_check_strictly` tinyint(1) NULL DEFAULT 1 COMMENT '閮ㄩ棬鏍戦€夋嫨椤规槸鍚﹀叧鑱旀樉绀?,
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙掕壊鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鍒犻櫎鏍囧織锛?浠ｈ〃瀛樺湪 2浠ｈ〃鍒犻櫎锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色名称',
+  `role_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色权限字符串',
+  `role_sort` int NOT NULL COMMENT '显示顺序',
+  `data_scope` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
+  `menu_check_strictly` tinyint(1) NULL DEFAULT 1 COMMENT '菜单树选择项是否关联显示',
+  `dept_check_strictly` tinyint(1) NULL DEFAULT 1 COMMENT '部门树选择项是否关联显示',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '角色状态（0正常 1停用）',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瑙掕壊淇℃伅琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES (1, '瓒呯骇绠＄悊鍛?, 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL, '瓒呯骇绠＄悊鍛?);
-INSERT INTO `sys_role` VALUES (2, '鏅€氳鑹?, 'common', 2, '2', 1, 1, '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL, '鏅€氳鑹?);
+INSERT INTO `sys_role` VALUES (1, '超级管理员', 'admin', 1, '1', 1, 1, '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL, '超级管理员');
+INSERT INTO `sys_role` VALUES (2, '普通角色', 'common', 2, '2', 1, 1, '0', '0', 'admin', '2026-06-14 21:43:54', '', NULL, '普通角色');
 
 -- ----------------------------
 -- Table structure for sys_role_dept
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_dept`;
 CREATE TABLE `sys_role_dept`  (
-  `role_id` bigint NOT NULL COMMENT '瑙掕壊ID',
-  `dept_id` bigint NOT NULL COMMENT '閮ㄩ棬ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `dept_id` bigint NOT NULL COMMENT '部门ID',
   PRIMARY KEY (`role_id`, `dept_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瑙掕壊鍜岄儴闂ㄥ叧鑱旇〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色和部门关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_dept
@@ -893,15 +959,23 @@ INSERT INTO `sys_role_dept` VALUES (2, 105);
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu`  (
-  `role_id` bigint NOT NULL COMMENT '瑙掕壊ID',
-  `menu_id` bigint NOT NULL COMMENT '鑿滃崟ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `menu_id` bigint NOT NULL COMMENT '菜单ID',
   PRIMARY KEY (`role_id`, `menu_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瑙掕壊鍜岃彍鍗曞叧鑱旇〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '角色和菜单关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_role_menu
 -- ----------------------------
 INSERT INTO `sys_role_menu` VALUES (1, 5);
+INSERT INTO `sys_role_menu` VALUES (1, 200);
+INSERT INTO `sys_role_menu` VALUES (1, 201);
+INSERT INTO `sys_role_menu` VALUES (1, 202);
+INSERT INTO `sys_role_menu` VALUES (1, 203);
+INSERT INTO `sys_role_menu` VALUES (1, 204);
+INSERT INTO `sys_role_menu` VALUES (1, 205);
+INSERT INTO `sys_role_menu` VALUES (1, 206);
+INSERT INTO `sys_role_menu` VALUES (1, 207);
 INSERT INTO `sys_role_menu` VALUES (1, 2000);
 INSERT INTO `sys_role_menu` VALUES (1, 2001);
 INSERT INTO `sys_role_menu` VALUES (1, 2002);
@@ -936,6 +1010,14 @@ INSERT INTO `sys_role_menu` VALUES (2, 114);
 INSERT INTO `sys_role_menu` VALUES (2, 115);
 INSERT INTO `sys_role_menu` VALUES (2, 116);
 INSERT INTO `sys_role_menu` VALUES (2, 117);
+INSERT INTO `sys_role_menu` VALUES (2, 200);
+INSERT INTO `sys_role_menu` VALUES (2, 201);
+INSERT INTO `sys_role_menu` VALUES (2, 202);
+INSERT INTO `sys_role_menu` VALUES (2, 203);
+INSERT INTO `sys_role_menu` VALUES (2, 204);
+INSERT INTO `sys_role_menu` VALUES (2, 205);
+INSERT INTO `sys_role_menu` VALUES (2, 206);
+INSERT INTO `sys_role_menu` VALUES (2, 207);
 INSERT INTO `sys_role_menu` VALUES (2, 500);
 INSERT INTO `sys_role_menu` VALUES (2, 501);
 INSERT INTO `sys_role_menu` VALUES (2, 1000);
@@ -1005,44 +1087,44 @@ INSERT INTO `sys_role_menu` VALUES (2, 1060);
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
-  `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '鐢ㄦ埛ID',
-  `dept_id` bigint NULL DEFAULT NULL COMMENT '閮ㄩ棬ID',
-  `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鐢ㄦ埛璐﹀彿',
-  `nick_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鐢ㄦ埛鏄电О',
-  `user_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '00' COMMENT '鐢ㄦ埛绫诲瀷锛?0绯荤粺鐢ㄦ埛锛?,
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鐢ㄦ埛閭',
-  `phonenumber` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鎵嬫満鍙风爜',
-  `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐢ㄦ埛鎬у埆锛?鐢?1濂?2鏈煡锛?,
-  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '澶村儚鍦板潃',
-  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '瀵嗙爜',
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '璐﹀彿鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鍒犻櫎鏍囧織锛?浠ｈ〃瀛樺湪 2浠ｈ〃鍒犻櫎锛?,
-  `login_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏈€鍚庣櫥褰旾P',
-  `login_date` datetime NULL DEFAULT NULL COMMENT '鏈€鍚庣櫥褰曟椂闂?,
-  `pwd_update_date` datetime NULL DEFAULT NULL COMMENT '瀵嗙爜鏈€鍚庢洿鏂版椂闂?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `dept_id` bigint NULL DEFAULT NULL COMMENT '部门ID',
+  `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户账号',
+  `nick_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '用户昵称',
+  `user_type` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '00' COMMENT '用户类型（00系统用户）',
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '用户邮箱',
+  `phonenumber` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '手机号码',
+  `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '头像地址',
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '密码',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '账号状态（0正常 1停用）',
+  `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `login_ip` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '最后登录IP',
+  `login_date` datetime NULL DEFAULT NULL COMMENT '最后登录时间',
+  `pwd_update_date` datetime NULL DEFAULT NULL COMMENT '密码最后更新时间',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鐢ㄦ埛淇℃伅琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户信息表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '绠＄悊鍛?, '00', 'admin@ddss.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-06-24 09:16:18', '2026-06-14 21:43:54', 'admin', '2026-06-14 21:43:54', '', NULL, '绠＄悊鍛?);
-INSERT INTO `sys_user` VALUES (2, 105, 'test', '娴嬭瘯鍛?, '00', 'test@ddss.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-06-14 21:43:54', '2026-06-14 21:43:54', 'admin', '2026-06-14 21:43:54', '', NULL, '娴嬭瘯鍛?);
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', 'DDSS管理员', '00', 'vip.p@live.com', '13888888888', '0', '/profile/avatar/2026/06/26/75e3b1cc4eb1460eb2d320c55a1662ea.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-07-01 12:59:33', '2026-06-14 21:43:54', 'admin', '2026-06-14 21:43:54', '', '2026-06-26 13:00:36', '管理员');
+INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-06-14 21:43:54', '2026-06-14 21:43:54', 'admin', '2026-06-14 21:43:54', '', NULL, '测试员');
 
 -- ----------------------------
 -- Table structure for sys_user_post
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_post`;
 CREATE TABLE `sys_user_post`  (
-  `user_id` bigint NOT NULL COMMENT '鐢ㄦ埛ID',
-  `post_id` bigint NOT NULL COMMENT '宀椾綅ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `post_id` bigint NOT NULL COMMENT '岗位ID',
   PRIMARY KEY (`user_id`, `post_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鐢ㄦ埛涓庡矖浣嶅叧鑱旇〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户与岗位关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_post
@@ -1055,10 +1137,10 @@ INSERT INTO `sys_user_post` VALUES (2, 2);
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role`  (
-  `user_id` bigint NOT NULL COMMENT '鐢ㄦ埛ID',
-  `role_id` bigint NOT NULL COMMENT '瑙掕壊ID',
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`user_id`, `role_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '鐢ㄦ埛鍜岃鑹插叧鑱旇〃' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '用户和角色关联表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -1071,49 +1153,29 @@ INSERT INTO `sys_user_role` VALUES (2, 2);
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_video_resource`;
 CREATE TABLE `sys_video_resource`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '瑙嗛璧勬簮ID',
-  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '瑙嗛鍚嶇О',
-  `file_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鏂囦欢鍚?,
-  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '鏂囦欢璺緞',
-  `file_size` bigint NULL DEFAULT NULL COMMENT '鏂囦欢澶у皬(瀛楄妭)',
-  `mime_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鏂囦欢绫诲瀷',
-  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鎻忚堪',
-  `duration` int NULL DEFAULT NULL COMMENT '鏃堕暱(绉?',
-  `resolution` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '鍒嗚鲸鐜?,
-  `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '灏侀潰鍥捐矾寰?,
-  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '鐘舵€侊紙0姝ｅ父 1鍋滅敤锛?,
-  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鍒涘缓鑰?,
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍒涘缓鏃堕棿',
-  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '鏇存柊鑰?,
-  `update_time` datetime NULL DEFAULT NULL COMMENT '鏇存柊鏃堕棿',
-  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '澶囨敞',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '视频资源ID',
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '视频名称',
+  `file_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件名',
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '文件路径',
+  `file_size` bigint NULL DEFAULT NULL COMMENT '文件大小(字节)',
+  `mime_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '文件类型',
+  `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '描述',
+  `duration` int NULL DEFAULT NULL COMMENT '时长(秒)',
+  `resolution` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '分辨率',
+  `thumbnail` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '封面图路径',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '瑙嗛璧勬簮琛? ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 100 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '视频资源表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of sys_video_resource
 -- ----------------------------
-INSERT INTO `sys_video_resource` VALUES (1, '绀轰緥瑙嗛1', 'sample1.mp4', '/videos/sample1.mp4', 1024000, 'video/mp4', '杩欐槸涓€涓ず渚嬭棰?, 60, '1920x1080', '/thumbnails/sample1.jpg', '0', 'admin', '2026-06-22 17:45:52', '', '2026-06-22 17:45:52', '绯荤粺鍒濆鏁版嵁');
-INSERT INTO `sys_video_resource` VALUES (2, '绀轰緥瑙嗛2', 'sample2.mp4', '/videos/sample2.mp4', 2048000, 'video/mp4', '鍙︿竴涓ず渚嬭棰?, 120, '1280x720', '/thumbnails/sample2.jpg', '0', 'admin', '2026-06-22 17:45:52', '', '2026-06-22 17:45:52', '绯荤粺鍒濆鏁版嵁');
+INSERT INTO `sys_video_resource` VALUES (1, '示例视频1', 'sample1.mp4', '/videos/sample1.mp4', 1024000, 'video/mp4', '这是一个示例视频', 60, '1920x1080', '/thumbnails/sample1.jpg', '0', 'admin', '2026-06-22 17:45:52', '', '2026-06-22 17:45:52', '系统初始数据');
+INSERT INTO `sys_video_resource` VALUES (2, '示例视频2', 'sample2.mp4', '/videos/sample2.mp4', 2048000, 'video/mp4', '另一个示例视频', 120, '1280x720', '/thumbnails/sample2.jpg', '0', 'admin', '2026-06-22 17:45:52', '', '2026-06-22 17:45:52', '系统初始数据');
 
 SET FOREIGN_KEY_CHECKS = 1;
-
-INSERT INTO `sys_menu` VALUES (200, '财务管理', 5, 1, 'finance', NULL, NULL, '', 1, 0, 'M', '0', '0', NULL, 'money', 'admin', now(), '', NULL, '财务管理目录');
-
--- 财务管理-列表
-INSERT INTO `sys_menu` VALUES (201, '财务记录', 200, 1, 'index', 'finance/index', NULL, '', 1, 1, 'C', '0', '0', 'finance:list', 'list', 'admin', now(), '', NULL, '财务记录菜单');
-
--- 财务管理-统计
-INSERT INTO `sys_menu` VALUES (202, '财务统计', 200, 2, 'statistics', 'finance/statistics', NULL, '', 1, 1, 'C', '0', '0', 'finance:stat', 'chart', 'admin', now(), '', NULL, '财务统计菜单');
-
--- 按钮权限
-INSERT INTO `sys_menu` VALUES (203, '财务查询', 201, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:query', '#', 'admin', now(), '', NULL, '');
-INSERT INTO `sys_menu` VALUES (204, '财务新增', 201, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:add', '#', 'admin', now(), '', NULL, '');
-INSERT INTO `sys_menu` VALUES (205, '财务修改', 201, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:edit', '#', 'admin', now(), '', NULL, '');
-INSERT INTO `sys_menu` VALUES (206, '财务删除', 201, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:remove', '#', 'admin', now(), '', NULL, '');
-INSERT INTO `sys_menu` VALUES (207, '财务统计', 202, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'finance:stat', '#', 'admin', now(), '', NULL, '');
-
--- 给角色分配菜单权�?admin 角色 = 1, common 角色 = 2)
-INSERT INTO `sys_role_menu` VALUES (1, 200), (1, 201), (1, 202), (1, 203), (1, 204), (1, 205), (1, 206), (1, 207);
-INSERT INTO `sys_role_menu` VALUES (2, 200), (2, 201), (2, 202), (2, 203), (2, 204), (2, 205), (2, 206), (2, 207);
-

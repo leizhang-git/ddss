@@ -84,6 +84,10 @@ public class SysFinance {
     @TableField(value = "remark")
     private String remark;
 
+    /** 已还月份（逗号分隔，如 "7月,8月"） */
+    @TableField(value = "paid_months")
+    private String paidMonths;
+
     @TableField(value = "create_by")
     private String createBy;
 

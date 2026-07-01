@@ -23,13 +23,25 @@
         <template slot-scope="s">{{ cheap(s.row) }}</template>
       </el-table-column>
       <el-table-column label="提前结清" prop="earlySettlementAmount" width="110" align="right"/>
-      <el-table-column label="总" prop="loanAmount" width="110" align="right"/>
+      <el-table-column label="总" width="110" align="right">
+        <template slot-scope="s">{{ totalRepay(s.row) }}</template>
+      </el-table-column>
       <el-table-column label="日期" prop="repaymentStartDate" width="110" align="center"/>
-      <el-table-column v-for="m in months" :key="m" :label="m" width="100" align="right">
+      <el-table-column v-for="m in months" :key="m" :label="m" width="90" align="center">
         <template slot-scope="s">
-          <span :style="{color: payThisMonth(s.row, m) > 0 ? '#e6a23c' : '#c0c4cc'}">
-            {{ payThisMonth(s.row, m) || '' }}
+          <span v-if="!isPaid(s.row, m) && payThisMonth(s.row, m) > 0"
+            style="cursor:pointer;color:#f56c6c;font-weight:bold"
+            :title="'点击标记已还'"
+            @click="togglePay(s.row, m)">
+            {{ Number(payThisMonth(s.row, m)).toFixed(2) }}
           </span>
+          <span v-else-if="isPaid(s.row, m) && payThisMonth(s.row, m) > 0"
+            style="cursor:pointer;color:#c0c4cc"
+            title="已还，点击撤回"
+            @click="togglePay(s.row, m)">
+            -
+          </span>
+          <span v-else style="color:#e8eaed">-</span>
         </template>
       </el-table-column>
       <el-table-column label="剩余" prop="remainingAmount" width="110" align="right" fixed="right"/>
@@ -143,15 +155,10 @@ import { listFinance, getFinance, addFinance, updateFinance, delFinance } from '
 export default {
   name: 'Finance',
   data() {
-    const now = new Date()
     const months = []
-    for (let i = 0; i < 9; i++) {
-      const d = new Date(now.getFullYear(), now.getMonth() + i, 1)
-      months.push((d.getMonth() + 1) + '月')
-    }
     return {
-      loading: false, open: false, title: '', total: 0, months,
-      financeList: [], ids: [], single: true, multiple: true,
+      loading: false, open: false, title: '',
+      financeList: [], ids: [], single: true, multiple: true, months,
       form: {},
       rules: {
         creditorName: [{ required: true, message: '必填', trigger: 'blur' }],
@@ -174,6 +181,11 @@ export default {
       const b = Number(row.earlySettlementAmount) || 0
       return a && b ? (a - b >= 0 ? (a - b).toFixed(2) : '0') : ''
     },
+    totalRepay(row) {
+      const m = Number(row.monthlyPayment) || 0
+      const t = row.loanTerm || 0
+      return m && t ? (m * t).toFixed(2) : ''
+    },
     /** 汇总行 */
     getSummaries(param) {
       const { columns, data } = param
@@ -181,19 +193,16 @@ export default {
       sums[1] = '合计'
       columns.forEach((col, i) => {
         if (i <= 1) return
-        const prop = (col.property || '') + (col.label || '')
-        // 月份列
         if (col.label && /^\d+月$/.test(col.label)) {
           let t = 0; data.forEach(r => { t += Number(this.payThisMonth(r, col.label)) || 0 })
           if (t > 0) sums[i] = t.toFixed(2)
-        }
-        // 便宜列
-        else if (col.label === '便宜') {
+        } else if (col.label === '便宜') {
           let t = 0; data.forEach(r => { const a = Number(r.loanAmount)||0; const b = Number(r.earlySettlementAmount)||0; t += a-b })
           sums[i] = t.toFixed(2)
-        }
-        // 金额列
-        else if (['总','提前结清','剩余'].includes(col.label)) {
+        } else if (col.label === '总') {
+          let t = 0; data.forEach(r => { const v = Number(this.totalRepay(r))||0; t += v })
+          sums[i] = t.toFixed(2)
+        } else if (col.label === '提前结清' || col.label === '剩余') {
           const total = data.reduce((s, r) => s + (Number(r[col.property]) || 0), 0)
           sums[i] = total.toFixed(2)
         }
@@ -208,24 +217,85 @@ export default {
       if (!start || !day || !amount) return 0
       const m = parseInt(monthLabel)
       if (!m) return 0
+      // 确定月份对应的年份：从当前月开始，简单处理为超过12的是次年
       const now = new Date()
-      const curYear = now.getFullYear()
-      const target = new Date(m <= now.getMonth() + 1 ? curYear + 1 : curYear, m - 1, day)
-      // 检查是否在还款范围内且还款日已过或等于今天
+      const curMon = now.getMonth() + 1
+      const curYr = now.getFullYear()
+      const targetYr = m >= curMon ? curYr : curYr + 1
+      const target = new Date(targetYr, m - 1, day)
       const startDate = new Date(start)
-      const loanEnd = new Date(start)
-      loanEnd.setMonth(loanEnd.getMonth() + (row.loanTerm || 0))
-      // 仅在还款期间内且当天是还款日时显示
-      if (target >= startDate && target <= loanEnd) {
-        return Number(amount).toFixed(2)
-      }
+      const endDate = new Date(start)
+      endDate.setMonth(endDate.getMonth() + (row.loanTerm || 0))
+      if (target >= startDate && target <= endDate) return Number(amount).toFixed(2)
       return 0
     },
     getList() {
       this.loading = true
       listFinance({ pageNum: 1, pageSize: 999 }).then(res => {
-        this.financeList = res.rows || []; this.loading = false
+        this.financeList = (res.rows || []).map(r => ({
+          ...r,
+          _paidSet: new Set((r.paidMonths || '').split(',').filter(Boolean))
+        }))
+        this.buildMonths()
+        this.loading = false
       })
+    },
+    isPaid(row, m) { return row._paidSet && row._paidSet.has(m) },
+    canPay(row, m) {
+      // 必须按顺序还款：前面的月份全部还了，当前月才能还
+      const amount = Number(this.payThisMonth(row, m))
+      if (!amount) return false
+      const months = this.months
+      for (let i = 0; i < months.length; i++) {
+        if (months[i] === m) return true // 到了当前月，前面的都没问题
+        const famt = Number(this.payThisMonth(row, months[i]))
+        if (famt > 0 && !row._paidSet.has(months[i])) return false // 前面有未还的
+        if (famt > 0 && row._paidSet.has(months[i])) continue
+      }
+      return true
+    },
+    togglePay(row, m) {
+      const amount = Number(this.payThisMonth(row, m))
+      if (!amount) return
+      if (row._paidSet.has(m)) {
+        this.$modal.confirm(`撤销 ${m} 的还款（¥${amount.toFixed(2)}）？`).then(() => {
+          row._paidSet.delete(m)
+          this.savePay(row, amount)
+        }).catch(() => {})
+      } else {
+        if (!this.canPay(row, m)) {
+          this.$message.warning('请按顺序还款，前面的月份还未还完')
+          return
+        }
+        this.$modal.confirm(`确认已还 ${m} 还款 ¥${amount.toFixed(2)}？`).then(() => {
+          row._paidSet.add(m)
+          this.savePay(row, amount)
+        }).catch(() => {})
+      }
+    },
+    savePay(row, amount) {
+      row.paidMonths = [...row._paidSet].join(',')
+      const count = row._paidSet.size
+      row.paidAmount = (count * Number(row.monthlyPayment)).toFixed(2)
+      row.remainingAmount = Math.max(0, (Number(row.loanAmount) || 0) - Number(row.paidAmount)).toFixed(2)
+      updateFinance(row).catch(() => {})
+    },
+    buildMonths() {
+      const now = new Date()
+      let maxDate = new Date(now.getFullYear(), now.getMonth() + 6, 1) // 至少未来6个月
+      this.financeList.forEach(r => {
+        if (!r.repaymentStartDate || !r.loanTerm) return
+        const end = new Date(r.repaymentStartDate)
+        end.setMonth(end.getMonth() + r.loanTerm)
+        if (end > maxDate) maxDate = end
+      })
+      const months = []
+      const cur = new Date(now.getFullYear(), now.getMonth(), 1)
+      while (cur <= maxDate) {
+        months.push((cur.getMonth() + 1) + '月')
+        cur.setMonth(cur.getMonth() + 1)
+      }
+      this.months = months
     },
     handleSelectionChange(sel) { this.ids = sel.map(i => i.financeId); this.single = sel.length !== 1; this.multiple = !sel.length },
     handleAdd() { this.form = { status: '0' }; this.open = true; this.title = '新增'; if (this.$refs.form) this.$refs.form.resetFields() },
@@ -261,6 +331,13 @@ export default {
         const d = new Date(f.repaymentStartDate); d.setMonth(d.getMonth() + T)
         f.repaymentEndDate = d.toISOString().slice(0, 10)
       }
+    },
+    /** 打开编辑时从 paidMonths 反推已还金额 */
+    syncPaidFromMonths(row) {
+      if (!row.paidMonths || !row.monthlyPayment) return
+      const months = row.paidMonths.split(',').filter(Boolean)
+      row.paidAmount = (months.length * Number(row.monthlyPayment)).toFixed(2)
+      row.remainingAmount = Math.max(0, (Number(row.loanAmount) || 0) - Number(row.paidAmount)).toFixed(2)
     }
   }
 }
