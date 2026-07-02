@@ -13,6 +13,7 @@
         </el-popover>
       </el-col>
       <el-col :span="1.5"><el-button icon="el-icon-refresh" plain size="mini" @click="getList">刷新</el-button></el-col>
+      <el-col :span="1.5"><el-button v-hasPermi="['finance:list']" icon="el-icon-download" plain size="mini" type="warning" @click="handleExport">导出</el-button></el-col>
     </el-row>
 
     <div class="table-wrapper">
@@ -77,7 +78,7 @@
 </template>
 
 <script>
-import { listFinance, getFinance, addFinance, updateFinance, delFinance } from '@/api/finance'
+import { listFinance, getFinance, addFinance, updateFinance, delFinance, exportFinance } from '@/api/finance'
 
 export default {
   name: 'Finance',
@@ -185,6 +186,7 @@ export default {
     handleUpdate(){if(!this.ids.length){this.$message.warning('请先选中');return};getFinance(this.ids[0]).then(res=>{this.form=res.data;this.formOpen=true;this.formTitle='修改'})},
     submitForm(){this.$refs.form.validate(v=>{if(!v)return;const act=this.form.financeId?updateFinance:addFinance;act(this.form).then(()=>{this.$message.success('成功');this.formOpen=false;this.$nextTick(()=>this.getList())})})},
     handleDelete(){if(!this.ids.length){this.$message.warning('请先选中');return};this.$modal.confirm('确认删除？').then(()=>delFinance(this.ids.join(','))).then(()=>{this.getList();this.$message.success('已删除')})},
+    handleExport(){exportFinance().then(res=>{const blob=new Blob([res]);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='财务管理.xlsx';a.click();this.$message.success('导出成功')}).catch(()=>{this.$message.error('导出失败')})},
     autoCalc(){
       const f=this.form;const L=Number(f.loanAmount)||0,P=Number(f.paidAmount)||0,R=Number(f.interestRate)||0,T=f.loanTerm||0,M=Number(f.monthlyPayment)||0,I=Number(f.interestAmount)||0
       if(L&&P)f.remainingAmount=Math.max(0,L-P).toFixed(2)

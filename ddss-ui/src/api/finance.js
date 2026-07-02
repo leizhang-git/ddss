@@ -39,3 +39,8 @@ export function getGroupByCreditor() {
 export function getMonthlyTrend() {
   return request({ url: '/finance/monthlyTrend', method: 'get' })
 }
+
+// 导出Excel
+export function exportFinance() {
+  return request({ url: '/finance/export', method: 'get', responseType: 'blob' })
+}
