@@ -132,6 +132,7 @@ public class FinanceController extends BaseController {
 
         // 创建 Excel
         SXSSFWorkbook wb = new SXSSFWorkbook();
+        try {
         Sheet sheet = wb.createSheet("财务管理");
 
         Font hf = wb.createFont(); hf.setBold(true); hf.setFontHeightInPoints((short) 11);
@@ -212,7 +213,9 @@ public class FinanceController extends BaseController {
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode("财务管理.xlsx", "UTF-8"));
         wb.write(response.getOutputStream());
-        wb.dispose();
+        } finally {
+            wb.dispose();
+        }
     }
 
     private void setCell(Row row, int i, Object v, CellStyle s) {

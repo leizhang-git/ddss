@@ -46,12 +46,15 @@ public class SysLoginController {
     @Value("${ddss.middleware.mysql.enabled:true}")
     private boolean mysqlEnabled;
 
+    @Value("${ddss.dev.login-enabled:true}")
+    private boolean devLoginEnabled;
+
     /**
      * 登录方法（MySQL 关闭时自动放行）
      */
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody) {
-        if (!mysqlEnabled) return devLogin();
+        if (!mysqlEnabled && devLoginEnabled) return devLogin();
         AjaxResult ajax = AjaxResult.success();
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(), loginBody.getUuid());
         ajax.put(SystemConstants.TOKEN, token);
@@ -76,7 +79,7 @@ public class SysLoginController {
 
     @GetMapping("getInfo")
     public AjaxResult getInfo() {
-        if (!mysqlEnabled) return devGetInfo();
+        if (!mysqlEnabled && devLoginEnabled) return devGetInfo();
         LoginUser loginUser = SecurityUtils.getLoginUser();
         SysUser user = loginUser.getUser();
         Set<String> roles = permissionService.getRolePermission(user);
@@ -114,7 +117,7 @@ public class SysLoginController {
 
     @GetMapping("getRouters")
     public AjaxResult getRouters() {
-        if (!mysqlEnabled) return AjaxResult.success(Collections.emptyList());
+        if (!mysqlEnabled && devLoginEnabled) return AjaxResult.success(Collections.emptyList());
         Long userId = SecurityUtils.getUserId();
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(userId);
         return AjaxResult.success(menuService.buildMenus(menus));

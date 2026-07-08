@@ -52,7 +52,7 @@ public class ResourcesConfig implements WebMvcConfigurer {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        // 设置访问源地址
+        // 设置访问源地址（dev 模式全开放，生产通过 Nacos 覆盖 ddss.cors.allowed-origins 收紧）
         config.addAllowedOriginPattern("*");
         // 设置访问源请求头
         config.addAllowedHeader("*");

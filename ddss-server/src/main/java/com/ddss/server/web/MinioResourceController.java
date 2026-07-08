@@ -1,6 +1,5 @@
 package com.ddss.server.web;
 
-import com.ddss.common.annotation.Anonymous;
 import com.ddss.common.annotation.Log;
 import com.ddss.common.core.controller.BaseController;
 import com.ddss.common.core.domain.AjaxResult;
@@ -35,7 +34,6 @@ public class MinioResourceController extends BaseController {
     /**
      * 查询MinIO资源列表
      */
-    @Anonymous
     @GetMapping("/list")
     public TableDataInfo list() {
         // 获取所有bucket并遍历
@@ -74,7 +72,6 @@ public class MinioResourceController extends BaseController {
     /**
      * 下载MinIO文件
      */
-    @Anonymous
     @GetMapping("/download")
     public void download(@RequestParam("objectName") String objectName, HttpServletResponse response) {
         try (InputStream inputStream = minioUtil.downloadFile(objectName)) {
@@ -97,7 +94,6 @@ public class MinioResourceController extends BaseController {
     /**
      * 获取文件预览URL
      */
-    @Anonymous
     @GetMapping("/previewUrl")
     public AjaxResult getPreviewUrl(@RequestParam("objectName") String objectName) {
         String url = minioUtil.getObjectUrl(objectName, 7);
@@ -107,7 +103,6 @@ public class MinioResourceController extends BaseController {
     /**
      * 删除MinIO文件
      */
-    @Anonymous
     @Log(title = "MinIO资源管理", businessType = BusinessType.DELETE)
     @DeleteMapping
     public AjaxResult remove(@RequestParam("objectName") String objectName) {

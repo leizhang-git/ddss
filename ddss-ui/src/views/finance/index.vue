@@ -1,41 +1,54 @@
 <template>
-  <div class="app-container">
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5"><el-button v-hasPermi="['finance:add']" icon="el-icon-plus" plain size="mini" type="primary" @click="handleAdd">新增</el-button></el-col>
-      <el-col :span="1.5"><el-button v-hasPermi="['finance:edit']" :disabled="single" icon="el-icon-edit" plain size="mini" type="success" @click="handleUpdate">修改</el-button></el-col>
-      <el-col :span="1.5"><el-button v-hasPermi="['finance:remove']" :disabled="multiple" icon="el-icon-delete" plain size="mini" type="danger" @click="handleDelete">删除</el-button></el-col>
-      <el-col :span="1.5">
-        <el-popover placement="bottom" width="200" trigger="click">
-          <el-checkbox-group v-model="visibleCols">
-            <el-checkbox v-for="c in allCols" :key="c.key" :label="c.key" style="display:block;margin:4px 0">{{ c.label }}</el-checkbox>
-          </el-checkbox-group>
-          <el-button slot="reference" icon="el-icon-menu" plain size="mini">列</el-button>
-        </el-popover>
-      </el-col>
-      <el-col :span="1.5"><el-button icon="el-icon-refresh" plain size="mini" @click="getList">刷新</el-button></el-col>
-      <el-col :span="1.5"><el-button v-hasPermi="['finance:list']" icon="el-icon-download" plain size="mini" type="warning" @click="handleExport">导出</el-button></el-col>
-    </el-row>
+  <div class="app-container finance-page">
+    <el-card shadow="never" class="toolbar-card">
+      <div class="toolbar">
+        <div class="toolbar-group">
+          <el-button v-hasPermi="['finance:add']" icon="el-icon-plus" plain size="mini" type="primary" @click="handleAdd">新增</el-button>
+          <el-button v-hasPermi="['finance:edit']" :disabled="single" icon="el-icon-edit" plain size="mini" type="success" @click="handleUpdate">修改</el-button>
+          <el-button v-hasPermi="['finance:remove']" :disabled="multiple" icon="el-icon-delete" plain size="mini" type="danger" @click="handleDelete">删除</el-button>
+        </div>
+        <el-divider direction="vertical"></el-divider>
+        <div class="toolbar-group">
+          <el-popover placement="bottom" width="200" trigger="click" title="列设置">
+            <el-checkbox-group v-model="visibleCols">
+              <el-checkbox v-for="c in allCols" :key="c.key" :label="c.key" style="display:block;margin:4px 0">{{ c.label }}</el-checkbox>
+            </el-checkbox-group>
+            <el-button slot="reference" icon="el-icon-menu" plain size="mini">列</el-button>
+          </el-popover>
+          <el-button icon="el-icon-refresh" plain size="mini" @click="getList">刷新</el-button>
+          <el-button v-hasPermi="['finance:list']" icon="el-icon-download" plain size="mini" type="warning" @click="handleExport">导出</el-button>
+        </div>
+      </div>
+    </el-card>
 
-    <div class="table-wrapper">
-    <el-table ref="table" v-loading="loading" :data="sortedList" border stripe size="small"
-      max-height="600" show-summary :summary-method="getSummaries"
-      @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'repaymentDay',order:'ascending'}">
-      <el-table-column type="selection" width="40"/>
-      <el-table-column label="名称" prop="creditorName" width="140" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
-      <el-table-column label="便宜" width="100" sortable="custom" align="right" v-if="vis('cheap')"><template slot-scope="s">{{ cheap(s.row) }}</template></el-table-column>
-      <el-table-column label="提前结清" prop="earlySettlementAmount" width="110" sortable="custom" align="right" v-if="vis('early')"/>
-      <el-table-column label="总额" width="110" sortable="custom" align="right" v-if="vis('total')"><template slot-scope="s">{{ totalRepay(s.row) }}</template></el-table-column>
-      <el-table-column label="日期" prop="repaymentStartDate" width="105" sortable="custom" align="center" v-if="vis('date')"/>
-      <el-table-column label="几号" prop="repaymentDay" width="75" sortable="custom" align="center" v-if="vis('day')"/>
-      <el-table-column v-for="m in months" :key="m" :label="m" width="88" align="center" v-if="vis('months')">
-        <template slot-scope="s"><span :class="getCellVal(s.row,m)>0?'val':'zero'" @dblclick="startEdit(s.row,m)">{{ getCellVal(s.row,m)||0 }}</span></template>
-      </el-table-column>
-      <el-table-column label="剩余" prop="remainingAmount" width="110" sortable="custom" align="right" v-if="vis('remain')"/>
-      <el-table-column label="状态" width="65" align="center" fixed="right" v-if="vis('status')">
-        <template slot-scope="s"><el-tag v-if="s.row.status==='0'" type="warning" size="small">中</el-tag><el-tag v-else-if="s.row.status==='1'" type="success" size="small">结</el-tag><el-tag v-else-if="s.row.status==='2'" type="danger" size="small">逾</el-tag></template>
-      </el-table-column>
-    </el-table>
-    </div>
+    <el-card shadow="never" class="table-card">
+      <div class="table-wrapper">
+        <el-table ref="table" v-loading="loading" :data="sortedList" stripe size="small"
+          :height="tableHeight" show-summary :summary-method="getSummaries"
+          @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'repaymentDay',order:'ascending'}">
+          <el-table-column type="selection" width="40"/>
+          <el-table-column label="名称" prop="creditorName" width="140" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
+          <el-table-column label="便宜" width="100" sortable="custom" align="right" v-if="vis('cheap')"><template slot-scope="s"><span class="amt-positive">{{ cheap(s.row) }}</span></template></el-table-column>
+          <el-table-column label="提前结清" prop="earlySettlementAmount" width="110" sortable="custom" align="right" v-if="vis('early')"/>
+          <el-table-column label="总额" width="110" sortable="custom" align="right" v-if="vis('total')"><template slot-scope="s"><span class="amt-bold">{{ totalRepay(s.row) }}</span></template></el-table-column>
+          <el-table-column label="日期" prop="repaymentStartDate" width="105" sortable="custom" align="center" v-if="vis('date')"/>
+          <el-table-column label="几号" prop="repaymentDay" width="75" sortable="custom" align="center" v-if="vis('day')"/>
+          <template v-if="vis('months')">
+            <el-table-column v-for="m in months" :key="m" :label="m" width="88" align="center">
+              <template slot-scope="s"><span :class="getCellVal(s.row,m)>0?'cell-val':'cell-zero'" @dblclick="startEdit(s.row,m)">{{ getCellVal(s.row,m)||0 }}</span></template>
+            </el-table-column>
+          </template>
+          <el-table-column label="剩余" prop="remainingAmount" width="110" sortable="custom" align="right" v-if="vis('remain')"/>
+          <el-table-column label="状态" width="70" align="center" fixed="right" v-if="vis('status')">
+            <template slot-scope="s">
+              <el-tag v-if="s.row.status==='0'" type="warning" size="mini" effect="plain">还款中</el-tag>
+              <el-tag v-else-if="s.row.status==='1'" type="success" size="mini" effect="plain">已结清</el-tag>
+              <el-tag v-else-if="s.row.status==='2'" type="danger" size="mini" effect="plain">逾期</el-tag>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-card>
 
     <el-dialog title="编辑金额" :visible.sync="cellEdit.open" width="300px" append-to-body>
       <el-form label-width="70px" @submit.native.prevent="saveCell">
@@ -94,6 +107,9 @@ export default {
     }
   },
   computed: {
+    tableHeight() {
+      return Math.max(400, document.documentElement.clientHeight - 220)
+    },
     sortedList() {
       if (!this.sortProp) return this.financeList
       const list = [...this.financeList]
@@ -186,7 +202,7 @@ export default {
     handleUpdate(){if(!this.ids.length){this.$message.warning('请先选中');return};getFinance(this.ids[0]).then(res=>{this.form=res.data;this.formOpen=true;this.formTitle='修改'})},
     submitForm(){this.$refs.form.validate(v=>{if(!v)return;const act=this.form.financeId?updateFinance:addFinance;act(this.form).then(()=>{this.$message.success('成功');this.formOpen=false;this.$nextTick(()=>this.getList())})})},
     handleDelete(){if(!this.ids.length){this.$message.warning('请先选中');return};this.$modal.confirm('确认删除？').then(()=>delFinance(this.ids.join(','))).then(()=>{this.getList();this.$message.success('已删除')})},
-    handleExport(){exportFinance().then(res=>{const blob=new Blob([res]);const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='财务管理.xlsx';a.click();this.$message.success('导出成功')}).catch(()=>{this.$message.error('导出失败')})},
+    handleExport(){exportFinance().then(res=>{const blob=new Blob([res]);const a=document.createElement('a');const url=URL.createObjectURL(blob);a.href=url;a.download='财务管理.xlsx';a.click();setTimeout(()=>URL.revokeObjectURL(url),0);this.$message.success('导出成功')}).catch(()=>{this.$message.error('导出失败')})},
     autoCalc(){
       const f=this.form;const L=Number(f.loanAmount)||0,P=Number(f.paidAmount)||0,R=Number(f.interestRate)||0,T=f.loanTerm||0,M=Number(f.monthlyPayment)||0,I=Number(f.interestAmount)||0
       if(L&&P)f.remainingAmount=Math.max(0,L-P).toFixed(2)
@@ -200,8 +216,101 @@ export default {
 </script>
 
 <style scoped>
-.table-wrapper{overflow-x:auto}
-::v-deep .el-table__footer-wrapper td{font-weight:600;font-size:13px;background:#f5f7fa;color:#303133}
-.val{cursor:pointer;color:#303133}.val:hover{color:#409eff;text-decoration:underline}
-.zero{cursor:pointer;color:#dcdfe6}.zero:hover{color:#409eff}
+.finance-page {
+  .toolbar-card {
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .toolbar-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+    }
+  }
+
+  .table-card {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+  }
+
+  ::v-deep .el-table {
+    border-radius: 8px;
+
+    th {
+      background: #f9fafb;
+      color: #374151;
+      font-weight: 600;
+    }
+
+    .el-table__footer-wrapper td {
+      font-weight: 700;
+      font-size: 13px;
+      background: #f3f4f6;
+      color: #1f2937;
+    }
+  }
+
+  .amt-positive {
+    color: #10b981;
+    font-weight: 500;
+  }
+
+  .amt-bold {
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  .cell-val {
+    cursor: pointer;
+    color: #1f2937;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #4f46e5;
+      background: rgba(79, 70, 229, 0.08);
+    }
+  }
+
+  .cell-zero {
+    cursor: pointer;
+    color: #d1d5db;
+    padding: 2px 8px;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:hover {
+      color: #4f46e5;
+      background: rgba(79, 70, 229, 0.08);
+    }
+  }
+
+  ::v-deep .el-dialog {
+    border-radius: 14px;
+  }
+
+  ::v-deep .el-dialog__header {
+    border-bottom: 1px solid #f3f4f6;
+    padding-bottom: 14px;
+  }
+
+  ::v-deep .el-dialog__footer {
+    border-top: 1px solid #f3f4f6;
+    padding-top: 14px;
+  }
+}
 </style>

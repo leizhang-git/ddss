@@ -112,7 +112,8 @@ spring:
 
 token:
   header: Authorization
-  secret: abcdefghijklmnopqrstuvwxyz
+  # HS512 要求密钥 >= 64 字节；生产环境务必通过 Nacos 加密配置或环境变量 TOKEN_SECRET 覆盖，并定期轮换
+  secret: ZmY5N2E3YzQyLTEyMzQtNTY3OC05YWJjLWRkZWY5N2E3YzQyMTIwMjUtZGRzcy1zZWNyZXQta2V5LWhzNTEy
   expireTime: 30
 
 mybatis:

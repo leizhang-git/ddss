@@ -55,7 +55,7 @@ public class MyBatisConfig {
                             try {
                                 result.add(Class.forName(metadataReader.getClassMetadata().getClassName()).getPackage().getName());
                             } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
+                                org.slf4j.LoggerFactory.getLogger(MyBatisConfig.class).warn("类型别名包扫描：类未找到", e);
                             }
                         }
                     }
@@ -71,7 +71,8 @@ public class MyBatisConfig {
                 throw new RuntimeException("mybatis typeAliasesPackage 路径扫描错误,参数typeAliasesPackage:" + typeAliasesPackage + "未找到任何包");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            org.slf4j.LoggerFactory.getLogger(MyBatisConfig.class).error("类型别名包扫描IO异常", e);
+            throw new RuntimeException("mybatis typeAliasesPackage 路径扫描IO异常", e);
         }
         return typeAliasesPackage;
     }

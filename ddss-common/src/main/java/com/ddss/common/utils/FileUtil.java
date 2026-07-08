@@ -30,11 +30,11 @@ public class FileUtil {
         if (!file.isFile()) {
             file.createNewFile();
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-        for (String l:strings){
-            writer.write(l + "\r\n");
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(path))) {
+            for (String l : strings) {
+                writer.write(l + "\r\n");
+            }
         }
-        writer.close();
     }
 
     /**
@@ -44,18 +44,17 @@ public class FileUtil {
      * @throws IOException
      */
     public static void getFileContent(String filePath, List<String> list) throws IOException {
-        BufferedReader br = null;
         if(ObjectUtil.isEmpty(filePath)) {
             return;
         }
-        br = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(filePath)), StandardCharsets.UTF_8));
-        String line;
-        while ((line = br.readLine()) != null) {
-            if(StrUtil.isNotEmpty(line)) {
-                list.add(line);
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Files.newInputStream(Paths.get(filePath)), StandardCharsets.UTF_8))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if(StrUtil.isNotEmpty(line)) {
+                    list.add(line);
+                }
             }
         }
-        br.close();
     }
 
     /**
@@ -66,20 +65,18 @@ public class FileUtil {
      * @throws IOException
      */
     public static ByteFile uploadFile(MultipartFile file, String fileName) throws IOException {
-        InputStream inputStream = file.getInputStream();
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        int i;
-        byte[] bytes = new byte[1024];
-        //转字节数组流
-        while ((i = inputStream.read(bytes)) != -1) {
-            byteArrayOutputStream.write(bytes, 0, i);
+        try (InputStream inputStream = file.getInputStream();
+             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            int i;
+            byte[] bytes = new byte[1024];
+            //转字节数组流
+            while ((i = inputStream.read(bytes)) != -1) {
+                byteArrayOutputStream.write(bytes, 0, i);
+            }
+            //放入字节数组
+            byte[] fileByte = byteArrayOutputStream.toByteArray();
+            return new ByteFile(fileByte, fileName);
         }
-        //放入字节数组
-        byte[] fileByte = byteArrayOutputStream.toByteArray();
-        inputStream.close();
-        byteArrayOutputStream.close();
-        ByteFile byteFile = new ByteFile(fileByte, fileName);
-        return byteFile;
     }
 
     /**
@@ -89,13 +86,13 @@ public class FileUtil {
      * @throws IOException
      */
     public List<String> fileToList(String fileName) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
         List<String> result = new ArrayList<>();
-        String str;
-        while (null != (str = bufferedReader.readLine())) {
-            result.add(str);
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
+            String str;
+            while (null != (str = bufferedReader.readLine())) {
+                result.add(str);
+            }
         }
-        bufferedReader.close();
         return result;
     }
 
@@ -125,9 +122,10 @@ public class FileUtil {
     public static Boolean createDir(String destDirName) {
         File dir = new File(destDirName);
         //判断有没有父路径，就是判断文件整个路径是否存在
-        if (!dir.getParentFile().exists()) {
+        File parentFile = dir.getParentFile();
+        if (parentFile != null && !parentFile.exists()) {
             //不存在就全部创建
-            return dir.getParentFile().mkdirs();
+            return parentFile.mkdirs();
         }
         return false;
     }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StreamUtils;
 
 import javax.sql.DataSource;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -52,8 +53,10 @@ public class H2DataInitializer implements InitializingBean {
     }
 
     private List<String> loadSql(String path) throws Exception {
-        String content = StreamUtils.copyToString(
-                new ClassPathResource(path).getInputStream(), StandardCharsets.UTF_8);
+        String content;
+        try (InputStream in = new ClassPathResource(path).getInputStream()) {
+            content = StreamUtils.copyToString(in, StandardCharsets.UTF_8);
+        }
         List<String> statements = new ArrayList<>();
         StringBuilder buf = new StringBuilder();
         for (String line : content.split("\n")) {

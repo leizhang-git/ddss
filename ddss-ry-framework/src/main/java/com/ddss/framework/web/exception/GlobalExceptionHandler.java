@@ -110,7 +110,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     public AjaxResult handleBindException(BindException e) {
         log.error(e.getMessage(), e);
-        String message = e.getAllErrors().get(0).getDefaultMessage();
+        String message = !e.getAllErrors().isEmpty() ? e.getAllErrors().get(0).getDefaultMessage() : e.getMessage();
         return AjaxResult.error(message);
     }
 
@@ -120,7 +120,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Object handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         log.error(e.getMessage(), e);
-        String message = e.getBindingResult().getFieldError().getDefaultMessage();
+        String message = e.getBindingResult().getFieldErrors().stream()
+                .findFirst().map(fe -> fe.getDefaultMessage()).orElse(e.getMessage());
         return AjaxResult.error(message);
     }
 

@@ -6,6 +6,8 @@ import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.utils.SecurityUtils;
 import com.ddss.common.utils.StringUtils;
 import com.ddss.framework.web.service.TokenService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -36,13 +38,23 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     @Value("${ddss.middleware.mysql.enabled:true}")
     private boolean mysqlEnabled;
 
+    @Value("${ddss.dev.login-enabled:true}")
+    private boolean devLoginEnabled;
+
+    private static final Logger log = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
+    private static volatile boolean devBackdoorWarned = false;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
         LoginUser loginUser = tokenService.getLoginUser(request);
 
-        // MySQL 关闭时，自动注入 admin 身份，跳过所有认证
-        if (!mysqlEnabled && loginUser == null) {
+        // 仅当 MySQL 关闭 且 显式开启开发后门时，自动注入 admin 身份（严禁用于生产环境）
+        if (!mysqlEnabled && devLoginEnabled && loginUser == null) {
+            if (!devBackdoorWarned) {
+                log.warn("【安全告警】开发模式认证后门已启用（ddss.dev.login-enabled=true），任何请求将以 admin 身份放行，严禁用于生产环境！");
+                devBackdoorWarned = true;
+            }
             loginUser = buildDevLoginUser();
         }
 

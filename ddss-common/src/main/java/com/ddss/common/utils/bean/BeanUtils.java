@@ -37,7 +37,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
         try {
             copyProperties(src, dest);
         } catch (Exception e) {
-            e.printStackTrace();
+            org.slf4j.LoggerFactory.getLogger(BeanUtils.class).error("Bean属性复制失败", e);
         }
     }
 

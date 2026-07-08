@@ -1067,7 +1067,7 @@ public class ExcelUtil<T> {
                 addStatisticsData(column, Convert.toStr(value), attr);
             }
         } catch (Exception e) {
-            log.error("导出Excel失败{}", e);
+            log.error("导出Excel失败", e);
         }
         return cell;
     }
@@ -1178,7 +1178,7 @@ public class ExcelUtil<T> {
             Method formatMethod = excel.handler().getMethod("format", new Class[]{Object.class, String[].class, Cell.class, Workbook.class});
             value = formatMethod.invoke(instance, value, excel.args(), cell, this.wb);
         } catch (Exception e) {
-            log.error("不能格式化数据 " + excel.handler(), e.getMessage());
+            log.error("不能格式化数据 {}", excel.handler(), e);
         }
         return Convert.toStr(value);
     }

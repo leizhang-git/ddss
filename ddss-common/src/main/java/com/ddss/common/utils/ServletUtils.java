@@ -130,7 +130,7 @@ public class ServletUtils {
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(string);
         } catch (IOException e) {
-            e.printStackTrace();
+            org.slf4j.LoggerFactory.getLogger(ServletUtils.class).error("渲染响应失败", e);
         }
     }
 

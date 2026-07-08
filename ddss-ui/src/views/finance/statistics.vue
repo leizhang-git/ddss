@@ -3,27 +3,39 @@
     <!-- 汇总卡片 -->
     <el-row :gutter="20" class="stats-cards">
       <el-col :xs="12" :sm="6">
-        <div class="card card-blue">
-          <div class="card-value">{{ summary.totalCount || 0 }}</div>
-          <div class="card-label">借款笔数</div>
+        <div class="card card-indigo">
+          <div class="card-icon"><i class="el-icon-document"></i></div>
+          <div class="card-body">
+            <div class="card-value">{{ summary.totalCount || 0 }}</div>
+            <div class="card-label">借款笔数</div>
+          </div>
         </div>
       </el-col>
       <el-col :xs="12" :sm="6">
-        <div class="card card-red">
-          <div class="card-value">{{ fmt(summary.totalLoan) }}</div>
-          <div class="card-label">借款总额(万)</div>
+        <div class="card card-violet">
+          <div class="card-icon"><i class="el-icon-coin"></i></div>
+          <div class="card-body">
+            <div class="card-value">{{ fmt(summary.totalLoan) }}</div>
+            <div class="card-label">借款总额(万)</div>
+          </div>
         </div>
       </el-col>
       <el-col :xs="12" :sm="6">
-        <div class="card card-orange">
-          <div class="card-value">{{ fmt(summary.totalRemaining) }}</div>
-          <div class="card-label">剩余未还(万)</div>
+        <div class="card card-amber">
+          <div class="card-icon"><i class="el-icon-wallet"></i></div>
+          <div class="card-body">
+            <div class="card-value">{{ fmt(summary.totalRemaining) }}</div>
+            <div class="card-label">剩余未还(万)</div>
+          </div>
         </div>
       </el-col>
       <el-col :xs="12" :sm="6">
-        <div class="card card-green">
-          <div class="card-value">{{ fmt(summary.totalInterest) }}</div>
-          <div class="card-label">利息总额(万)</div>
+        <div class="card card-emerald">
+          <div class="card-icon"><i class="el-icon-data-line"></i></div>
+          <div class="card-body">
+            <div class="card-value">{{ fmt(summary.totalInterest) }}</div>
+            <div class="card-label">利息总额(万)</div>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -31,14 +43,14 @@
     <!-- 状态分布 + 欠款方分布 -->
     <el-row :gutter="20" class="chart-row">
       <el-col :xs="24" :lg="8">
-        <el-card shadow="never">
-          <div slot="header"><span>状态分布</span></div>
+        <el-card shadow="hover" class="chart-card">
+          <div slot="header" class="chart-header"><span class="chart-title">状态分布</span></div>
           <div ref="pieChart" style="height:300px"></div>
         </el-card>
       </el-col>
       <el-col :xs="24" :lg="16">
-        <el-card shadow="never">
-          <div slot="header"><span>欠款方借款分布</span></div>
+        <el-card shadow="hover" class="chart-card">
+          <div slot="header" class="chart-header"><span class="chart-title">欠款方借款分布</span></div>
           <div ref="barChart" style="height:300px"></div>
         </el-card>
       </el-col>
@@ -47,8 +59,8 @@
     <!-- 月还款趋势 -->
     <el-row :gutter="20" class="chart-row">
       <el-col :span="24">
-        <el-card shadow="never">
-          <div slot="header"><span>每月还款趋势</span></div>
+        <el-card shadow="hover" class="chart-card">
+          <div slot="header" class="chart-header"><span class="chart-title">每月还款趋势</span></div>
           <div ref="trendChart" style="height:300px"></div>
         </el-card>
       </el-col>
@@ -57,12 +69,12 @@
     <!-- 明细列表 -->
     <el-row class="chart-row">
       <el-col :span="24">
-        <el-card shadow="never">
-          <div slot="header">
-            <span>欠款明细</span>
-            <el-button size="mini" type="primary" style="float:right" @click="refreshAll">刷新</el-button>
+        <el-card shadow="hover" class="chart-card">
+          <div slot="header" class="chart-header">
+            <span class="chart-title">欠款明细</span>
+            <el-button size="mini" type="primary" plain @click="refreshAll">刷新</el-button>
           </div>
-          <el-table :data="creditorList" size="small">
+          <el-table :data="creditorList" size="small" stripe>
             <el-table-column label="欠款方" prop="name"/>
             <el-table-column label="借款总额(元)" prop="loanAmount" align="right">
               <template slot-scope="s">{{ s.row.loanAmount | numFilter }}</template>
@@ -94,13 +106,19 @@ export default {
   data() {
     return { summary: {}, creditorList: [], trendList: [], pieChart: null, barChart: null, trendChart: null }
   },
-  mounted() { this.refreshAll() },
+  mounted() { this.refreshAll(); window.addEventListener('resize', this.handleResize) },
   beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize)
     if (this.pieChart) { this.pieChart.dispose(); this.pieChart = null }
     if (this.barChart) { this.barChart.dispose(); this.barChart = null }
     if (this.trendChart) { this.trendChart.dispose(); this.trendChart = null }
   },
   methods: {
+    handleResize() {
+      if (this.pieChart) this.pieChart.resize()
+      if (this.barChart) this.barChart.resize()
+      if (this.trendChart) this.trendChart.resize()
+    },
     refreshAll() {
       getSummary().then(r => { this.summary = r.data || {}; this.$nextTick(() => this.initPie()) })
       getGroupByCreditor().then(r => { this.creditorList = r.data || []; this.$nextTick(() => this.initBar()) })
@@ -112,15 +130,14 @@ export default {
       const paid = Number(row.loanAmount) - Number(row.remainingAmount || 0)
       return Math.round((paid / Number(row.loanAmount)) * 100)
     },
-    progressColor(row) { const p = this.calcPercent(row); return p >= 100 ? '#67c23a' : p >= 50 ? '#409eff' : '#e6a23c' },
+    progressColor(row) { const p = this.calcPercent(row); return p >= 100 ? '#10b981' : p >= 50 ? '#4f46e5' : '#f59e0b' },
     initPie() {
       if (!this.$refs.pieChart) return
-      if (this.pieChart) this.pieChart.dispose()
-      this.pieChart = echarts.init(this.$refs.pieChart)
+      if (!this.pieChart) this.pieChart = echarts.init(this.$refs.pieChart)
       this.pieChart.setOption({
         tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
         legend: { bottom: 0, data: ['还款中', '已结清', '逾期'] },
-        color: ['#e6a23c', '#67c23a', '#f56c6c'],
+        color: ['#f59e0b', '#10b981', '#ef4444'],
         series: [{
           type: 'pie', radius: ['40%', '70%'], center: ['50%', '45%'],
           data: [
@@ -134,8 +151,7 @@ export default {
     },
     initBar() {
       if (!this.$refs.barChart) return
-      if (this.barChart) this.barChart.dispose()
-      this.barChart = echarts.init(this.$refs.barChart)
+      if (!this.barChart) this.barChart = echarts.init(this.$refs.barChart)
       this.barChart.setOption({
         tooltip: { trigger: 'axis' },
         legend: { data: ['借款总额(万)', '剩余未还(万)'] },
@@ -143,15 +159,14 @@ export default {
         xAxis: { type: 'category', data: this.creditorList.map(i => i.name), axisLabel: { rotate: 15 } },
         yAxis: { type: 'value' },
         series: [
-          { name: '借款总额(万)', type: 'bar', data: this.creditorList.map(i => (i.loanAmount / 10000).toFixed(2)), itemStyle: { color: '#409eff' } },
-          { name: '剩余未还(万)', type: 'bar', data: this.creditorList.map(i => (i.remainingAmount / 10000).toFixed(2)), itemStyle: { color: '#f56c6c' } }
+          { name: '借款总额(万)', type: 'bar', data: this.creditorList.map(i => (i.loanAmount / 10000).toFixed(2)), itemStyle: { color: '#4f46e5', borderRadius: [4, 4, 0, 0] } },
+          { name: '剩余未还(万)', type: 'bar', data: this.creditorList.map(i => (i.remainingAmount / 10000).toFixed(2)), itemStyle: { color: '#f59e0b', borderRadius: [4, 4, 0, 0] } }
         ]
       })
     },
     initTrend() {
       if (!this.$refs.trendChart) return
-      if (this.trendChart) this.trendChart.dispose()
-      this.trendChart = echarts.init(this.$refs.trendChart)
+      if (!this.trendChart) this.trendChart = echarts.init(this.$refs.trendChart)
       this.trendChart.setOption({
         tooltip: { trigger: 'axis' },
         grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
@@ -160,8 +175,8 @@ export default {
         series: [{
           type: 'line', name: '月还款额', smooth: true,
           data: this.trendList.map(i => i.value),
-          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1, [{offset:0,color:'rgba(64,158,255,0.3)'},{offset:1,color:'rgba(64,158,255,0.05)'}]) },
-          itemStyle: { color: '#409eff' }
+          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1, [{offset:0,color:'rgba(79,70,229,0.3)'},{offset:1,color:'rgba(79,70,229,0.05)'}]) },
+          itemStyle: { color: '#4f46e5' }
         }]
       })
     }
@@ -171,12 +186,74 @@ export default {
 
 <style scoped>
 .stats-cards { margin-bottom: 20px }
-.stats-cards .card { border-radius: 10px; padding: 20px; color: #fff; text-align: center }
-.stats-cards .card-blue { background: linear-gradient(135deg, #409eff, #2d6cbf) }
-.stats-cards .card-red { background: linear-gradient(135deg, #f56c6c, #c03636) }
-.stats-cards .card-orange { background: linear-gradient(135deg, #e6a23c, #b87e2a) }
-.stats-cards .card-green { background: linear-gradient(135deg, #67c23a, #4a8f2a) }
-.card-value { font-size: 28px; font-weight: 700; margin-bottom: 6px }
-.card-label { font-size: 13px; opacity: .85 }
+.stats-cards .card {
+  border-radius: 14px;
+  padding: 20px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.3s ease;
+  cursor: default;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    i { font-size: 24px; }
+  }
+
+  .card-body {
+    flex: 1;
+  }
+
+  .card-value { font-size: 26px; font-weight: 700; margin-bottom: 4px }
+  .card-label { font-size: 13px; opacity: .85 }
+}
+
+.card-indigo { background: linear-gradient(135deg, #4f46e5, #6366f1) }
+.card-violet { background: linear-gradient(135deg, #7c3aed, #a78bfa) }
+.card-amber { background: linear-gradient(135deg, #f59e0b, #fbbf24) }
+.card-emerald { background: linear-gradient(135deg, #10b981, #34d399) }
+
 .chart-row { margin-bottom: 20px }
+
+.chart-card {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.3s;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .chart-title {
+      font-weight: 600;
+      font-size: 15px;
+      color: #374151;
+    }
+  }
+}
+
+::v-deep .el-table {
+  th { background: #f9fafb; color: #374151; font-weight: 600 }
+  border-radius: 8px;
+}
 </style>

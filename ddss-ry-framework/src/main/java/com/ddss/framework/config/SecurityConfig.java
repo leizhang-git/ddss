@@ -118,6 +118,11 @@ public class SecurityConfig {
                             requests.antMatchers(url).permitAll()
                     );
 
+                    // @Anonymous 注解标记的匿名访问 URL
+                    permitAllUrl.getUrls().forEach(url ->
+                            requests.antMatchers(url).permitAll()
+                    );
+
                     // 除白名单外的所有请求全部需要鉴权认证
                     requests.anyRequest().authenticated();
                 })
