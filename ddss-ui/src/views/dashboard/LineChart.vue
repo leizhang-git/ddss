@@ -77,7 +77,7 @@ export default {
             }
           },
           axisLabel: {
-            color: '#909399'
+            color: '#9CA3AF'
           }
         },
         grid: {
@@ -103,7 +103,7 @@ export default {
           },
           splitLine: {
             lineStyle: {
-              color: '#f0f2f5'
+              color: '#F3F4F6'
             }
           }
         },
@@ -117,9 +117,9 @@ export default {
           name: '预期数据',
           itemStyle: {
             normal: {
-              color: '#409eff',
+              color: '#4f46e5',
               lineStyle: {
-                color: '#409eff',
+                color: '#4f46e5',
                 width: 2
               }
             }
@@ -136,15 +136,15 @@ export default {
           type: 'line',
           itemStyle: {
             normal: {
-              color: '#67c23a',
+              color: '#10b981',
               lineStyle: {
-                color: '#67c23a',
+                color: '#10b981',
                 width: 2
               },
               areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                  {offset: 0, color: 'rgba(103, 194, 58, 0.2)'},
-                  {offset: 1, color: 'rgba(103, 194, 58, 0.02)'}
+                  {offset: 0, color: 'rgba(16, 185, 129, 0.2)'},
+                  {offset: 1, color: 'rgba(16, 185, 129, 0.02)'}
                 ])
               }
             }

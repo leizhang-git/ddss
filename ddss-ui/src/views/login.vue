@@ -1,59 +1,98 @@
 <template>
-  <div class="login-container">
-    <div class="bg-layer">
-      <div class="bg-gradient"></div>
-      <div class="bg-glow bg-glow-1"></div>
-      <div class="bg-glow bg-glow-2"></div>
-    </div>
+  <div class="login-page">
+    <!-- 左侧品牌展示区 -->
+    <aside class="brand-side">
+      <div class="brand-bg">
+        <div class="aurora aurora-1"></div>
+        <div class="aurora aurora-2"></div>
+        <div class="aurora aurora-3"></div>
+        <div class="grid-overlay"></div>
+        <div class="orbital-ring"></div>
+      </div>
 
-    <div class="login-card">
-      <div class="card-inner">
-        <div class="brand">
-          <img src="../assets/logo/logo.png" alt="Logo" class="logo" />
-          <h1 class="title">{{ title }}</h1>
-          <p class="subtitle">数据驱动的决策支持系统</p>
+      <div class="brand-content">
+        <div class="brand-logo">
+          <img src="../assets/logo/logo.png" alt="Logo" />
+        </div>
+        <h1 class="brand-title">{{ title }}</h1>
+        <p class="brand-slogan">数据驱动的决策支持系统</p>
+
+        <ul class="brand-features">
+          <li v-for="f in features" :key="f.title">
+            <i :class="f.icon"></i>
+            <div>
+              <h4>{{ f.title }}</h4>
+              <p>{{ f.desc }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="brand-footer">
+        <span>© 2025 {{ title }}</span>
+      </div>
+    </aside>
+
+    <!-- 右侧登录区 -->
+    <main class="form-side">
+      <div class="form-wrapper">
+        <div class="form-header">
+          <h2>欢迎回来</h2>
+          <p>请登录您的账户以继续</p>
         </div>
 
         <el-form ref="loginForm" :model="loginForm" @keyup.enter.native="handleLogin">
           <div class="field">
-            <i class="el-icon-user"></i>
-            <el-input v-model="loginForm.username" placeholder="用户名" type="text" size="large" clearable />
+            <label>用户名</label>
+            <div class="input-box">
+              <i class="el-icon-user"></i>
+              <el-input v-model="loginForm.username" placeholder="请输入用户名" type="text" clearable />
+            </div>
           </div>
 
           <div class="field">
-            <i class="el-icon-lock"></i>
-            <el-input
-              v-model="loginForm.password"
-              placeholder="密码"
-              :type="passwordVisible ? 'text' : 'password'"
-              size="large"
-              show-password
-            />
+            <label>密码</label>
+            <div class="input-box">
+              <i class="el-icon-lock"></i>
+              <el-input
+                v-model="loginForm.password"
+                placeholder="请输入密码"
+                :type="passwordVisible ? 'text' : 'password'"
+                show-password
+              />
+            </div>
           </div>
 
-          <div v-if="captchaEnabled" class="field captcha-field">
-            <i class="el-icon-picture-outline"></i>
-            <el-input v-model="loginForm.code" placeholder="验证码" size="large" class="captcha-input" />
-            <span v-if="mathCaptcha" class="captcha-box" @click="getCode" title="点击刷新">
-              {{ captchaTip }}
-            </span>
-            <img v-else :src="codeUrl" class="captcha-box captcha-img" @click="getCode" title="点击刷新" />
+          <div v-if="captchaEnabled" class="field">
+            <label>验证码</label>
+            <div class="captcha-row">
+              <div class="input-box captcha-input">
+                <i class="el-icon-picture-outline"></i>
+                <el-input v-model="loginForm.code" placeholder="请输入验证码" />
+              </div>
+              <div class="captcha-box" @click="getCode" title="点击刷新">
+                <span v-if="mathCaptcha" class="captcha-text">{{ captchaTip }}</span>
+                <img v-else :src="codeUrl" alt="验证码" />
+              </div>
+            </div>
           </div>
 
-          <div class="options">
+          <div class="form-options">
             <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
-            <router-link v-if="register" to="/register" class="register-link">立即注册</router-link>
+            <router-link v-if="register" to="/register" class="link">立即注册</router-link>
           </div>
 
-          <el-button type="primary" size="large" class="login-btn" :loading="loading" @click="handleLogin">
+          <el-button type="primary" class="submit-btn" :loading="loading" @click="handleLogin">
             <span v-if="!loading">登 录</span>
             <span v-else>登录中...</span>
           </el-button>
         </el-form>
-      </div>
-    </div>
 
-    <div class="footer">© 2025 {{ title }}</div>
+        <div class="form-footer">
+          <span>DDSS Management System</span>
+        </div>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -61,7 +100,6 @@
 import { getCodeImg } from "@/api/login"
 import Cookies from "js-cookie"
 import { decrypt, encrypt } from '@/utils/jsencrypt'
-import defaultSettings from '@/settings'
 
 export default {
   name: "Login",
@@ -83,7 +121,12 @@ export default {
       loading: false,
       captchaEnabled: true,
       register: false,
-      redirect: undefined
+      redirect: undefined,
+      features: [
+        { icon: 'el-icon-data-analysis', title: '智能分析', desc: '多维度数据可视化决策' },
+        { icon: 'el-icon-finance', title: '财务管理', desc: '全链路借款还款追踪' },
+        { icon: 'el-icon-cpu', title: '高性能架构', desc: '微服务 + 中间件可插拔' }
+      ]
     }
   },
   watch: {
@@ -165,183 +208,304 @@ export default {
 
 <style lang="scss" scoped>
 $primary: #4f46e5;
-$primary-dark: #4338ca;
 $primary-light: #6366f1;
 $secondary: #8b5cf6;
 
-.login-container {
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ============ 左侧品牌区 ============ */
+.brand-side {
   position: relative;
+  width: 52%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  padding: 60px 64px;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #fff;
+  background: #0a0a1a;
+  flex-shrink: 0;
 
-  .bg-layer {
+  .brand-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
 
-    .bg-gradient {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, #0f0c29 0%, #1a1040 40%, #24243e 100%);
-    }
-
-    .bg-glow {
+    .aurora {
       position: absolute;
       border-radius: 50%;
-      filter: blur(100px);
-      animation: glow 8s ease-in-out infinite;
+      filter: blur(90px);
+      mix-blend-mode: screen;
 
-      &.bg-glow-1 {
-        width: 500px;
-        height: 500px;
-        background: radial-gradient(circle, rgba(79, 70, 229, 0.4), transparent 70%);
-        top: -150px;
-        left: -100px;
+      &.aurora-1 {
+        width: 600px; height: 600px;
+        background: radial-gradient(circle, #4f46e5, transparent 65%);
+        top: -200px; left: -150px;
+        animation: drift1 18s ease-in-out infinite;
       }
+      &.aurora-2 {
+        width: 500px; height: 500px;
+        background: radial-gradient(circle, #8b5cf6, transparent 65%);
+        bottom: -180px; right: -100px;
+        animation: drift2 22s ease-in-out infinite;
+      }
+      &.aurora-3 {
+        width: 400px; height: 400px;
+        background: radial-gradient(circle, #06b6d4, transparent 65%);
+        top: 40%; left: 50%;
+        animation: drift3 26s ease-in-out infinite;
+      }
+    }
 
-      &.bg-glow-2 {
-        width: 400px;
-        height: 400px;
-        background: radial-gradient(circle, rgba(139, 92, 246, 0.3), transparent 70%);
-        bottom: -100px;
-        right: -80px;
-        animation-delay: -4s;
+    .grid-overlay {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99, 102, 241, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 102, 241, 0.07) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+    }
+
+    .orbital-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 600px; height: 600px;
+      margin: -300px 0 0 -300px;
+      border: 1px solid rgba(99, 102, 241, 0.1);
+      border-radius: 50%;
+      animation: spin 60s linear infinite;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: -3px; left: 50%;
+        width: 6px; height: 6px;
+        margin-left: -3px;
+        background: $primary-light;
+        border-radius: 50%;
+        box-shadow: 0 0 20px $primary-light;
       }
     }
   }
 
-  .login-card {
+  .brand-content {
     position: relative;
     z-index: 1;
-    width: 90%;
-    max-width: 440px;
-    animation: slideUp 0.6s ease-out;
+    max-width: 420px;
+  }
 
-    .card-inner {
-      background: rgba(255, 255, 255, 0.97);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 48px 40px 40px;
-      box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.3),
-                  0 0 0 1px rgba(255, 255, 255, 0.1);
+  .brand-logo {
+    width: 56px; height: 56px;
+    margin-bottom: 28px;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.4);
+
+    img { width: 100%; height: 100%; display: block; }
+  }
+
+  .brand-title {
+    font-size: 38px;
+    font-weight: 800;
+    margin: 0 0 10px;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .brand-slogan {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0 0 48px;
+    line-height: 1.6;
+  }
+
+  .brand-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 16px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+      &:last-child {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      i {
+        font-size: 22px;
+        color: $primary-light;
+        margin-top: 2px;
+        flex-shrink: 0;
+      }
+
+      h4 {
+        font-size: 15px;
+        font-weight: 600;
+        margin: 0 0 4px;
+        color: #fff;
+      }
+
+      p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.5);
+        margin: 0;
+      }
     }
   }
 
-  .brand {
-    text-align: center;
+  .brand-footer {
+    position: absolute;
+    bottom: 32px;
+    left: 64px;
+    z-index: 1;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.35);
+  }
+}
+
+/* ============ 右侧登录区 ============ */
+.form-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #fff;
+
+  .form-wrapper {
+    width: 100%;
+    max-width: 380px;
+    animation: fadeIn 0.7s ease;
+  }
+
+  .form-header {
     margin-bottom: 36px;
 
-    .logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px;
-      filter: drop-shadow(0 8px 20px rgba(79, 70, 229, 0.3));
-      margin-bottom: 16px;
-    }
-
-    .title {
-      font-size: 26px;
+    h2 {
+      font-size: 28px;
       font-weight: 700;
-      margin: 0 0 6px;
-      background: linear-gradient(135deg, $primary, $secondary);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #111827;
+      margin: 0 0 8px;
       letter-spacing: -0.5px;
     }
 
-    .subtitle {
-      font-size: 13px;
+    p {
+      font-size: 14px;
       color: #6b7280;
       margin: 0;
     }
   }
 
   .field {
-    position: relative;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 
-    > i {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 16px;
-      color: #9ca3af;
-      z-index: 2;
-      transition: color 0.3s;
+    > label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
     }
 
-    &:focus-within > i {
-      color: $primary;
-    }
+    .input-box {
+      position: relative;
 
-    ::v-deep .el-input__inner {
-      padding-left: 42px;
-      height: 46px;
-      line-height: 46px;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
-      font-size: 15px;
-      background: #f9fafb;
-      transition: all 0.25s ease;
-
-      &:focus {
-        border-color: $primary;
-        background: #fff;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-      }
-    }
-
-    &.captcha-field {
-      .captcha-input {
-        width: 60%;
-      }
-
-      .captcha-box {
+      > i {
         position: absolute;
-        right: 6px;
+        left: 14px;
         top: 50%;
         transform: translateY(-50%);
-        height: 38px;
-        min-width: 120px;
-        padding: 0 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid #e5e7eb;
-        border-radius: 10px;
-        font-size: 15px;
-        font-weight: 600;
-        color: #1f2937;
-        background: #f3f4f6;
-        cursor: pointer;
-        transition: all 0.25s;
-        box-sizing: border-box;
-
-        &:hover {
-          border-color: $primary;
-          color: $primary;
-        }
+        font-size: 16px;
+        color: #9ca3af;
+        z-index: 2;
+        transition: color 0.25s;
       }
 
-      .captcha-img {
-        padding: 0;
+      &:focus-within > i {
+        color: $primary;
+      }
+
+      ::v-deep .el-input__inner {
+        padding-left: 42px;
+        height: 48px;
+        line-height: 48px;
+        border: 1.5px solid #e5e7eb;
+        border-radius: 12px;
+        font-size: 15px;
+        background: #f9fafb;
+        transition: all 0.2s ease;
+
+        &:hover {
+          border-color: #c7d2fe;
+        }
+
+        &:focus {
+          border-color: $primary;
+          background: #fff;
+          box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+        }
+      }
+    }
+
+    .captcha-row {
+      display: flex;
+      gap: 10px;
+
+      .captcha-input { flex: 1; }
+    }
+
+    .captcha-box {
+      width: 130px;
+      height: 48px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      background: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.25s;
+      flex-shrink: 0;
+
+      &:hover {
+        border-color: $primary;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+      }
+
+      .captcha-text {
+        font-size: 15px;
+        font-weight: 600;
+        color: #374151;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
         object-fit: cover;
       }
     }
   }
 
-  .options {
+  .form-options {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 28px;
 
     ::v-deep .el-checkbox__label {
       font-size: 14px;
@@ -358,33 +522,31 @@ $secondary: #8b5cf6;
       border-color: $primary;
     }
 
-    .register-link {
+    .link {
       font-size: 14px;
       color: $primary;
       text-decoration: none;
       font-weight: 500;
 
-      &:hover {
-        color: $primary-dark;
-      }
+      &:hover { color: $primary-light; }
     }
   }
 
-  .login-btn {
+  .submit-btn {
     width: 100%;
-    height: 46px;
+    height: 48px;
     font-size: 16px;
     font-weight: 600;
     border-radius: 12px;
     border: none;
     background: linear-gradient(135deg, $primary, $primary-light);
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.3);
     transition: all 0.25s ease;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+      box-shadow: 0 10px 28px rgba(79, 70, 229, 0.4);
     }
 
     &:active {
@@ -392,28 +554,66 @@ $secondary: #8b5cf6;
     }
   }
 
-  .footer {
-    position: absolute;
-    bottom: 24px;
-    z-index: 1;
-    color: rgba(255, 255, 255, 0.6);
-    font-size: 13px;
+  .form-footer {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 12px;
+    color: #d1d5db;
+    letter-spacing: 1px;
   }
 }
 
-@keyframes glow {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  50% { opacity: 0.9; transform: scale(1.08); }
+/* ============ 动画 ============ */
+@keyframes drift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 40px) scale(1.1); }
+}
+@keyframes drift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-50px, -60px) scale(1.15); }
+}
+@keyframes drift3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  50% { transform: translate(-40%, -60%) scale(1.2); opacity: 0.4; }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+/* ============ 响应式 ============ */
+@media (max-width: 960px) {
+  .login-page {
+    flex-direction: column;
+  }
+
+  .brand-side {
+    width: 100%;
+    min-height: auto;
+    padding: 48px 32px 36px;
+
+    .brand-features { display: none; }
+    .brand-slogan { margin-bottom: 0; }
+    .brand-footer { display: none; }
+  }
+
+  .form-side {
+    padding: 32px 24px 48px;
+  }
 }
 
 @media (max-width: 480px) {
-  .login-container .login-card .card-inner {
-    padding: 36px 24px 32px;
+  .brand-side {
+    padding: 36px 24px 24px;
+
+    .brand-title { font-size: 28px; }
+    .brand-slogan { font-size: 14px; }
   }
+
+  .form-side .form-wrapper { max-width: 100%; }
 }
 </style>

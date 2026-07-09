@@ -6,12 +6,40 @@
 @import './btn.scss';
 @import './login.scss';
 
+:root {
+  --ddss-primary: #4F46E5;
+  --ddss-primary-light: #6366F1;
+  --ddss-primary-dark: #4338CA;
+  --ddss-secondary: #8B5CF6;
+  --ddss-success: #10B981;
+  --ddss-warning: #F59E0B;
+  --ddss-danger: #EF4444;
+  --ddss-info: #6B7280;
+  --ddss-cyan: #06B6D4;
+  --ddss-text: #1F2937;
+  --ddss-text-regular: #374151;
+  --ddss-text-secondary: #6B7280;
+  --ddss-text-placeholder: #9CA3AF;
+  --ddss-border: #E5E7EB;
+  --ddss-border-light: #F3F4F6;
+  --ddss-bg: #F9FAFB;
+  --ddss-bg-hover: #F3F4F6;
+  --ddss-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --ddss-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+  --ddss-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
+  --ddss-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --ddss-radius: 12px;
+  --ddss-radius-sm: 8px;
+}
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  color: var(--ddss-text);
+  background: #F3F4F6;
 }
 
 label {
@@ -98,24 +126,24 @@ div:focus {
 }
 
 aside {
-  background: #eef1f6;
+  background: #EEF2FF;
   padding: 8px 24px;
   margin-bottom: 20px;
-  border-radius: 2px;
+  border-radius: var(--ddss-radius-sm);
   display: block;
   line-height: 32px;
   font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: #2c3e50;
+  color: var(--ddss-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   a {
-    color: #337ab7;
+    color: var(--ddss-primary);
     cursor: pointer;
 
     &:hover {
-      color: rgb(32, 160, 255);
+      color: var(--ddss-primary-light);
     }
   }
 }
@@ -123,6 +151,32 @@ aside {
 //main-container全局样式
 .app-container {
   padding: 20px;
+
+  // 搜索表单区域：白底卡片，提升层次（仅作用于直接子级 inline 搜索表单）
+  > .el-form {
+    background: #fff;
+    padding: 20px 20px 4px;
+    border-radius: var(--ddss-radius);
+    margin-bottom: 16px;
+    box-shadow: var(--ddss-shadow-sm);
+    border: 1px solid var(--ddss-border-light);
+
+    .el-form-item {
+      margin-bottom: 18px;
+    }
+
+    // 最后一行通常是按钮，减少底部间距避免过度留白
+    .el-form-item:last-child {
+      margin-bottom: 12px;
+    }
+  }
+
+  // 工具栏行
+  > .el-row {
+    &.mb8 {
+      margin-bottom: 14px;
+    }
+  }
 }
 
 .components-container {
@@ -142,7 +196,7 @@ aside {
   text-align: right;
   padding-right: 20px;
   transition: 600ms ease position;
-  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+  background: linear-gradient(90deg, var(--ddss-primary) 0%, var(--ddss-secondary) 100%);
 
   .subtitle {
     font-size: 20px;
@@ -150,21 +204,21 @@ aside {
   }
 
   &.draft {
-    background: #d0d0d0;
+    background: #d1d5db;
   }
 
   &.deleted {
-    background: #d0d0d0;
+    background: #d1d5db;
   }
 }
 
 .link-type,
 .link-type:focus {
-  color: #337ab7;
+  color: var(--ddss-primary);
   cursor: pointer;
 
   &:hover {
-    color: rgb(32, 160, 255);
+    color: var(--ddss-primary-light);
   }
 }
 

@@ -86,7 +86,7 @@ export default {
     align-items: center;
     width: 100%;
     height: 100%;
-    color: #909399;
+    color: #9ca3af;
     font-size: 30px;
   }
 }

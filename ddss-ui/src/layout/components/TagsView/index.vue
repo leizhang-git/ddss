@@ -289,8 +289,8 @@ export default {
 
       &:hover {
         background: #f5f7fa;
-        border-color: #409eff;
-        color: #409eff;
+        border-color: #4f46e5;
+        color: #4f46e5;
       }
 
       &.left-arrow {
@@ -344,9 +344,9 @@ export default {
     }
 
     &.active {
-      background-color: #409eff;
+      background-color: #4f46e5;
       color: #fff;
-      border-color: #409eff;
+      border-color: #4f46e5;
 
       &::before {
         content: '';
@@ -362,9 +362,9 @@ export default {
     }
 
     &.affix {
-      background-color: #ecf5ff;
-      border-color: #b3d8ff;
-      color: #409eff;
+      background-color: #eef2ff;
+      border-color: #c7d2fe;
+      color: #4f46e5;
     }
 
     .el-icon-close {

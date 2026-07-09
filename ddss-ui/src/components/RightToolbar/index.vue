@@ -172,21 +172,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-::v-deep .el-transfer__button {
-  border-radius: 50%;
-  padding: 12px;
-  display: block;
-  margin-left: 0px;
-}
+.top-right-btn {
+  .el-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
 
-::v-deep .el-transfer__button:first-child {
-  margin-bottom: 10px;
-}
+  ::v-deep .el-button.is-circle {
+    border: 1px solid #E5E7EB;
+    color: #6B7280;
+    transition: all 0.2s ease;
 
-.check-line {
-  width: 90%;
-  height: 1px;
-  background-color: #ccc;
-  margin: 3px auto;
+    &:hover {
+      color: var(--ddss-primary, #4F46E5);
+      border-color: #C7D2FE;
+      background: #EEF2FF;
+    }
+  }
+
+  ::v-deep .el-transfer__button {
+    border-radius: 50%;
+    padding: 12px;
+    display: block;
+    margin-left: 0px;
+  }
+
+  ::v-deep .el-transfer__button:first-child {
+    margin-bottom: 10px;
+  }
+
+  .check-line {
+    width: 90%;
+    height: 1px;
+    background-color: #F3F4F6;
+    margin: 6px auto;
+  }
 }
 </style>

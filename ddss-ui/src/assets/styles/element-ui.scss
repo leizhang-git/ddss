@@ -87,6 +87,108 @@
 > div
 > .el-submenu
 > .el-submenu__title
-.el-submenu__icon-arrow {
+> .el-submenu__icon-arrow {
   display: none;
+}
+
+/* ============ DDSS 全局组件精修 ============ */
+
+// Tag 标签：圆角 + 轻底色（不强制高度，避免长文本截断）
+.el-tag {
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  border-width: 1px;
+}
+
+// Input 输入框：聚焦渐变光晕（mini 尺寸缩小光晕）
+.el-input__inner {
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #C7D2FE;
+  }
+
+  &:focus {
+    border-color: var(--ddss-primary, #4F46E5);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+  }
+}
+
+.el-input--mini .el-input__inner:focus {
+  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.08);
+}
+
+// Select 选择器下拉项 hover
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background: #EEF2FF;
+  color: var(--ddss-primary, #4F46E5);
+}
+
+// Checkbox 选中色
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: var(--ddss-primary, #4F46E5);
+  border-color: var(--ddss-primary, #4F46E5);
+}
+
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: var(--ddss-primary, #4F46E5);
+}
+
+// Radio 选中色
+.el-radio__input.is-checked .el-radio__inner {
+  background-color: var(--ddss-primary, #4F46E5);
+  border-color: var(--ddss-primary, #4F46E5);
+}
+
+.el-radio__input.is-checked + .el-radio__label {
+  color: var(--ddss-primary, #4F46E5);
+}
+
+// Switch 开关
+.el-switch.is-checked .el-switch__core {
+  background-color: var(--ddss-primary, #4F46E5);
+  border-color: var(--ddss-primary, #4F46E5);
+}
+
+// Tabs 选中下划线
+.el-tabs__item.is-active {
+  color: var(--ddss-primary, #4F46E5);
+}
+
+.el-tabs__active-bar {
+  background-color: var(--ddss-primary, #4F46E5);
+}
+
+// Loading 遮罩
+.el-loading-mask {
+  background-color: rgba(249, 250, 251, 0.85);
+  backdrop-filter: blur(2px);
+}
+
+// Tooltip 暗色 + 圆角
+.el-tooltip__popper {
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+// 滚动条美化
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 4px;
+
+  &:hover {
+    background: #9CA3AF;
+  }
 }

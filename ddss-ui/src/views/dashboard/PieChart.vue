@@ -58,7 +58,7 @@ export default {
             color: '#606266'
           }
         },
-        color: ['#409eff', '#67c23a', '#e6a23c', '#9b59b6', '#f56c6c'],
+        color: ['#4f46e5', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
         series: [
           {
             name: '资源分类',

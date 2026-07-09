@@ -59,34 +59,41 @@
 }
 
 .el-table {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border-radius: var(--ddss-radius-sm);
+  box-shadow: var(--ddss-shadow-sm);
 
   .el-table__header-wrapper, .el-table__fixed-header-wrapper {
     th {
       word-break: break-word;
-      background: linear-gradient(180deg, #F8FAFC 0%, #F1F5F9 100%);
+      background: linear-gradient(180deg, #FAFBFC 0%, #F1F5F9 100%);
       color: #475569;
-      height: 44px;
+      height: 48px;
       font-size: 13px;
       font-weight: 600;
       border-bottom: 2px solid #E2E8F0;
       letter-spacing: 0.01em;
+      padding: 8px 0;
+
+      .caret-wrapper {
+        color: #94A3B8;
+      }
     }
   }
 
   .el-table__body-wrapper {
     .el-table__row {
       transition: background-color 0.15s ease;
-      
+
       &:hover > td {
-        background-color: #F8FAFC !important;
+        background-color: #F5F3FF !important;
       }
     }
-    
+
     td {
       border-bottom: 1px solid #F1F5F9;
+      font-size: 13px;
+      color: #374151;
+      padding: 12px 0;
     }
 
     .el-button [class*="el-icon-"] + span {
@@ -97,6 +104,20 @@
   // stripe style
   &--striped .el-table__body tr.el-table__row--striped td {
     background-color: #FAFBFC;
+  }
+
+  // 固定列阴影
+  .el-table__fixed,
+  .el-table__fixed-right {
+    box-shadow: none;
+  }
+
+  // 合计行
+  .el-table__footer-wrapper td {
+    background: #F8FAFC;
+    color: #1F2937;
+    font-weight: 600;
+    border-top: 2px solid #E2E8F0;
   }
 }
 
@@ -117,6 +138,23 @@
   align-items: center;
   margin-top: 20px;
   padding: 12px 0;
+
+  ::v-deep .el-pagination {
+    .el-pager li {
+      border-radius: 6px;
+      margin: 0 3px;
+      font-weight: 500;
+
+      &.active {
+        background: var(--ddss-primary);
+        color: #fff;
+      }
+    }
+
+    .btn-prev, .btn-next {
+      border-radius: 6px;
+    }
+  }
 }
 
 /* tree border */
@@ -212,22 +250,40 @@
 /* button color */
 .el-button--cyan.is-active,
 .el-button--cyan:active {
-  background: #20B2AA;
-  border-color: #20B2AA;
+  background: #06B6D4;
+  border-color: #06B6D4;
   color: #FFFFFF;
 }
 
 .el-button--cyan:focus,
 .el-button--cyan:hover {
-  background: #48D1CC;
-  border-color: #48D1CC;
+  background: #22D3EE;
+  border-color: #22D3EE;
   color: #FFFFFF;
 }
 
 .el-button--cyan {
-  background-color: #20B2AA;
-  border-color: #20B2AA;
+  background-color: #06B6D4;
+  border-color: #06B6D4;
   color: #FFFFFF;
+}
+
+// 主按钮 hover 加深
+.el-button--primary:hover,
+.el-button--primary:focus {
+  background: var(--ddss-primary-light);
+  border-color: var(--ddss-primary-light);
+}
+
+// plain 按钮 hover 过渡
+.el-button.is-plain {
+  transition: all 0.2s ease;
+}
+
+// mini 按钮间距优化
+.el-button--mini {
+  padding: 7px 14px;
+  border-radius: 6px;
 }
 
 /* text color - modern palette */

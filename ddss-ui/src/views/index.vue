@@ -130,7 +130,7 @@
             </div>
             <div class="info-item">
               <span class="info-label">运行环境</span>
-              <span class="info-value" :style="{color: '#67c23a'}">正常运行中</span>
+              <span class="info-value" :style="{color: '#10b981'}">正常运行中</span>
             </div>
           </div>
         </el-card>
@@ -252,7 +252,7 @@ export default {
 <style lang="scss" scoped>
 .dashboard-container {
   padding: 24px;
-  background: #f0f2f5;
+  background: #F3F4F6;
   min-height: calc(100vh - 84px);
 
   // 统计卡片
@@ -337,8 +337,8 @@ export default {
             display: inline-block;
 
             &.online {
-              background: #67c23a;
-              box-shadow: 0 0 8px rgba(103, 194, 58, 0.6);
+              background: #10b981;
+              box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
               animation: pulse-dot 2s infinite;
             }
           }
@@ -361,19 +361,19 @@ export default {
     }
 
     .stat-card-blue {
-      background: linear-gradient(135deg, #409eff, #337ecc);
+      background: linear-gradient(135deg, #4f46e5, #6366f1);
     }
 
     .stat-card-green {
-      background: linear-gradient(135deg, #67c23a, #529b2e);
+      background: linear-gradient(135deg, #10b981, #34d399);
     }
 
     .stat-card-orange {
-      background: linear-gradient(135deg, #e6a23c, #cf9236);
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
     }
 
     .stat-card-purple {
-      background: linear-gradient(135deg, #9b59b6, #7d3c98);
+      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
     }
   }
 
@@ -422,7 +422,7 @@ export default {
           transform: translateY(-50%);
           width: 3px;
           height: 16px;
-          background: #409eff;
+          background: #4f46e5;
           border-radius: 2px;
         }
       }
@@ -448,7 +448,7 @@ export default {
       }
 
       .info-label {
-        color: #909399;
+        color: #6B7280;
         font-size: 13px;
       }
 
@@ -477,9 +477,9 @@ export default {
       background: #fafafa;
 
       &:hover {
-        background: #ecf5ff;
+        background: #EEF2FF;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(64, 158, 255, 0.15);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
 
         .action-icon {
           transform: scale(1.1);
@@ -497,19 +497,19 @@ export default {
         transition: transform 0.3s ease;
 
         &.bg-blue {
-          background: rgba(64, 158, 255, 0.1);
+          background: rgba(79, 70, 229, 0.1);
         }
 
         &.bg-green {
-          background: rgba(103, 194, 58, 0.1);
+          background: rgba(16, 185, 129, 0.1);
         }
 
         &.bg-orange {
-          background: rgba(230, 162, 60, 0.1);
+          background: rgba(245, 158, 11, 0.1);
         }
 
         &.bg-purple {
-          background: rgba(155, 89, 182, 0.1);
+          background: rgba(139, 92, 246, 0.1);
         }
 
         .svg-icon {

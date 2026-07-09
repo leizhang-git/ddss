@@ -26,8 +26,8 @@
         <el-table ref="table" v-loading="loading" :data="sortedList" stripe size="small"
           :height="tableHeight" show-summary :summary-method="getSummaries"
           @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'repaymentDay',order:'ascending'}">
-          <el-table-column type="selection" width="40"/>
-          <el-table-column label="名称" prop="creditorName" width="140" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
+          <el-table-column type="selection" width="55"/>
+          <el-table-column label="名称" prop="creditorName" width="180" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
           <el-table-column label="便宜" width="100" sortable="custom" align="right" v-if="vis('cheap')"><template slot-scope="s"><span class="amt-positive">{{ cheap(s.row) }}</span></template></el-table-column>
           <el-table-column label="提前结清" prop="earlySettlementAmount" width="110" sortable="custom" align="right" v-if="vis('early')"/>
           <el-table-column label="总额" width="110" sortable="custom" align="right" v-if="vis('total')"><template slot-scope="s"><span class="amt-bold">{{ totalRepay(s.row) }}</span></template></el-table-column>
@@ -66,7 +66,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8"><el-form-item label="提前结清"><el-input-number v-model="form.earlySettlementAmount" :min="0" :precision="2" style="width:100%" controls-position="right"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="便宜"><el-input :value="cheap(form)" readonly style="font-weight:bold;color:#67c23a"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="便宜"><el-input :value="cheap(form)" readonly style="font-weight:bold;color:#10b981"/></el-form-item></el-col>
           <el-col :span="8"><el-form-item label="月还款"><el-input-number v-model="form.monthlyPayment" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
         </el-row>
         <el-row :gutter="20">
@@ -267,7 +267,6 @@ export default {
     color: #10b981;
     font-weight: 500;
   }
-
   .amt-bold {
     font-weight: 600;
     color: #1f2937;

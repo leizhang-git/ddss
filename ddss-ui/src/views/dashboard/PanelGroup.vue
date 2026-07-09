@@ -95,36 +95,36 @@ export default {
       }
 
       .icon-people {
-        background: #40c9c6;
+        background: #4f46e5;
       }
 
       .icon-message {
-        background: #36a3f7;
+        background: #06b6d4;
       }
 
       .icon-money {
-        background: #f4516c;
+        background: #ef4444;
       }
 
       .icon-shopping {
-        background: #34bfa3
+        background: #10b981
       }
     }
 
     .icon-people {
-      color: #40c9c6;
+      color: #4f46e5;
     }
 
     .icon-message {
-      color: #36a3f7;
+      color: #06b6d4;
     }
 
     .icon-money {
-      color: #f4516c;
+      color: #ef4444;
     }
 
     .icon-shopping {
-      color: #34bfa3
+      color: #10b981
     }
 
     .card-panel-icon-wrapper {
