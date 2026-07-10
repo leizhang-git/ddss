@@ -45,39 +45,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/styles/variables.scss';
+
 .app-main {
-  /* 50= navbar  50  */
-  min-height: calc(100vh - 50px);
+  min-height: calc(100vh - #{$header-height});
   width: 100%;
   position: relative;
-  overflow: hidden;
+  background: $bg-base;
 }
 
 .fixed-header + .app-main {
+  margin-top: $header-height;
+  height: calc(100vh - #{$header-height});
   overflow-y: auto;
-  scrollbar-gutter: auto;
-  height: calc(100vh - 50px);
-  min-height: 0px;
+  min-height: 0;
 }
 
 .app-main:has(.copyright) {
   padding-bottom: 36px;
 }
 
-.fixed-header + .app-main {
-  margin-top: 50px;
-}
-
 .hasTagsView {
   .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
-    min-height: calc(100vh - 84px);
+    min-height: calc(100vh - #{$header-height} - #{$tags-height});
   }
 
   .fixed-header + .app-main {
-    margin-top: 84px;
-    height: calc(100vh - 84px);
-    min-height: 0px;
+    margin-top: calc(#{$header-height} + #{$tags-height});
+    height: calc(100vh - #{$header-height} - #{$tags-height});
+    min-height: 0;
   }
 }
 </style>
@@ -89,7 +85,7 @@ export default {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {

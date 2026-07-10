@@ -172,6 +172,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/styles/variables.scss';
+
 .top-right-btn {
   .el-row {
     display: flex;
@@ -180,14 +182,14 @@ export default {
   }
 
   ::v-deep .el-button.is-circle {
-    border: 1px solid #E5E7EB;
-    color: #6B7280;
-    transition: all 0.2s ease;
+    border: 1px solid $border-light;
+    color: $gray-400;
+    transition: all $duration-fast $ease;
 
     &:hover {
-      color: var(--ddss-primary, #4F46E5);
-      border-color: #C7D2FE;
-      background: #EEF2FF;
+      color: $brand;
+      border-color: $brand;
+      background: $brand-bg;
     }
   }
 
@@ -205,8 +207,8 @@ export default {
   .check-line {
     width: 90%;
     height: 1px;
-    background-color: #F3F4F6;
-    margin: 6px auto;
+    background-color: $border-lighter;
+    margin: 4px auto;
   }
 }
 </style>

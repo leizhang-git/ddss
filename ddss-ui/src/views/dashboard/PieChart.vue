@@ -53,25 +53,25 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['监控视频', '宣传视频', '培训视频', '会议视频', '其他'],
+          data: ['鐩戞帶瑙嗛', '瀹ｄ紶瑙嗛', '鍩硅瑙嗛', '浼氳瑙嗛', '鍏朵粬'],
           textStyle: {
             color: '#606266'
           }
         },
-        color: ['#4f46e5', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
+        color: ['#0071e3', '#34c759', '#ff9f0a', '#2997ff', '#ff3b30'],
         series: [
           {
-            name: '资源分类',
+            name: '璧勬簮鍒嗙被',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 85],
             center: ['50%', '42%'],
             data: [
-              {value: 520, name: '监控视频'},
-              {value: 340, name: '宣传视频'},
-              {value: 210, name: '培训视频'},
-              {value: 120, name: '会议视频'},
-              {value: 66, name: '其他'}
+              {value: 520, name: '鐩戞帶瑙嗛'},
+              {value: 340, name: '瀹ｄ紶瑙嗛'},
+              {value: 210, name: '鍩硅瑙嗛'},
+              {value: 120, name: '浼氳瑙嗛'},
+              {value: 66, name: '鍏朵粬'}
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600,

@@ -1,171 +1,149 @@
-// 现代化设计系统 - 主色板
-$blue: #4F46E5;
-$blue-dark: #3730A3;
-$blue-light: #6366F1;
+// ============================================================
+// DDSS Design System — Premium Design Tokens
+// ============================================================
 
-$red: #EF4444;
-$red-dark: #DC2626;
-$red-light: #F87171;
+// ---- 品牌主色 ----
+$brand: #0071e3;
+$brand-hover: #0077ed;
+$brand-active: #006edb;
+$brand-light: #2997ff;
+$brand-bg: #e8f0fe;
 
-$green: #10B981;
-$green-dark: #059669;
-$green-light: #34D399;
+// ---- 语义色 ----
+$success: #34c759;
+$warning: #ff9f0a;
+$danger: #ff3b30;
+$info: #8e8e93;
 
-$yellow: #F59E0B;
-$yellow-dark: #D97706;
-$yellow-light: #FCD34D;
+// ---- 中性色阶 ----
+$gray-50: #f5f5f7;
+$gray-100: #e8e8ed;
+$gray-200: #d2d2d7;
+$gray-300: #b0b0b5;
+$gray-400: #86868b;
+$gray-500: #6e6e73;
+$gray-600: #515154;
+$gray-700: #3a3a3c;
+$gray-800: #1d1d1f;
+$gray-900: #1d1d1f;
 
-$purple: #8B5CF6;
-$purple-dark: #7C3AED;
-$purple-light: #A78BFA;
+// ---- 文本 ----
+$text-primary: #1d1d1f;
+$text-regular: #424245;
+$text-secondary: #6e6e73;
+$text-placeholder: #aeaeb2;
+$text-inverse: #ffffff;
 
-$pink: #EC4899;
-$pink-dark: #DB2777;
-$pink-light: #F472B6;
+// ---- 背景 ----
+$bg-base: #f5f5f7;
+$bg-surface: #ffffff;
+$bg-subtle: #f5f5f7;
+$bg-hover: #f5f5f7;
+$bg-overlay: rgba(0, 0, 0, 0.4);
 
-$tiffany: #06B6D4;
-$tiffany-dark: #0891B2;
-$tiffany-light: #22D3EE;
+// ---- 边框 ----
+$border-base: #d2d2d7;
+$border-light: #e8e8ed;
+$border-lighter: #f5f5f7;
 
-$gray-50: #F9FAFB;
-$gray-100: #F3F4F6;
-$gray-200: #E5E7EB;
-$gray-300: #D1D5DB;
-$gray-400: #9CA3AF;
-$gray-500: #6B7280;
-$gray-600: #4B5563;
-$gray-700: #374151;
-$gray-800: #1F2937;
-$gray-900: #111827;
+// ---- 圆角 ----
+$radius-xs: 6px;
+$radius-sm: 8px;
+$radius-base: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+$radius-full: 9999px;
 
-// 渐变配色
-$gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-$gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-$gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-$gradient-warning: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-$gradient-dark: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+// ---- 阴影 ----
+$shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+$shadow-base: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+$shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
+$shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
 
-// 暗色菜单主题风格
-$base-menu-color: rgba(255, 255, 255, 0.65);
-$base-menu-color-active: #ffffff;
-$base-menu-background: #0F172A;
-$base-menu-subtle: #1E293B;
-$base-menu-border: #334155;
-$base-logo-title-color: #ffffff;
+// ---- 间距 ----
+$space-1: 4px;
+$space-2: 8px;
+$space-3: 12px;
+$space-4: 16px;
+$space-5: 24px;
+$space-6: 32px;
+$space-8: 40px;
+$space-10: 48px;
+$space-12: 64px;
 
-$base-menu-light-color: rgba(0, 0, 0, 0.65);
-$base-menu-light-background: #ffffff;
-$base-menu-light-subtle: #F8FAFC;
-$base-menu-light-border: #E2E8F0;
-$base-logo-light-title-color: #0F172A;
+// ---- 字体 ----
+$font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+$font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
 
-$base-sub-menu-background: #1E293B;
-$base-sub-menu-hover: rgba(79, 70, 229, 0.15);
+$fs-xs: 12px;
+$fs-sm: 13px;
+$fs-base: 14px;
+$fs-md: 15px;
+$fs-lg: 16px;
+$fs-xl: 18px;
+$fs-2xl: 20px;
+$fs-3xl: 24px;
+$fs-4xl: 30px;
 
-// 自定义暗色菜单风格
-/**
-$base-menu-color:hsla(0,0%,100%,.65);
-$base-menu-color-active:#fff;
-$base-menu-background:#001529;
-$base-logo-title-color: #ffffff;
+$fw-normal: 400;
+$fw-medium: 500;
+$fw-semibold: 600;
+$fw-bold: 700;
 
-$base-menu-light-color:rgba(0,0,0,.70);
-$base-menu-light-background:#ffffff;
-$base-logo-light-title-color: #001529;
+// ---- 布局 ----
+$sidebar-width: 240px;
+$sidebar-collapsed: 64px;
+$header-height: 60px;
+$tags-height: 46px;
 
-$base-sub-menu-background:#000c17;
-$base-sub-menu-hover:#001528;
-*/
+// ---- 侧边栏 ----
+$menu-bg: #1d1d1f;
+$menu-bg-gradient: linear-gradient(180deg, #1d1d1f 0%, #2c2c2e 100%);
+$menu-color: rgba(255, 255, 255, 0.72);
+$menu-color-active: #ffffff;
+$menu-hover-bg: rgba(255, 255, 255, 0.08);
+$menu-active-bg: rgba(255, 255, 255, 0.12);
+$menu-border: rgba(255, 255, 255, 0.06);
 
-// 布局尺寸
-$base-sidebar-width: 200px;
-$base-sidebar-collapsed: 64px;
-$base-header-height: 60px;
-$base-footer-height: 40px;
-$base-border-radius: 12px;
-$base-border-radius-sm: 8px;
-$base-border-radius-lg: 16px;
+$menu-light-bg: #ffffff;
+$menu-light-color: #1d1d1f;
+$menu-light-color-active: #0071e3;
+$menu-light-hover-bg: #f5f5f7;
+$menu-light-active-bg: #e8f0fe;
+$menu-light-border: #e8e8ed;
 
-// 间距系统
-$spacing-xs: 4px;
-$spacing-sm: 8px;
-$spacing-md: 16px;
-$spacing-lg: 24px;
-$spacing-xl: 32px;
-$spacing-2xl: 48px;
+// ---- 动画 ----
+$ease: cubic-bezier(0.4, 0, 0.2, 1);
+$ease-out: cubic-bezier(0, 0, 0.2, 1);
+$ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+$duration-fast: 0.15s;
+$duration-base: 0.25s;
+$duration-slow: 0.4s;
 
-// 字体系统
-$font-size-xs: 12px;
-$font-size-sm: 14px;
-$font-size-base: 16px;
-$font-size-lg: 18px;
-$font-size-xl: 20px;
-$font-size-2xl: 24px;
-$font-size-3xl: 30px;
-
-$font-weight-normal: 400;
-$font-weight-medium: 500;
-$font-weight-semibold: 600;
-$font-weight-bold: 700;
-
-$line-height-tight: 1.25;
-$line-height-base: 1.5;
-$line-height-relaxed: 1.75;
-
-// 阴影系统
-$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-$shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-$shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-$shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-$shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-
-// 动画时间
-$duration-fast: 150ms;
-$duration-base: 300ms;
-$duration-slow: 500ms;
-
-// 断点系统
-$breakpoint-xs: 0;
-$breakpoint-sm: 640px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 1024px;
-$breakpoint-xl: 1280px;
-$breakpoint-2xl: 1536px;
-
-// 组件变量
-$input-height: 40px;
-$input-height-sm: 32px;
-$input-height-lg: 48px;
-
-$button-height: 40px;
-$button-height-sm: 32px;
-$button-height-lg: 48px;
-
-// the :export directive is the magic sauce for webpack
-// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+// ============ :export（JS 引用）============
 :export {
-  // 菜单相关
-  menuColor: $base-menu-color;
-  menuLightColor: $base-menu-light-color;
-  menuColorActive: $base-menu-color-active;
-  menuBackground: $base-menu-background;
-  menuLightBackground: $base-menu-light-background;
-  menuSubtle: $base-menu-subtle;
-  menuBorder: $base-menu-border;
-  menuLightSubtle: $base-menu-light-subtle;
-  menuLightBorder: $base-menu-light-border;
-  subMenuBackground: $base-sub-menu-background;
-  subMenuHover: $base-sub-menu-hover;
-  sideBarWidth: $base-sidebar-width;
-  sideBarCollapsed: $base-sidebar-collapsed;
-  logoTitleColor: $base-logo-title-color;
-  logoLightTitleColor: $base-logo-light-title-color;
+  menuColor: $menu-color;
+  menuLightColor: $menu-light-color;
+  menuColorActive: $menu-color-active;
+  menuBackground: $menu-bg;
+  menuLightBackground: $menu-light-bg;
+  menuSubtle: #2c2c2e;
+  menuBorder: $menu-border;
+  menuLightSubtle: $bg-subtle;
+  menuLightBorder: $menu-light-border;
+  subMenuBackground: #2c2c2e;
+  subMenuHover: $menu-hover-bg;
+  sideBarWidth: $sidebar-width;
+  sideBarCollapsed: $sidebar-collapsed;
+  logoTitleColor: #ffffff;
+  logoLightTitleColor: $text-primary;
 
-  // 设计令牌
-  primaryColor: $blue;
-  primaryColorDark: $blue-dark;
-  primaryColorLight: $blue-light;
-  borderRadius: $base-border-radius;
-  shadow: $shadow-md;
-  headerHeight: $base-header-height;
+  primaryColor: $brand;
+  primaryColorDark: $brand-active;
+  primaryColorLight: $brand-light;
+  borderRadius: $radius-base;
+  shadow: $shadow-base;
+  headerHeight: $header-height;
 }

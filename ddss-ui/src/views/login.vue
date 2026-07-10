@@ -207,9 +207,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #4f46e5;
-$primary-light: #6366f1;
-$secondary: #8b5cf6;
+@import '~@/assets/styles/variables.scss';
+
+$primary: $brand;
+$primary-light: $brand-light;
+$secondary: $brand-light;
 
 .login-page {
   display: flex;

@@ -48,6 +48,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/styles/variables.scss';
+
 .sidebarLogoFade-enter-active {
   transition: opacity 0.8s;
 }
@@ -60,12 +62,12 @@ export default {
 .sidebar-logo-container {
   position: relative;
   width: 100%;
-  height: 56px;
-  line-height: 56px;
-  background: linear-gradient(135deg, #111827 0%, #1E293B 100%);
+  height: 60px;
+  line-height: 60px;
+  background: $menu-bg;
   text-align: center;
   overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid $menu-border;
 
   &::after {
     content: '';
@@ -74,7 +76,7 @@ export default {
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, #4F46E5, #6366F1, #8B5CF6);
+    background: linear-gradient(90deg, $brand, $brand-light, $brand-light);
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -94,22 +96,22 @@ export default {
       width: 34px;
       height: 34px;
       vertical-align: middle;
-      margin-right: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+      margin-right: $space-3;
+      border-radius: $radius-sm;
+      box-shadow: 0 2px 8px rgba(0, 113, 227, 0.3);
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
       color: #fff;
-      font-weight: 700;
-      line-height: 56px;
-      font-size: 15px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-weight: $fw-bold;
+      line-height: 60px;
+      font-size: $fs-md;
+      font-family: $font-family;
       vertical-align: middle;
       letter-spacing: 0.02em;
-      background: linear-gradient(135deg, #C7D2FE, #A5B4FC);
+      background: linear-gradient(135deg, #b4d4ff, #A5B4FC);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;

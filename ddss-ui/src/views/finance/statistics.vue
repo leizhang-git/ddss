@@ -1,6 +1,5 @@
 <template>
   <div class="app-container">
-    <!-- 汇总卡片 -->
     <el-row :gutter="20" class="stats-cards">
       <el-col :xs="12" :sm="6">
         <div class="card card-indigo">
@@ -12,7 +11,7 @@
         </div>
       </el-col>
       <el-col :xs="12" :sm="6">
-        <div class="card card-violet">
+        <div class="card card-blue">
           <div class="card-icon"><i class="el-icon-coin"></i></div>
           <div class="card-body">
             <div class="card-value">{{ fmt(summary.totalLoan) }}</div>
@@ -40,7 +39,6 @@
       </el-col>
     </el-row>
 
-    <!-- 状态分布 + 欠款方分布 -->
     <el-row :gutter="20" class="chart-row">
       <el-col :xs="24" :lg="8">
         <el-card shadow="hover" class="chart-card">
@@ -56,7 +54,6 @@
       </el-col>
     </el-row>
 
-    <!-- 月还款趋势 -->
     <el-row :gutter="20" class="chart-row">
       <el-col :span="24">
         <el-card shadow="hover" class="chart-card">
@@ -66,7 +63,6 @@
       </el-col>
     </el-row>
 
-    <!-- 明细列表 -->
     <el-row class="chart-row">
       <el-col :span="24">
         <el-card shadow="hover" class="chart-card">
@@ -130,14 +126,14 @@ export default {
       const paid = Number(row.loanAmount) - Number(row.remainingAmount || 0)
       return Math.round((paid / Number(row.loanAmount)) * 100)
     },
-    progressColor(row) { const p = this.calcPercent(row); return p >= 100 ? '#10b981' : p >= 50 ? '#4f46e5' : '#f59e0b' },
+    progressColor(row) { const p = this.calcPercent(row); return p >= 100 ? '#34c759' : p >= 50 ? '#0071e3' : '#ff9f0a' },
     initPie() {
       if (!this.$refs.pieChart) return
       if (!this.pieChart) this.pieChart = echarts.init(this.$refs.pieChart)
       this.pieChart.setOption({
         tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
         legend: { bottom: 0, data: ['还款中', '已结清', '逾期'] },
-        color: ['#f59e0b', '#10b981', '#ef4444'],
+        color: ['#ff9f0a', '#34c759', '#ff3b30'],
         series: [{
           type: 'pie', radius: ['40%', '70%'], center: ['50%', '45%'],
           data: [
@@ -159,8 +155,8 @@ export default {
         xAxis: { type: 'category', data: this.creditorList.map(i => i.name), axisLabel: { rotate: 15 } },
         yAxis: { type: 'value' },
         series: [
-          { name: '借款总额(万)', type: 'bar', data: this.creditorList.map(i => (i.loanAmount / 10000).toFixed(2)), itemStyle: { color: '#4f46e5', borderRadius: [4, 4, 0, 0] } },
-          { name: '剩余未还(万)', type: 'bar', data: this.creditorList.map(i => (i.remainingAmount / 10000).toFixed(2)), itemStyle: { color: '#f59e0b', borderRadius: [4, 4, 0, 0] } }
+          { name: '借款总额(万)', type: 'bar', data: this.creditorList.map(i => (i.loanAmount / 10000).toFixed(2)), itemStyle: { color: '#0071e3', borderRadius: [4, 4, 0, 0] } },
+          { name: '剩余未还(万)', type: 'bar', data: this.creditorList.map(i => (i.remainingAmount / 10000).toFixed(2)), itemStyle: { color: '#ff9f0a', borderRadius: [4, 4, 0, 0] } }
         ]
       })
     },
@@ -175,8 +171,8 @@ export default {
         series: [{
           type: 'line', name: '月还款额', smooth: true,
           data: this.trendList.map(i => i.value),
-          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1, [{offset:0,color:'rgba(79,70,229,0.3)'},{offset:1,color:'rgba(79,70,229,0.05)'}]) },
-          itemStyle: { color: '#4f46e5' }
+          areaStyle: { color: new echarts.graphic.LinearGradient(0,0,0,1, [{offset:0,color:'rgba(0,113,227,0.3)'},{offset:1,color:'rgba(0,113,227,0.05)'}]) },
+          itemStyle: { color: '#0071e3' }
         }]
       })
     }
@@ -195,65 +191,56 @@ export default {
   gap: 16px;
   transition: all 0.3s ease;
   cursor: default;
-
-  &:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
-  }
-
-  .card-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-
-    i { font-size: 24px; }
-  }
-
-  .card-body {
-    flex: 1;
-  }
-
-  .card-value { font-size: 26px; font-weight: 700; margin-bottom: 4px }
-  .card-label { font-size: 13px; opacity: .85 }
+  margin-bottom: 16px;
 }
+.stats-cards .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+.stats-cards .card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.stats-cards .card-icon i { font-size: 24px; }
+.stats-cards .card-body { flex: 1; }
+.card-value { font-size: 26px; font-weight: 700; margin-bottom: 4px; }
+.card-label { font-size: 13px; opacity: .85; }
 
-.card-indigo { background: linear-gradient(135deg, #4f46e5, #6366f1) }
-.card-violet { background: linear-gradient(135deg, #7c3aed, #a78bfa) }
-.card-amber { background: linear-gradient(135deg, #f59e0b, #fbbf24) }
-.card-emerald { background: linear-gradient(135deg, #10b981, #34d399) }
+.card-indigo  { background: linear-gradient(135deg, #0071e3, #2997ff); }
+.card-blue    { background: linear-gradient(135deg, #5e5ce6, #8e8e93); }
+.card-amber   { background: linear-gradient(135deg, #ff9f0a, #ffd60a); }
+.card-emerald { background: linear-gradient(135deg, #34c759, #30d158); }
 
 .chart-row { margin-bottom: 20px }
-
 .chart-card {
   border-radius: 12px;
   border: none;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   transition: box-shadow 0.3s;
-
-  &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  }
-
-  .chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .chart-title {
-      font-weight: 600;
-      font-size: 15px;
-      color: #374151;
-    }
-  }
+  margin-bottom: 16px;
+}
+.chart-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chart-title {
+  font-weight: 600;
+  font-size: 15px;
+  color: #1d1d1f;
 }
 
 ::v-deep .el-table {
-  th { background: #f9fafb; color: #374151; font-weight: 600 }
+  th { background: #f5f5f7; color: #6e6e73; font-weight: 600 }
   border-radius: 8px;
 }
 </style>

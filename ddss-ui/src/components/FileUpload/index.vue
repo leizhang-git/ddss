@@ -16,18 +16,18 @@
       class="upload-file-uploader"
       multiple
     >
-      <!-- 上传按钮 -->
-      <el-button size="mini" type="primary">选取文件</el-button>
-      <!-- 上传提示 -->
+      <!-- 涓婁紶鎸夐挳 -->
+      <el-button size="mini" type="primary">閫夊彇鏂囦欢</el-button>
+      <!-- 涓婁紶鎻愮ず -->
       <div v-if="showTip" slot="tip" class="el-upload__tip">
-        请上传
-        <template v-if="fileSize"> 大小不超过 <b style="color: #ef4444">{{ fileSize }}MB</b></template>
-        <template v-if="fileType"> 格式为 <b style="color: #ef4444">{{ fileType.join("/") }}</b></template>
-        的文件
+        璇蜂笂浼?
+        <template v-if="fileSize"> 澶у皬涓嶈秴杩?<b style="color: #ff3b30">{{ fileSize }}MB</b></template>
+        <template v-if="fileType"> 鏍煎紡涓?<b style="color: #ff3b30">{{ fileType.join("/") }}</b></template>
+        鐨勬枃浠?
       </div>
     </el-upload>
 
-    <!-- 文件列表 -->
+    <!-- 鏂囦欢鍒楄〃 -->
     <transition-group ref="uploadFileList" class="upload-file-list el-upload-list el-upload-list--text"
                       name="el-fade-in-linear" tag="ul">
       <li v-for="(file, index) in fileList" :key="file.url" class="el-upload-list__item ele-upload-list__item-content">
@@ -35,7 +35,7 @@
           <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
         </el-link>
         <div class="ele-upload-list__item-content-action">
-          <el-link v-if="!disabled" :underline="false" type="danger" @click="handleDelete(index)">删除</el-link>
+          <el-link v-if="!disabled" :underline="false" type="danger" @click="handleDelete(index)">鍒犻櫎</el-link>
         </div>
       </li>
     </transition-group>
@@ -49,43 +49,43 @@ import Sortable from 'sortablejs'
 export default {
   name: "FileUpload",
   props: {
-    // 值
+    // 鍊?
     value: [String, Object, Array],
-    // 上传接口地址
+    // 涓婁紶鎺ュ彛鍦板潃
     action: {
       type: String,
       default: "/common/upload"
     },
-    // 上传携带的参数
+    // 涓婁紶鎼哄甫鐨勫弬鏁?
     data: {
       type: Object
     },
-    // 数量限制
+    // 鏁伴噺闄愬埗
     limit: {
       type: Number,
       default: 5
     },
-    // 大小限制(MB)
+    // 澶у皬闄愬埗(MB)
     fileSize: {
       type: Number,
       default: 5
     },
-    // 文件类型, 例如['png', 'jpg', 'jpeg']
+    // 鏂囦欢绫诲瀷, 渚嬪['png', 'jpg', 'jpeg']
     fileType: {
       type: Array,
       default: () => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "pdf"]
     },
-    // 是否显示提示
+    // 鏄惁鏄剧ず鎻愮ず
     isShowTip: {
       type: Boolean,
       default: true
     },
-    // 禁用组件（仅查看文件）
+    // 绂佺敤缁勪欢锛堜粎鏌ョ湅鏂囦欢锛?
     disabled: {
       type: Boolean,
       default: false
     },
-    // 拖动排序
+    // 鎷栧姩鎺掑簭
     drag: {
       type: Boolean,
       default: true
@@ -96,7 +96,7 @@ export default {
       number: 0,
       uploadList: [],
       baseUrl: process.env.VUE_APP_BASE_API,
-      uploadFileUrl: process.env.VUE_APP_BASE_API + this.action, // 上传文件服务器地址
+      uploadFileUrl: process.env.VUE_APP_BASE_API + this.action, // 涓婁紶鏂囦欢鏈嶅姟鍣ㄥ湴鍧€
       headers: {
         Authorization: "Bearer " + getToken(),
       },
@@ -123,9 +123,9 @@ export default {
       handler(val) {
         if (val) {
           let temp = 1
-          // 首先将值转为数组
+          // 棣栧厛灏嗗€艰浆涓烘暟缁?
           const list = Array.isArray(val) ? val : this.value.split(',')
-          // 然后将数组转为对象数组
+          // 鐒跺悗灏嗘暟缁勮浆涓哄璞℃暟缁?
           this.fileList = list.map(item => {
             if (typeof item === "string") {
               item = {name: item, url: item}
@@ -143,51 +143,51 @@ export default {
     }
   },
   computed: {
-    // 是否显示提示
+    // 鏄惁鏄剧ず鎻愮ず
     showTip() {
       return this.isShowTip && (this.fileType || this.fileSize)
     },
   },
   methods: {
-    // 上传前校检格式和大小
+    // 涓婁紶鍓嶆牎妫€鏍煎紡鍜屽ぇ灏?
     handleBeforeUpload(file) {
-      // 校检文件类型
+      // 鏍℃鏂囦欢绫诲瀷
       if (this.fileType) {
         const fileName = file.name.split('.')
         const fileExt = fileName[fileName.length - 1]
         const isTypeOk = this.fileType.indexOf(fileExt) >= 0
         if (!isTypeOk) {
-          this.$modal.msgError(`文件格式不正确，请上传${this.fileType.join("/")}格式文件!`)
+          this.$modal.msgError(`鏂囦欢鏍煎紡涓嶆纭紝璇蜂笂浼?{this.fileType.join("/")}鏍煎紡鏂囦欢!`)
           return false
         }
       }
-      // 校检文件名是否包含特殊字符
+      // 鏍℃鏂囦欢鍚嶆槸鍚﹀寘鍚壒娈婂瓧绗?
       if (file.name.includes(',')) {
-        this.$modal.msgError('文件名不正确，不能包含英文逗号!')
+        this.$modal.msgError('鏂囦欢鍚嶄笉姝ｇ‘锛屼笉鑳藉寘鍚嫳鏂囬€楀彿!')
         return false
       }
-      // 校检文件大小
+      // 鏍℃鏂囦欢澶у皬
       if (this.fileSize) {
         const isLt = file.size / 1024 / 1024 < this.fileSize
         if (!isLt) {
-          this.$modal.msgError(`上传文件大小不能超过 ${this.fileSize} MB!`)
+          this.$modal.msgError(`涓婁紶鏂囦欢澶у皬涓嶈兘瓒呰繃 ${this.fileSize} MB!`)
           return false
         }
       }
-      this.$modal.loading("正在上传文件，请稍候...")
+      this.$modal.loading("姝ｅ湪涓婁紶鏂囦欢锛岃绋嶅€?..")
       this.number++
       return true
     },
-    // 文件个数超出
+    // 鏂囦欢涓暟瓒呭嚭
     handleExceed() {
-      this.$modal.msgError(`上传文件数量不能超过 ${this.limit} 个!`)
+      this.$modal.msgError(`涓婁紶鏂囦欢鏁伴噺涓嶈兘瓒呰繃 ${this.limit} 涓?`)
     },
-    // 上传失败
+    // 涓婁紶澶辫触
     handleUploadError(err) {
-      this.$modal.msgError("上传文件失败，请重试")
+      this.$modal.msgError("涓婁紶鏂囦欢澶辫触锛岃閲嶈瘯")
       this.$modal.closeLoading()
     },
-    // 上传成功回调
+    // 涓婁紶鎴愬姛鍥炶皟
     handleUploadSuccess(res, file) {
       if (res.code === 200) {
         this.uploadList.push({name: res.fileName, url: res.fileName})
@@ -200,12 +200,12 @@ export default {
         this.uploadedSuccessfully()
       }
     },
-    // 删除文件
+    // 鍒犻櫎鏂囦欢
     handleDelete(index) {
       this.fileList.splice(index, 1)
       this.$emit("input", this.listToString(this.fileList))
     },
-    // 上传结束处理
+    // 涓婁紶缁撴潫澶勭悊
     uploadedSuccessfully() {
       if (this.number > 0 && this.uploadList.length === this.number) {
         this.fileList = this.fileList.concat(this.uploadList)
@@ -215,16 +215,16 @@ export default {
         this.$modal.closeLoading()
       }
     },
-    // 获取文件名称
+    // 鑾峰彇鏂囦欢鍚嶇О
     getFileName(name) {
-      // 如果是url那么取最后的名字 如果不是直接返回
+      // 濡傛灉鏄痷rl閭ｄ箞鍙栨渶鍚庣殑鍚嶅瓧 濡傛灉涓嶆槸鐩存帴杩斿洖
       if (name.lastIndexOf("/") > -1) {
         return name.slice(name.lastIndexOf("/") + 1)
       } else {
         return name
       }
     },
-    // 对象转成指定字符串分隔
+    // 瀵硅薄杞垚鎸囧畾瀛楃涓插垎闅?
     listToString(list, separator) {
       let strs = ""
       separator = separator || ","

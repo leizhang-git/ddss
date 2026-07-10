@@ -130,7 +130,7 @@
             </div>
             <div class="info-item">
               <span class="info-label">运行环境</span>
-              <span class="info-value" :style="{color: '#10b981'}">正常运行中</span>
+              <span class="info-value" :style="{color: '#34c759'}">正常运行中</span>
             </div>
           </div>
         </el-card>
@@ -250,28 +250,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/styles/variables.scss';
+
 .dashboard-container {
-  padding: 24px;
-  background: #F3F4F6;
-  min-height: calc(100vh - 84px);
+  padding: $space-6;
+  background: $bg-base;
+  min-height: calc(100vh - #{$header-height} - #{$tags-height});
 
   // 统计卡片
   .stats-row {
-    margin-bottom: 24px;
+    margin-bottom: $space-6;
 
     .stat-card {
-      border-radius: 12px;
+      border-radius: $radius-lg;
       overflow: hidden;
-      transition: all 0.3s ease;
-      margin-bottom: 16px;
+      transition: all $duration-base $ease;
+      margin-bottom: $space-4;
 
       &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        box-shadow: $shadow-lg;
       }
 
       .stat-card-inner {
-        padding: 24px;
+        padding: $space-6;
         display: flex;
         align-items: center;
         color: #fff;
@@ -293,12 +295,12 @@ export default {
       .stat-icon {
         width: 56px;
         height: 56px;
-        border-radius: 12px;
+        border-radius: $radius-base;
         background: rgba(255, 255, 255, 0.2);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-right: 16px;
+        margin-right: $space-4;
         flex-shrink: 0;
 
         .svg-icon {
@@ -313,22 +315,22 @@ export default {
         min-width: 0;
 
         .stat-label {
-          font-size: 13px;
+          font-size: $fs-sm;
           opacity: 0.85;
-          margin-bottom: 4px;
+          margin-bottom: $space-1;
         }
 
         .stat-value {
-          font-size: 26px;
-          font-weight: 700;
+          font-size: $fs-3xl;
+          font-weight: $fw-bold;
           line-height: 1.2;
         }
 
         .server-status {
-          font-size: 16px;
+          font-size: $fs-lg;
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: $space-2;
 
           .dot {
             width: 8px;
@@ -337,69 +339,52 @@ export default {
             display: inline-block;
 
             &.online {
-              background: #10b981;
-              box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+              background: #fff;
+              box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
               animation: pulse-dot 2s infinite;
             }
           }
         }
 
         .stat-trend {
-          font-size: 12px;
-          margin-top: 4px;
+          font-size: $fs-xs;
+          margin-top: $space-1;
           opacity: 0.9;
 
-          &.up {
-            color: rgba(255, 255, 255, 0.95);
-          }
-
-          &.down {
-            color: rgba(255, 255, 255, 0.8);
-          }
+          &.up { color: rgba(255, 255, 255, 0.95); }
+          &.down { color: rgba(255, 255, 255, 0.8); }
         }
       }
     }
 
-    .stat-card-blue {
-      background: linear-gradient(135deg, #4f46e5, #6366f1);
-    }
-
-    .stat-card-green {
-      background: linear-gradient(135deg, #10b981, #34d399);
-    }
-
-    .stat-card-orange {
-      background: linear-gradient(135deg, #f59e0b, #fbbf24);
-    }
-
-    .stat-card-purple {
-      background: linear-gradient(135deg, #8b5cf6, #a78bfa);
-    }
+    .stat-card-blue   { background: linear-gradient(135deg, #0071e3, #2997ff); }
+    .stat-card-green  { background: linear-gradient(135deg, #34c759, #30d158); }
+    .stat-card-orange { background: linear-gradient(135deg, #ff9f0a, #ffd60a); }
+    .stat-card-purple { background: linear-gradient(135deg, #5e5ce6, #8e8e93); }
   }
 
-  // 图表卡片
   .chart-row {
-    margin-bottom: 24px;
+    margin-bottom: $space-6;
   }
 
   .bottom-row {
-    margin-bottom: 24px;
+    margin-bottom: $space-6;
   }
 
   .chart-card {
-    border-radius: 12px;
+    border-radius: $radius-lg;
     overflow: hidden;
-    margin-bottom: 16px;
+    margin-bottom: $space-4;
     border: none;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    box-shadow: $shadow-xs;
 
     ::v-deep .el-card__header {
-      border-bottom: 1px solid #f0f2f5;
-      padding: 16px 20px;
+      border-bottom: 1px solid $border-lighter;
+      padding: $space-4 $space-5;
     }
 
     ::v-deep .el-card__body {
-      padding: 20px;
+      padding: $space-5;
     }
 
     .card-header {
@@ -408,11 +393,11 @@ export default {
       align-items: center;
 
       .card-title {
-        font-size: 16px;
-        font-weight: 600;
-        color: #303133;
+        font-size: $fs-md;
+        font-weight: $fw-semibold;
+        color: $text-primary;
         position: relative;
-        padding-left: 12px;
+        padding-left: $space-3;
 
         &::before {
           content: '';
@@ -422,8 +407,8 @@ export default {
           transform: translateY(-50%);
           width: 3px;
           height: 16px;
-          background: #4f46e5;
-          border-radius: 2px;
+          background: $brand;
+          border-radius: $radius-full;
         }
       }
     }
@@ -440,22 +425,22 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px dashed #ebeef5;
+      padding: $space-3 0;
+      border-bottom: 1px dashed $border-lighter;
 
       &:last-child {
         border-bottom: none;
       }
 
       .info-label {
-        color: #6B7280;
-        font-size: 13px;
+        color: $text-secondary;
+        font-size: $fs-sm;
       }
 
       .info-value {
-        color: #303133;
-        font-size: 13px;
-        font-weight: 500;
+        color: $text-primary;
+        font-size: $fs-sm;
+        font-weight: $fw-medium;
       }
     }
   }
@@ -464,22 +449,22 @@ export default {
   .quick-actions {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: $space-4;
 
     .action-item {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 16px 8px;
-      border-radius: 10px;
+      padding: $space-4 $space-2;
+      border-radius: $radius-base;
       cursor: pointer;
-      transition: all 0.3s ease;
-      background: #fafafa;
+      transition: all $duration-base $ease;
+      background: $bg-subtle;
 
       &:hover {
-        background: #EEF2FF;
+        background: $brand-bg;
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+        box-shadow: $shadow-sm;
 
         .action-icon {
           transform: scale(1.1);
@@ -489,28 +474,17 @@ export default {
       .action-icon {
         width: 44px;
         height: 44px;
-        border-radius: 10px;
+        border-radius: $radius-sm;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 8px;
-        transition: transform 0.3s ease;
+        margin-bottom: $space-2;
+        transition: transform $duration-base $ease;
 
-        &.bg-blue {
-          background: rgba(79, 70, 229, 0.1);
-        }
-
-        &.bg-green {
-          background: rgba(16, 185, 129, 0.1);
-        }
-
-        &.bg-orange {
-          background: rgba(245, 158, 11, 0.1);
-        }
-
-        &.bg-purple {
-          background: rgba(139, 92, 246, 0.1);
-        }
+        &.bg-blue   { background: rgba(0, 113, 227, 0.1); }
+        &.bg-green  { background: rgba(52, 199, 89, 0.1); }
+        &.bg-orange { background: rgba(255, 159, 10, 0.1); }
+        &.bg-purple { background: rgba(94, 92, 230, 0.1); }
 
         .svg-icon {
           font-size: 22px;
@@ -520,9 +494,9 @@ export default {
       }
 
       span {
-        font-size: 12px;
-        color: #606266;
-        font-weight: 500;
+        font-size: $fs-xs;
+        color: $text-secondary;
+        font-weight: $fw-medium;
       }
     }
   }
@@ -530,36 +504,32 @@ export default {
   // 关于
   .about-section {
     .about-text {
-      color: #606266;
-      font-size: 13px;
+      color: $text-secondary;
+      font-size: $fs-sm;
       line-height: 1.8;
-      margin: 0 0 16px 0;
+      margin: 0 0 $space-4 0;
     }
 
     .tech-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: $space-2;
 
       .el-tag {
-        border-radius: 4px;
+        border-radius: $radius-xs;
       }
     }
   }
 }
 
 @keyframes pulse-dot {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
 }
 
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 12px;
+    padding: $space-4;
 
     .quick-actions {
       grid-template-columns: repeat(2, 1fr);

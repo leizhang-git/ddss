@@ -1,52 +1,39 @@
-// cover some element-ui styles
+// ============================================================
+// DDSS Element UI 覆盖样式 — Premium
+// ============================================================
+@import './variables.scss';
 
+// ============ 基础 ============
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
-  font-weight: 400 !important;
+  font-weight: $fw-normal !important;
 }
 
 .el-upload {
-  input[type="file"] {
-    display: none !important;
-  }
+  input[type="file"] { display: none !important; }
 }
 
-.el-upload__input {
-  display: none;
+.el-upload__input { display: none; }
+
+.cell .el-tag { margin-right: 0; }
+
+.small-padding .cell {
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
-.cell {
-  .el-tag {
-    margin-right: 0px;
-  }
+.fixed-width .el-button--mini {
+  padding: 7px 10px;
+  width: 60px;
 }
 
-.small-padding {
-  .cell {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
+.status-col .cell {
+  padding: 0 10px;
+  text-align: center;
+  .el-tag { margin-right: 0; }
 }
 
-.fixed-width {
-  .el-button--mini {
-    padding: 7px 10px;
-    width: 60px;
-  }
-}
-
-.status-col {
-  .cell {
-    padding: 0 10px;
-    text-align: center;
-
-    .el-tag {
-      margin-right: 0px;
-    }
-  }
-}
-
-// to fixed https://github.com/ElemeFE/element/issues/2461
+// ============ Dialog 定位 ============
 .el-dialog {
   transform: none;
   left: 0;
@@ -54,11 +41,9 @@
   margin: 0 auto;
 }
 
-// refine element ui upload
 .upload-container {
   .el-upload {
     width: 100%;
-
     .el-upload-dragger {
       width: 100%;
       height: 200px;
@@ -66,118 +51,170 @@
   }
 }
 
-// dropdown
-.el-dropdown-menu {
-  a {
-    display: block
-  }
-}
+.el-dropdown-menu a { display: block; }
 
-// fix date-picker ui bug in filter-item
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
 }
 
-// to fix el-date-picker css style
-.el-range-separator {
-  box-sizing: content-box;
-}
+.el-range-separator { box-sizing: content-box; }
 
-.el-menu--collapse
-> div
-> .el-submenu
-> .el-submenu__title
-> .el-submenu__icon-arrow {
+.el-menu--collapse > div > .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
   display: none;
 }
 
-/* ============ DDSS 全局组件精修 ============ */
+// ============ DDSS 全局精修 ============
 
-// Tag 标签：圆角 + 轻底色（不强制高度，避免长文本截断）
+// Tag
 .el-tag {
-  border-radius: 6px;
-  font-weight: 500;
-  font-size: 12px;
+  border-radius: $radius-xs;
+  font-weight: $fw-medium;
+  font-size: $fs-xs;
   border-width: 1px;
+  height: auto;
+  line-height: 1.5;
+  padding: 2px 10px;
 }
 
-// Input 输入框：聚焦渐变光晕（mini 尺寸缩小光晕）
+// Input
 .el-input__inner {
-  transition: all 0.2s ease;
+  border-radius: $radius-sm;
+  font-size: $fs-base;
+  transition: all $duration-fast $ease;
 
   &:hover {
-    border-color: #C7D2FE;
+    border-color: $gray-300;
   }
 
   &:focus {
-    border-color: var(--ddss-primary, #4F46E5);
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.08);
+    border-color: $brand;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
   }
 }
 
 .el-input--mini .el-input__inner:focus {
-  box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.08);
+  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.1);
 }
 
-// Select 选择器下拉项 hover
+// Textarea
+.el-textarea__inner {
+  border-radius: $radius-sm;
+  transition: all $duration-fast $ease;
+
+  &:hover { border-color: $gray-300; }
+  &:focus {
+    border-color: $brand;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+}
+
+// Select
 .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
-  background: #EEF2FF;
-  color: var(--ddss-primary, #4F46E5);
+  background: $bg-subtle;
+  color: $brand;
 }
 
-// Checkbox 选中色
+// Checkbox
 .el-checkbox__input.is-checked .el-checkbox__inner,
 .el-checkbox__input.is-indeterminate .el-checkbox__inner {
-  background-color: var(--ddss-primary, #4F46E5);
-  border-color: var(--ddss-primary, #4F46E5);
+  background-color: $brand;
+  border-color: $brand;
 }
 
 .el-checkbox__input.is-checked + .el-checkbox__label {
-  color: var(--ddss-primary, #4F46E5);
+  color: $brand;
 }
 
-// Radio 选中色
+.el-checkbox__inner {
+  border-radius: $radius-xs;
+  transition: all $duration-fast $ease;
+}
+
+// Form item 间距
+.el-form-item {
+  margin-bottom: $space-5;
+}
+
+.el-form-item__label {
+  font-size: $fs-base;
+  color: $text-regular;
+  font-weight: $fw-medium;
+  padding-right: $space-4;
+}
+
+.el-form-item__content {
+  line-height: 1.6;
+}
+
+// Radio
 .el-radio__input.is-checked .el-radio__inner {
-  background-color: var(--ddss-primary, #4F46E5);
-  border-color: var(--ddss-primary, #4F46E5);
+  background-color: $brand;
+  border-color: $brand;
 }
 
 .el-radio__input.is-checked + .el-radio__label {
-  color: var(--ddss-primary, #4F46E5);
+  color: $brand;
 }
 
-// Switch 开关
+// Switch
 .el-switch.is-checked .el-switch__core {
-  background-color: var(--ddss-primary, #4F46E5);
-  border-color: var(--ddss-primary, #4F46E5);
+  background-color: $success;
+  border-color: $success;
 }
 
-// Tabs 选中下划线
-.el-tabs__item.is-active {
-  color: var(--ddss-primary, #4F46E5);
+// Tabs
+.el-tabs__item.is-active { color: $brand; }
+.el-tabs__active-bar { background-color: $brand; }
+.el-tabs__item:hover { color: $brand; }
+
+// Button
+.el-button--primary {
+  background-color: $brand;
+  border-color: $brand;
+
+  &:hover, &:focus {
+    background: $brand-hover;
+    border-color: $brand-hover;
+  }
 }
 
-.el-tabs__active-bar {
-  background-color: var(--ddss-primary, #4F46E5);
+.el-button.is-plain {
+  transition: all $duration-fast $ease;
 }
 
-// Loading 遮罩
+.el-button--mini {
+  padding: 7px 14px;
+  border-radius: $radius-xs;
+}
+
+// Loading
 .el-loading-mask {
-  background-color: rgba(249, 250, 251, 0.85);
-  backdrop-filter: blur(2px);
+  background-color: rgba(245, 245, 247, 0.8);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
-// Tooltip 暗色 + 圆角
+.el-loading-spinner .path {
+  stroke: $brand;
+}
+
+// Tooltip
 .el-tooltip__popper {
-  border-radius: 6px;
-  font-size: 12px;
+  border-radius: $radius-xs;
+  font-size: $fs-xs;
+  padding: 6px 12px;
 }
 
-// 滚动条美化
+// DatePicker
+.el-date-editor .el-range-separator {
+  color: $gray-400;
+}
+
+// 滚动条
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -185,10 +222,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D1D5DB;
-  border-radius: 4px;
+  background: $gray-200;
+  border-radius: $radius-full;
 
   &:hover {
-    background: #9CA3AF;
+    background: $gray-300;
   }
 }

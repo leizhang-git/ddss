@@ -108,18 +108,18 @@ export default {
           }
         },
         legend: {
-          data: ['预期数据', '实际数据'],
+          data: ['棰勬湡鏁版嵁', '瀹為檯鏁版嵁'],
           textStyle: {
             color: '#606266'
           }
         },
         series: [{
-          name: '预期数据',
+          name: '棰勬湡鏁版嵁',
           itemStyle: {
             normal: {
-              color: '#4f46e5',
+              color: '#0071e3',
               lineStyle: {
-                color: '#4f46e5',
+                color: '#0071e3',
                 width: 2
               }
             }
@@ -131,14 +131,14 @@ export default {
           animationEasing: 'cubicInOut'
         },
         {
-          name: '实际数据',
+          name: '瀹為檯鏁版嵁',
           smooth: true,
           type: 'line',
           itemStyle: {
             normal: {
-              color: '#10b981',
+              color: '#34c759',
               lineStyle: {
-                color: '#10b981',
+                color: '#34c759',
                 width: 2
               },
               areaStyle: {

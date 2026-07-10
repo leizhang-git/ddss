@@ -7,227 +7,128 @@
 @import './login.scss';
 
 :root {
-  --ddss-primary: #4F46E5;
-  --ddss-primary-light: #6366F1;
-  --ddss-primary-dark: #4338CA;
-  --ddss-secondary: #8B5CF6;
-  --ddss-success: #10B981;
-  --ddss-warning: #F59E0B;
-  --ddss-danger: #EF4444;
-  --ddss-info: #6B7280;
-  --ddss-cyan: #06B6D4;
-  --ddss-text: #1F2937;
-  --ddss-text-regular: #374151;
-  --ddss-text-secondary: #6B7280;
-  --ddss-text-placeholder: #9CA3AF;
-  --ddss-border: #E5E7EB;
-  --ddss-border-light: #F3F4F6;
-  --ddss-bg: #F9FAFB;
-  --ddss-bg-hover: #F3F4F6;
-  --ddss-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --ddss-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
-  --ddss-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
-  --ddss-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --ddss-radius: 12px;
-  --ddss-radius-sm: 8px;
+  --brand: #{$brand};
+  --brand-hover: #{$brand-hover};
+  --brand-light: #{$brand-light};
+  --brand-bg: #{$brand-bg};
+  --success: #{$success};
+  --warning: #{$warning};
+  --danger: #{$danger};
+  --info: #{$info};
+  --text-primary: #{$text-primary};
+  --text-regular: #{$text-regular};
+  --text-secondary: #{$text-secondary};
+  --text-placeholder: #{$text-placeholder};
+  --border-base: #{$border-base};
+  --border-light: #{$border-light};
+  --border-lighter: #{$border-lighter};
+  --bg-base: #{$bg-base};
+  --bg-surface: #{$bg-surface};
+  --bg-subtle: #{$bg-subtle};
+  --radius-sm: #{$radius-sm};
+  --radius-base: #{$radius-base};
+  --radius-lg: #{$radius-lg};
+  --shadow-sm: #{$shadow-sm};
+  --shadow-base: #{$shadow-base};
+  --shadow-md: #{$shadow-md};
+  --shadow-lg: #{$shadow-lg};
 }
 
-body {
-  height: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  color: var(--ddss-text);
-  background: #F3F4F6;
-}
-
-label {
-  font-weight: 700;
-}
-
-html {
-  height: 100%;
+* {
   box-sizing: border-box;
 }
 
-#app {
+html, body, #app {
   height: 100%;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-.no-padding {
-  padding: 0px !important;
-}
-
-.padding-content {
-  padding: 4px 0;
-}
-
-a:focus,
-a:active {
-  outline: none;
-}
-
-a,
-a:focus,
-a:hover {
-  cursor: pointer;
-  color: inherit;
-  text-decoration: none;
-}
-
-div:focus {
-  outline: none;
-}
-
-.fr {
-  float: right;
-}
-
-.fl {
-  float: left;
-}
-
-.pr-5 {
-  padding-right: 5px;
-}
-
-.pl-5 {
-  padding-left: 5px;
-}
-
-.block {
-  display: block;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.inlineBlock {
-  display: block;
-}
-
-.clearfix {
-  &:after {
-    visibility: hidden;
-    display: block;
-    font-size: 0;
-    content: " ";
-    clear: both;
-    height: 0;
-  }
-}
-
-aside {
-  background: #EEF2FF;
-  padding: 8px 24px;
-  margin-bottom: 20px;
-  border-radius: var(--ddss-radius-sm);
-  display: block;
-  line-height: 32px;
-  font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: var(--ddss-text);
+body {
+  margin: 0;
+  font-family: $font-family;
+  font-size: $fs-base;
+  color: $text-primary;
+  background: $bg-base;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
 
-  a {
-    color: var(--ddss-primary);
-    cursor: pointer;
+a {
+  color: $brand;
+  text-decoration: none;
+  cursor: pointer;
 
-    &:hover {
-      color: var(--ddss-primary-light);
+  &:focus, &:active { outline: none; }
+  &:hover { color: $brand-hover; }
+}
+
+div:focus { outline: none; }
+
+// ============ 工具类 ============
+.fl { float: left; }
+.fr { float: right; }
+.clearfix { @include clearfix; }
+.text-center { text-align: center; }
+.pointer { cursor: pointer; }
+.no-padding { padding: 0 !important; }
+
+// ============ App Main 背景 ============
+.app-main {
+  background: $bg-base !important;
+}
+
+// ============ 业务页面容器 ============
+.app-container {
+  padding: $space-6;
+
+  // 搜索表单 — 白底大留白卡片
+  > .el-form {
+    background: $bg-surface;
+    padding: $space-6 $space-6 $space-3;
+    border-radius: $radius-lg;
+    margin-bottom: $space-5;
+    border: 1px solid $border-lighter;
+
+    .el-form-item {
+      margin-bottom: $space-5;
     }
+
+    .el-form-item:last-child {
+      margin-bottom: $space-3;
+    }
+  }
+
+  > .el-row.mb8 {
+    margin-bottom: $space-4;
   }
 }
 
-//main-container全局样式
-.app-container {
-  padding: 20px;
+// ============ 通用 ============
+aside {
+  background: $brand-bg;
+  padding: $space-3 $space-6;
+  margin-bottom: $space-5;
+  border-radius: $radius-base;
+  color: $text-regular;
+  font-size: $fs-base;
+}
 
-  // 搜索表单区域：白底卡片，提升层次（仅作用于直接子级 inline 搜索表单）
-  > .el-form {
-    background: #fff;
-    padding: 20px 20px 4px;
-    border-radius: var(--ddss-radius);
-    margin-bottom: 16px;
-    box-shadow: var(--ddss-shadow-sm);
-    border: 1px solid var(--ddss-border-light);
+.link-type {
+  color: $brand;
+  cursor: pointer;
+  &:hover { color: $brand-hover; }
+}
 
-    .el-form-item {
-      margin-bottom: 18px;
-    }
-
-    // 最后一行通常是按钮，减少底部间距避免过度留白
-    .el-form-item:last-child {
-      margin-bottom: 12px;
-    }
-  }
-
-  // 工具栏行
-  > .el-row {
-    &.mb8 {
-      margin-bottom: 14px;
-    }
+.filter-container {
+  padding-bottom: $space-3;
+  .filter-item {
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: $space-3;
   }
 }
 
 .components-container {
-  margin: 30px 50px;
+  margin: $space-8 $space-10;
   position: relative;
-}
-
-.text-center {
-  text-align: center
-}
-
-.sub-navbar {
-  height: 50px;
-  line-height: 50px;
-  position: relative;
-  width: 100%;
-  text-align: right;
-  padding-right: 20px;
-  transition: 600ms ease position;
-  background: linear-gradient(90deg, var(--ddss-primary) 0%, var(--ddss-secondary) 100%);
-
-  .subtitle {
-    font-size: 20px;
-    color: #fff;
-  }
-
-  &.draft {
-    background: #d1d5db;
-  }
-
-  &.deleted {
-    background: #d1d5db;
-  }
-}
-
-.link-type,
-.link-type:focus {
-  color: var(--ddss-primary);
-  cursor: pointer;
-
-  &:hover {
-    color: var(--ddss-primary-light);
-  }
-}
-
-.filter-container {
-  padding-bottom: 10px;
-
-  .filter-item {
-    display: inline-block;
-    vertical-align: middle;
-    margin-bottom: 10px;
-  }
 }

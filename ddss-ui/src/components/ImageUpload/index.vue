@@ -22,18 +22,18 @@
       <i class="el-icon-plus"></i>
     </el-upload>
 
-    <!-- 上传提示 -->
+    <!-- 涓婁紶鎻愮ず -->
     <div v-if="showTip && !disabled" slot="tip" class="el-upload__tip">
-      请上传
-      <template v-if="fileSize"> 大小不超过 <b style="color: #ef4444">{{ fileSize }}MB</b></template>
-      <template v-if="fileType"> 格式为 <b style="color: #ef4444">{{ fileType.join("/") }}</b></template>
-      的文件
+      璇蜂笂浼?
+      <template v-if="fileSize"> 澶у皬涓嶈秴杩?<b style="color: #ff3b30">{{ fileSize }}MB</b></template>
+      <template v-if="fileType"> 鏍煎紡涓?<b style="color: #ff3b30">{{ fileType.join("/") }}</b></template>
+      鐨勬枃浠?
     </div>
 
     <el-dialog
       :visible.sync="dialogVisible"
       append-to-body
-      title="预览"
+      title="棰勮"
       width="800"
     >
       <img
@@ -52,41 +52,41 @@ import Sortable from 'sortablejs'
 export default {
   props: {
     value: [String, Object, Array],
-    // 上传接口地址
+    // 涓婁紶鎺ュ彛鍦板潃
     action: {
       type: String,
       default: "/common/upload"
     },
-    // 上传携带的参数
+    // 涓婁紶鎼哄甫鐨勫弬鏁?
     data: {
       type: Object
     },
-    // 图片数量限制
+    // 鍥剧墖鏁伴噺闄愬埗
     limit: {
       type: Number,
       default: 5
     },
-    // 大小限制(MB)
+    // 澶у皬闄愬埗(MB)
     fileSize: {
       type: Number,
       default: 5
     },
-    // 文件类型, 例如['png', 'jpg', 'jpeg']
+    // 鏂囦欢绫诲瀷, 渚嬪['png', 'jpg', 'jpeg']
     fileType: {
       type: Array,
       default: () => ["png", "jpg", "jpeg"]
     },
-    // 是否显示提示
+    // 鏄惁鏄剧ず鎻愮ず
     isShowTip: {
       type: Boolean,
       default: true
     },
-    // 禁用组件（仅查看图片）
+    // 绂佺敤缁勪欢锛堜粎鏌ョ湅鍥剧墖锛?
     disabled: {
       type: Boolean,
       default: false
     },
-    // 拖动排序
+    // 鎷栧姩鎺掑簭
     drag: {
       type: Boolean,
       default: true
@@ -100,7 +100,7 @@ export default {
       dialogVisible: false,
       hideUpload: false,
       baseUrl: process.env.VUE_APP_BASE_API,
-      uploadImgUrl: process.env.VUE_APP_BASE_API + this.action, // 上传的图片服务器地址
+      uploadImgUrl: process.env.VUE_APP_BASE_API + this.action, // 涓婁紶鐨勫浘鐗囨湇鍔″櫒鍦板潃
       headers: {
         Authorization: "Bearer " + getToken(),
       },
@@ -125,9 +125,9 @@ export default {
     value: {
       handler(val) {
         if (val) {
-          // 首先将值转为数组
+          // 棣栧厛灏嗗€艰浆涓烘暟缁?
           const list = Array.isArray(val) ? val : this.value.split(',')
-          // 然后将数组转为对象数组
+          // 鐒跺悗灏嗘暟缁勮浆涓哄璞℃暟缁?
           this.fileList = list.map(item => {
             if (typeof item === "string") {
               if (item.indexOf(this.baseUrl) === -1 && !isExternal(item)) {
@@ -148,13 +148,13 @@ export default {
     }
   },
   computed: {
-    // 是否显示提示
+    // 鏄惁鏄剧ず鎻愮ず
     showTip() {
       return this.isShowTip && (this.fileType || this.fileSize)
     },
   },
   methods: {
-    // 上传前loading加载
+    // 涓婁紶鍓峫oading鍔犺浇
     handleBeforeUpload(file) {
       let isImg = false
       if (this.fileType.length) {
@@ -172,28 +172,28 @@ export default {
       }
 
       if (!isImg) {
-        this.$modal.msgError(`文件格式不正确，请上传${this.fileType.join("/")}图片格式文件!`)
+        this.$modal.msgError(`鏂囦欢鏍煎紡涓嶆纭紝璇蜂笂浼?{this.fileType.join("/")}鍥剧墖鏍煎紡鏂囦欢!`)
         return false
       }
       if (file.name.includes(',')) {
-        this.$modal.msgError('文件名不正确，不能包含英文逗号!')
+        this.$modal.msgError('鏂囦欢鍚嶄笉姝ｇ‘锛屼笉鑳藉寘鍚嫳鏂囬€楀彿!')
         return false
       }
       if (this.fileSize) {
         const isLt = file.size / 1024 / 1024 < this.fileSize
         if (!isLt) {
-          this.$modal.msgError(`上传头像图片大小不能超过 ${this.fileSize} MB!`)
+          this.$modal.msgError(`涓婁紶澶村儚鍥剧墖澶у皬涓嶈兘瓒呰繃 ${this.fileSize} MB!`)
           return false
         }
       }
-      this.$modal.loading("正在上传图片，请稍候...")
+      this.$modal.loading("姝ｅ湪涓婁紶鍥剧墖锛岃绋嶅€?..")
       this.number++
     },
-    // 文件个数超出
+    // 鏂囦欢涓暟瓒呭嚭
     handleExceed() {
-      this.$modal.msgError(`上传文件数量不能超过 ${this.limit} 个!`)
+      this.$modal.msgError(`涓婁紶鏂囦欢鏁伴噺涓嶈兘瓒呰繃 ${this.limit} 涓?`)
     },
-    // 上传成功回调
+    // 涓婁紶鎴愬姛鍥炶皟
     handleUploadSuccess(res, file) {
       if (res.code === 200) {
         this.uploadList.push({name: res.fileName, url: res.fileName})
@@ -206,7 +206,7 @@ export default {
         this.uploadedSuccessfully()
       }
     },
-    // 删除图片
+    // 鍒犻櫎鍥剧墖
     handleDelete(file) {
       const findex = this.fileList.map(f => f.name).indexOf(file.name)
       if (findex > -1) {
@@ -214,12 +214,12 @@ export default {
         this.$emit("input", this.listToString(this.fileList))
       }
     },
-    // 上传失败
+    // 涓婁紶澶辫触
     handleUploadError() {
-      this.$modal.msgError("上传图片失败，请重试")
+      this.$modal.msgError("涓婁紶鍥剧墖澶辫触锛岃閲嶈瘯")
       this.$modal.closeLoading()
     },
-    // 上传结束处理
+    // 涓婁紶缁撴潫澶勭悊
     uploadedSuccessfully() {
       if (this.number > 0 && this.uploadList.length === this.number) {
         this.fileList = this.fileList.concat(this.uploadList)
@@ -229,12 +229,12 @@ export default {
         this.$modal.closeLoading()
       }
     },
-    // 预览
+    // 棰勮
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url
       this.dialogVisible = true
     },
-    // 对象转成指定字符串分隔
+    // 瀵硅薄杞垚鎸囧畾瀛楃涓插垎闅?
     listToString(list, separator) {
       let strs = ""
       separator = separator || ","
@@ -249,7 +249,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-// .el-upload--picture-card 控制加号部分
+// .el-upload--picture-card 鎺у埗鍔犲彿閮ㄥ垎
 ::v-deep.hide .el-upload--picture-card {
   display: none;
 }
@@ -258,7 +258,7 @@ export default {
   display: none !important;
 }
 
-// 去掉动画效果
+// 鍘绘帀鍔ㄧ敾鏁堟灉
 ::v-deep .el-list-enter-active,
 ::v-deep .el-list-leave-active {
   transition: all 0s;

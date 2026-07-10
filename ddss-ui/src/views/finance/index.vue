@@ -66,7 +66,7 @@
         </el-row>
         <el-row :gutter="20">
           <el-col :span="8"><el-form-item label="提前结清"><el-input-number v-model="form.earlySettlementAmount" :min="0" :precision="2" style="width:100%" controls-position="right"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="便宜"><el-input :value="cheap(form)" readonly style="font-weight:bold;color:#10b981"/></el-form-item></el-col>
+          <el-col :span="8"><el-form-item label="便宜"><el-input :value="cheap(form)" readonly style="font-weight:bold;color:#34c759"/></el-form-item></el-col>
           <el-col :span="8"><el-form-item label="月还款"><el-input-number v-model="form.monthlyPayment" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
         </el-row>
         <el-row :gutter="20">
@@ -181,19 +181,11 @@ export default {
     },
     getSummaries({columns,data}) {
       const sums=columns.map(()=>''); sums[1]='合计'; let idx=2
-      // 便宜
       let cheapSum=0; data.forEach(r=>{const tr=Number(this.totalRepay(r))||0,es=Number(r.earlySettlementAmount)||0;if(tr&&es)cheapSum+=Math.max(0,tr-es)}); sums[idx++]=cheapSum.toFixed(2)
-      // 提前结清
       sums[idx++]=data.reduce((s,r)=>s+(Number(r.earlySettlementAmount)||0),0).toFixed(2)
-      // 总额
       let totalSum=0; data.forEach(r=>totalSum+=Number(this.totalRepay(r))||0); sums[idx++]=totalSum.toFixed(2)
-      // 日期
-      idx++
-      // 几号
-      idx++
-      // 月份列
+      idx++; idx++
       this.months.forEach(m=>{let mt=0;data.forEach(r=>{mt+=this.getCellVal(r,m)});sums[idx++]=mt>0?mt.toFixed(2):''})
-      // 剩余
       sums[idx++]=data.reduce((s,r)=>s+(Number(r.remainingAmount)||0),0).toFixed(2)
       return sums
     },
@@ -219,96 +211,81 @@ export default {
 .finance-page {
   .toolbar-card {
     margin-bottom: 12px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-
-    .toolbar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-
-      .toolbar-group {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-      }
-    }
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   }
-
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
   .table-card {
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-
-    .table-wrapper {
-      overflow-x: auto;
-    }
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   }
-
+  .table-wrapper {
+    overflow-x: auto;
+  }
   ::v-deep .el-table {
     border-radius: 8px;
-
-    th {
-      background: #f9fafb;
-      color: #374151;
-      font-weight: 600;
-    }
-
-    .el-table__footer-wrapper td {
-      font-weight: 700;
-      font-size: 13px;
-      background: #f3f4f6;
-      color: #1f2937;
-    }
   }
-
+  ::v-deep .el-table th {
+    background: #f5f5f7;
+    color: #6e6e73;
+    font-weight: 600;
+  }
+  ::v-deep .el-table__footer-wrapper td {
+    font-weight: 700;
+    font-size: 13px;
+    background: #f5f5f7;
+    color: #1d1d1f;
+  }
   .amt-positive {
-    color: #10b981;
+    color: #34c759;
     font-weight: 500;
   }
   .amt-bold {
     font-weight: 600;
-    color: #1f2937;
+    color: #1d1d1f;
   }
-
   .cell-val {
     cursor: pointer;
-    color: #1f2937;
+    color: #1d1d1f;
     padding: 2px 8px;
     border-radius: 4px;
     transition: all 0.2s;
-
-    &:hover {
-      color: #4f46e5;
-      background: rgba(79, 70, 229, 0.08);
-    }
   }
-
+  .cell-val:hover {
+    color: #0071e3;
+    background: #e8f0fe;
+  }
   .cell-zero {
     cursor: pointer;
-    color: #d1d5db;
+    color: #d2d2d7;
     padding: 2px 8px;
     border-radius: 4px;
     transition: all 0.2s;
-
-    &:hover {
-      color: #4f46e5;
-      background: rgba(79, 70, 229, 0.08);
-    }
   }
-
+  .cell-zero:hover {
+    color: #0071e3;
+    background: #e8f0fe;
+  }
   ::v-deep .el-dialog {
     border-radius: 14px;
   }
-
   ::v-deep .el-dialog__header {
-    border-bottom: 1px solid #f3f4f6;
+    border-bottom: 1px solid #f5f5f7;
     padding-bottom: 14px;
   }
-
   ::v-deep .el-dialog__footer {
-    border-top: 1px solid #f3f4f6;
+    border-top: 1px solid #f5f5f7;
     padding-top: 14px;
   }
 }

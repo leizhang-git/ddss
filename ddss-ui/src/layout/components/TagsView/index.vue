@@ -257,162 +257,148 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/styles/variables.scss';
+
 .tags-view-container {
-  height: 34px;
+  height: $tags-height;
   width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #e4e7ed;
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 $space-4;
+  background: $bg-surface;
+  border-bottom: 1px solid $border-lighter;
 
   .tags-wrapper {
     position: relative;
     display: flex;
     align-items: center;
     height: 100%;
+    width: 100%;
 
     .scroll-arrow {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 28px;
-      height: 28px;
-      background: #fff;
-      border: 1px solid #e4e7ed;
-      border-radius: 4px;
+      width: 24px;
+      height: 24px;
+      background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 10;
-      transition: all 0.2s ease;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      color: $gray-400;
+      transition: color $duration-fast $ease;
 
       &:hover {
-        background: #f5f7fa;
-        border-color: #4f46e5;
-        color: #4f46e5;
+        color: $text-primary;
       }
 
-      &.left-arrow {
-        left: 4px;
-      }
+      &.left-arrow { left: 0; }
+      &.right-arrow { right: 0; }
 
-      &.right-arrow {
-        right: 4px;
-      }
-
-      i {
-        font-size: 14px;
-      }
+      i { font-size: 14px; }
     }
 
     .tags-scroll-container {
       flex: 1;
       overflow: hidden;
       white-space: nowrap;
+      padding: 0 28px;
 
-      ::v-deep .el-scrollbar__bar {
-        bottom: 0;
-      }
-
-      ::v-deep .el-scrollbar__wrap {
-        height: 34px;
-      }
+      ::v-deep .el-scrollbar__bar { display: none; }
+      ::v-deep .el-scrollbar__wrap { height: 100%; overflow: hidden; }
     }
   }
 
   .tags-view-item {
-    display: inline-block;
-    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 14px;
+    margin: 0 4px;
+    font-size: $fs-sm;
+    color: $text-secondary;
+    background: transparent;
+    border: none;
+    border-radius: $radius-full;
     cursor: pointer;
-    height: 26px;
-    line-height: 26px;
-    border: 1px solid #d8dce5;
-    color: #495060;
-    background: #fff;
-    padding: 0 8px;
-    font-size: 12px;
-    margin-left: 5px;
-    margin-top: 4px;
+    transition: all $duration-fast $ease;
+    white-space: nowrap;
 
-    &:first-of-type {
-      margin-left: 15px;
-    }
-
-    &:last-of-type {
-      margin-right: 15px;
+    &:hover {
+      background: $bg-subtle;
+      color: $text-primary;
     }
 
     &.active {
-      background-color: #4f46e5;
+      background: $brand;
       color: #fff;
-      border-color: #4f46e5;
-
-      &::before {
-        content: '';
-        background: #fff;
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        position: relative;
-        margin-right: 4px;
-        vertical-align: middle;
-      }
+      font-weight: $fw-medium;
     }
 
     &.affix {
-      background-color: #eef2ff;
-      border-color: #c7d2fe;
-      color: #4f46e5;
+      background: $brand-bg;
+      color: $brand;
+
+      &:hover {
+        background: darken($brand-bg, 3%);
+      }
     }
 
     .el-icon-close {
       width: 16px;
       height: 16px;
-      vertical-align: 2px;
-      border-radius: 50%;
+      line-height: 16px;
+      border-radius: $radius-full;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      transform-origin: 100% 50%;
-      margin-left: 4px;
+      margin-left: 6px;
+      font-size: 12px;
+      transition: all $duration-fast $ease;
 
       &:hover {
-        background-color: #b4bccc;
+        background: rgba(255, 255, 255, 0.3);
         color: #fff;
       }
+    }
+
+    &.active .el-icon-close:hover {
+      background: rgba(255, 255, 255, 0.25);
     }
   }
 
   .contextmenu {
     margin: 0;
-    background: #fff;
+    background: $bg-surface;
     z-index: 3000;
     position: absolute;
-    list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+    list-style: none;
+    padding: $space-1;
+    border-radius: $radius-sm;
+    border: 1px solid $border-light;
+    box-shadow: $shadow-lg;
+    font-size: $fs-sm;
 
     li {
       margin: 0;
-      padding: 7px 16px;
+      padding: $space-2 $space-3;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: $space-2;
+      border-radius: $radius-xs;
+      color: $text-regular;
+      transition: all $duration-fast $ease;
 
       &:hover {
-        background: #eee;
+        background: $bg-subtle;
+        color: $text-primary;
       }
 
       i {
         font-size: 14px;
-        width: 16px;
-        text-align: center;
+        color: $gray-400;
       }
     }
   }

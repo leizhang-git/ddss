@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            访客
+            璁垮
           </div>
           <count-to :duration="2600" :end-val="102400" :start-val="0" class="card-panel-num"/>
         </div>
@@ -20,7 +20,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            消息
+            娑堟伅
           </div>
           <count-to :duration="3000" :end-val="81212" :start-val="0" class="card-panel-num"/>
         </div>
@@ -33,7 +33,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            金额
+            閲戦
           </div>
           <count-to :duration="3200" :end-val="9280" :start-val="0" class="card-panel-num"/>
         </div>
@@ -46,7 +46,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            订单
+            璁㈠崟
           </div>
           <count-to :duration="3600" :end-val="13600" :start-val="0" class="card-panel-num"/>
         </div>
@@ -95,7 +95,7 @@ export default {
       }
 
       .icon-people {
-        background: #4f46e5;
+        background: #0071e3;
       }
 
       .icon-message {
@@ -103,16 +103,16 @@ export default {
       }
 
       .icon-money {
-        background: #ef4444;
+        background: #ff3b30;
       }
 
       .icon-shopping {
-        background: #10b981
+        background: #34c759
       }
     }
 
     .icon-people {
-      color: #4f46e5;
+      color: #0071e3;
     }
 
     .icon-message {
@@ -120,11 +120,11 @@ export default {
     }
 
     .icon-money {
-      color: #ef4444;
+      color: #ff3b30;
     }
 
     .icon-shopping {
-      color: #10b981
+      color: #34c759
     }
 
     .card-panel-icon-wrapper {
