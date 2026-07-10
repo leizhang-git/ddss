@@ -365,3 +365,24 @@ INSERT INTO ddss_video VALUES (1, '示例视频', 'http://example.com/sample.mp4
 INSERT INTO ddss_resource VALUES (1, '示例图片.png', '5.9 MB', 'png', '示例图片.png', '0', NULL, 'system', '2026-06-24 17:10:06', '', '2026-06-24 17:10:06');
 INSERT INTO sys_video_resource VALUES (1, '示例视频1', 'sample1.mp4', '/videos/sample1.mp4', 1024000, 'video/mp4', '示例视频', 60, '1920x1080', '/thumbnails/sample1.jpg', '0', 'admin', '2026-06-22 17:45:52', '', '2026-06-22 17:45:52', '系统初始数据');
 INSERT INTO sys_video_resource VALUES (2, '示例视频2', 'sample2.mp4', '/videos/sample2.mp4', 2048000, 'video/mp4', '另一个示例视频', 120, '1280x720', '/thumbnails/sample2.jpg', '0', 'admin', '2026-06-22 17:45:52', '', '2026-06-22 17:45:52', '系统初始数据');
+
+-- ----------------------------
+-- SQL记录管理 - 菜单与权限
+-- ----------------------------
+INSERT INTO sys_menu VALUES (3006, '数据管理', 0, 6, 'data', NULL, '', '', 1, 0, 'M', '0', '0', '', 'database', 'admin', '2026-07-09 00:00:00', '', NULL, '数据管理目录');
+INSERT INTO sys_menu VALUES (3007, 'SQL管理', 3006, 1, 'sqlRecord', 'system/sqlRecord/index', '', '', 1, 0, 'C', '0', '0', 'system:sql:list', 'code', 'admin', '2026-07-09 00:00:00', '', NULL, 'SQL记录管理菜单');
+INSERT INTO sys_menu VALUES (3008, 'SQL查询', 3007, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'system:sql:query', '#', 'admin', '2026-07-09 00:00:00', '', NULL, '');
+INSERT INTO sys_menu VALUES (3009, 'SQL新增', 3007, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'system:sql:add', '#', 'admin', '2026-07-09 00:00:00', '', NULL, '');
+INSERT INTO sys_menu VALUES (3010, 'SQL修改', 3007, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'system:sql:edit', '#', 'admin', '2026-07-09 00:00:00', '', NULL, '');
+INSERT INTO sys_menu VALUES (3011, 'SQL删除', 3007, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'system:sql:remove', '#', 'admin', '2026-07-09 00:00:00', '', NULL, '');
+
+-- 角色-菜单关联
+INSERT INTO sys_role_menu VALUES (1, 3006);
+INSERT INTO sys_role_menu VALUES (1, 3007);
+INSERT INTO sys_role_menu VALUES (1, 3008);
+INSERT INTO sys_role_menu VALUES (1, 3009);
+INSERT INTO sys_role_menu VALUES (1, 3010);
+INSERT INTO sys_role_menu VALUES (1, 3011);
+INSERT INTO sys_role_menu VALUES (2, 3006);
+INSERT INTO sys_role_menu VALUES (2, 3007);
+INSERT INTO sys_role_menu VALUES (2, 3008);

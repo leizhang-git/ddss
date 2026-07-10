@@ -477,3 +477,20 @@ CREATE TABLE gen_table_column (
   update_time DATETIME DEFAULT NULL,
   PRIMARY KEY (column_id)
 );
+
+-- ----------------------------
+-- SQL记录管理表
+-- ----------------------------
+DROP TABLE IF EXISTS sys_sql_record;
+CREATE TABLE sys_sql_record (
+  sql_id BIGINT NOT NULL AUTO_INCREMENT,
+  purpose VARCHAR(200) NOT NULL,
+  sql_content TEXT NOT NULL,
+  create_by VARCHAR(64) DEFAULT '',
+  create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  update_by VARCHAR(64) DEFAULT '',
+  update_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+  remark VARCHAR(500) DEFAULT NULL,
+  PRIMARY KEY (sql_id)
+);
+CREATE INDEX idx_sql_record_purpose ON sys_sql_record (purpose);
