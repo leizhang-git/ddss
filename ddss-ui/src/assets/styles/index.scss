@@ -12,8 +12,11 @@
   --brand-light: #{$brand-light};
   --brand-bg: #{$brand-bg};
   --success: #{$success};
+  --success-light: #{$success-light};
   --warning: #{$warning};
+  --warning-light: #{$warning-light};
   --danger: #{$danger};
+  --danger-light: #{$danger-light};
   --info: #{$info};
   --text-primary: #{$text-primary};
   --text-regular: #{$text-regular};
@@ -28,13 +31,20 @@
   --radius-sm: #{$radius-sm};
   --radius-base: #{$radius-base};
   --radius-lg: #{$radius-lg};
+  --radius-xl: #{$radius-xl};
   --shadow-sm: #{$shadow-sm};
   --shadow-base: #{$shadow-base};
   --shadow-md: #{$shadow-md};
   --shadow-lg: #{$shadow-lg};
+  --shadow-xl: #{$shadow-xl};
 }
 
 * {
+  box-sizing: border-box;
+}
+
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -51,12 +61,14 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  line-height: 1.6;
 }
 
 a {
   color: $brand;
   text-decoration: none;
   cursor: pointer;
+  transition: color $duration-fast $ease;
 
   &:focus, &:active { outline: none; }
   &:hover { color: $brand-hover; }
@@ -69,8 +81,10 @@ div:focus { outline: none; }
 .fr { float: right; }
 .clearfix { @include clearfix; }
 .text-center { text-align: center; }
+.text-right { text-align: right; }
 .pointer { cursor: pointer; }
 .no-padding { padding: 0 !important; }
+.no-margin { margin: 0 !important; }
 
 // ============ App Main 背景 ============
 .app-main {
@@ -79,18 +93,19 @@ div:focus { outline: none; }
 
 // ============ 业务页面容器 ============
 .app-container {
-  padding: $space-6;
+  padding: $space-5;
 
   // 搜索表单 — 白底大留白卡片
   > .el-form {
     background: $bg-surface;
-    padding: $space-6 $space-6 $space-3;
+    padding: $space-5 $space-5 $space-3;
     border-radius: $radius-lg;
     margin-bottom: $space-5;
     border: 1px solid $border-lighter;
+    box-shadow: $shadow-xs;
 
     .el-form-item {
-      margin-bottom: $space-5;
+      margin-bottom: $space-4;
     }
 
     .el-form-item:last-child {
@@ -106,21 +121,24 @@ div:focus { outline: none; }
 // ============ 通用 ============
 aside {
   background: $brand-bg;
-  padding: $space-3 $space-6;
+  padding: $space-3 $space-5;
   margin-bottom: $space-5;
   border-radius: $radius-base;
   color: $text-regular;
   font-size: $fs-base;
+  line-height: 1.6;
 }
 
 .link-type {
   color: $brand;
   cursor: pointer;
+  transition: color $duration-fast $ease;
   &:hover { color: $brand-hover; }
 }
 
 .filter-container {
   padding-bottom: $space-3;
+
   .filter-item {
     display: inline-block;
     vertical-align: middle;

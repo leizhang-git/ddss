@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
-    <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" label-width="68px" size="small">
+    <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" label-width="80px" size="small">
       <el-form-item label="资源名称" prop="resourceName">
         <el-input
           v-model="queryParams.resourceName"
           clearable
           placeholder="请输入资源名称"
-          style="width: 240px"
+          style="width: 220px"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" clearable placeholder="请选择状态" style="width: 240px">
+        <el-select v-model="queryParams.status" clearable placeholder="请选择状态" style="width: 160px">
           <el-option label="正常" value="0" />
           <el-option label="停用" value="1" />
         </el-select>
@@ -87,29 +87,31 @@
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="200">
+      <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="260">
         <template slot-scope="scope">
-          <el-button
-            v-hasPermi="['video:resource:download']"
-            icon="el-icon-download"
-            size="mini"
-            type="text"
-            @click="handleDownload(scope.row)"
-          >下载</el-button>
-          <el-button
-            v-hasPermi="['video:resource:edit']"
-            icon="el-icon-edit"
-            size="mini"
-            type="text"
-            @click="handleUpdate(scope.row)"
-          >修改</el-button>
-          <el-button
-            v-hasPermi="['video:resource:remove']"
-            icon="el-icon-delete"
-            size="mini"
-            type="text"
-            @click="handleDelete(scope.row)"
-          >删除</el-button>
+          <div class="table-ops">
+            <el-button
+              v-hasPermi="['video:resource:download']"
+              icon="el-icon-download"
+              size="mini"
+              type="text"
+              @click="handleDownload(scope.row)"
+            >下载</el-button>
+            <el-button
+              v-hasPermi="['video:resource:edit']"
+              icon="el-icon-edit"
+              size="mini"
+              type="text"
+              @click="handleUpdate(scope.row)"
+            >修改</el-button>
+            <el-button
+              v-hasPermi="['video:resource:remove']"
+              icon="el-icon-delete"
+              size="mini"
+              type="text"
+              @click="handleDelete(scope.row)"
+            >删除</el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>

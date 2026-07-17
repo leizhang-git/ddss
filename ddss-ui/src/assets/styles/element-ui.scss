@@ -1,5 +1,5 @@
 // ============================================================
-// DDSS Element UI 覆盖样式 — Premium
+// DDSS Element UI 覆盖样式 — Premium v2.0
 // ============================================================
 @import './variables.scss';
 
@@ -18,13 +18,15 @@
 .cell .el-tag { margin-right: 0; }
 
 .small-padding .cell {
-  padding-left: 5px;
-  padding-right: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
 }
 
+// 操作列按钮：不限制宽度，避免被裁切/挤换行
 .fixed-width .el-button--mini {
-  padding: 7px 10px;
-  width: 60px;
+  padding: 0 6px;
+  width: auto !important;
+  min-width: auto !important;
 }
 
 .status-col .cell {
@@ -65,7 +67,7 @@
 
 // ============ DDSS 全局精修 ============
 
-// Tag
+// --- Tag ---
 .el-tag {
   border-radius: $radius-xs;
   font-weight: $fw-medium;
@@ -73,14 +75,37 @@
   border-width: 1px;
   height: auto;
   line-height: 1.5;
-  padding: 2px 10px;
+  padding: 3px 10px;
+  transition: all $duration-fast $ease;
+
+  &.el-tag--success {
+    background: $success-light;
+    border-color: transparent;
+    color: darken($success, 5%);
+  }
+  &.el-tag--warning {
+    background: $warning-light;
+    border-color: transparent;
+    color: darken($warning, 5%);
+  }
+  &.el-tag--danger {
+    background: $danger-light;
+    border-color: transparent;
+    color: darken($danger, 5%);
+  }
+  &.el-tag--info {
+    background: $gray-100;
+    border-color: transparent;
+    color: $gray-600;
+  }
 }
 
-// Input
+// --- Input ---
 .el-input__inner {
   border-radius: $radius-sm;
   font-size: $fs-base;
   transition: all $duration-fast $ease;
+  border-color: $border-light;
 
   &:hover {
     border-color: $gray-300;
@@ -88,34 +113,57 @@
 
   &:focus {
     border-color: $brand;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
   }
 }
 
-.el-input--mini .el-input__inner:focus {
-  box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.1);
+.el-input--mini .el-input__inner {
+  border-radius: 6px;
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(0, 113, 227, 0.12);
+  }
 }
 
-// Textarea
+.el-input--small .el-input__inner {
+  border-radius: $radius-xs;
+}
+
+// --- Textarea ---
 .el-textarea__inner {
   border-radius: $radius-sm;
   transition: all $duration-fast $ease;
+  border-color: $border-light;
 
   &:hover { border-color: $gray-300; }
   &:focus {
     border-color: $brand;
-    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
   }
 }
 
-// Select
+// --- Select ---
 .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
   background: $bg-subtle;
   color: $brand;
 }
 
-// Checkbox
+.el-select-dropdown {
+  border-radius: $radius-sm;
+  border: 1px solid $border-lighter;
+  box-shadow: $shadow-lg;
+  padding: $space-1;
+}
+
+.el-select-dropdown__item {
+  border-radius: $radius-xs;
+  margin: 2px 0;
+  padding: 0 12px;
+  height: 34px;
+  line-height: 34px;
+}
+
+// --- Checkbox ---
 .el-checkbox__input.is-checked .el-checkbox__inner,
 .el-checkbox__input.is-indeterminate .el-checkbox__inner {
   background-color: $brand;
@@ -127,11 +175,12 @@
 }
 
 .el-checkbox__inner {
-  border-radius: $radius-xs;
+  border-radius: 4px;
   transition: all $duration-fast $ease;
+  border-color: $gray-300;
 }
 
-// Form item 间距
+// --- Form item ---
 .el-form-item {
   margin-bottom: $space-5;
 }
@@ -147,7 +196,7 @@
   line-height: 1.6;
 }
 
-// Radio
+// --- Radio ---
 .el-radio__input.is-checked .el-radio__inner {
   background-color: $brand;
   border-color: $brand;
@@ -157,18 +206,70 @@
   color: $brand;
 }
 
-// Switch
+.el-radio__inner {
+  border-color: $gray-300;
+  transition: all $duration-fast $ease;
+}
+
+// --- Switch ---
 .el-switch.is-checked .el-switch__core {
   background-color: $success;
   border-color: $success;
 }
 
-// Tabs
-.el-tabs__item.is-active { color: $brand; }
-.el-tabs__active-bar { background-color: $brand; }
-.el-tabs__item:hover { color: $brand; }
+.el-switch__core {
+  border-radius: 10px;
+  height: 20px;
+  width: 40px !important;
 
-// Button
+  &::after {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.el-switch.is-checked .el-switch__core::after {
+  margin-left: -17px;
+}
+
+// --- Tabs ---
+.el-tabs__item.is-active {
+  color: $brand;
+  font-weight: $fw-semibold;
+}
+.el-tabs__active-bar { background-color: $brand; height: 2.5px; }
+.el-tabs__item:hover { color: $brand; }
+.el-tabs__item {
+  font-size: $fs-base;
+  padding: 0 20px;
+  transition: color $duration-fast $ease;
+}
+.el-tabs__header {
+  margin: 0 0 $space-5;
+}
+.el-tabs__nav-wrap::after {
+  height: 1px;
+  background: $border-lighter;
+}
+
+// --- Button ---
+.el-button {
+  border-radius: $radius-sm;
+  font-weight: $fw-medium;
+  transition: all $duration-fast $ease;
+  border: 1px solid $border-light;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: $shadow-sm;
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+}
+
 .el-button--primary {
   background-color: $brand;
   border-color: $brand;
@@ -176,21 +277,66 @@
   &:hover, &:focus {
     background: $brand-hover;
     border-color: $brand-hover;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.35);
+  }
+}
+
+.el-button--success {
+  &:hover, &:focus {
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+  }
+}
+
+.el-button--warning {
+  &:hover, &:focus {
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+  }
+}
+
+.el-button--danger {
+  &:hover, &:focus {
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
   }
 }
 
 .el-button.is-plain {
   transition: all $duration-fast $ease;
+  background: transparent;
+
+  &:hover {
+    background: $bg-subtle;
+  }
+}
+
+.el-button--text {
+  border: none;
+
+  &:hover {
+    transform: none;
+    box-shadow: none;
+    color: $brand-hover;
+  }
 }
 
 .el-button--mini {
-  padding: 7px 14px;
+  padding: 7px 15px;
   border-radius: $radius-xs;
+  font-size: $fs-xs;
 }
 
-// Loading
+.el-button--small {
+  padding: 9px 18px;
+  border-radius: $radius-xs;
+  font-size: $fs-sm;
+}
+
+.el-button--medium {
+  padding: 11px 22px;
+}
+
+// --- Loading ---
 .el-loading-mask {
-  background-color: rgba(245, 245, 247, 0.8);
+  background-color: rgba(249, 250, 251, 0.85);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
@@ -199,19 +345,415 @@
   stroke: $brand;
 }
 
-// Tooltip
+.el-loading-spinner .circular {
+  width: 36px;
+  height: 36px;
+}
+
+.el-loading-spinner .el-loading-text {
+  color: $brand;
+  font-size: $fs-sm;
+  margin-top: $space-2;
+}
+
+// --- Tooltip ---
 .el-tooltip__popper {
   border-radius: $radius-xs;
   font-size: $fs-xs;
   padding: 6px 12px;
+  line-height: 1.4;
+  max-width: 280px;
+
+  &.is-dark {
+    background: $gray-800;
+    color: $text-inverse;
+  }
 }
 
-// DatePicker
+// --- DatePicker ---
 .el-date-editor .el-range-separator {
   color: $gray-400;
 }
 
-// 滚动条
+.el-date-range-picker {
+  border-radius: $radius-base;
+  box-shadow: $shadow-xl;
+}
+
+.el-picker-panel {
+  border-radius: $radius-base;
+  border: 1px solid $border-light;
+}
+
+.el-date-table td.today .el-date-table-cell__text {
+  color: $brand;
+  font-weight: $fw-bold;
+}
+
+.el-date-table td.current:not(.disabled) .el-date-table-cell__text {
+  background: $brand;
+  color: #fff;
+  border-radius: $radius-sm;
+}
+
+// --- Message ---
+.el-message {
+  border-radius: $radius-base;
+  border: 1px solid $border-lighter;
+  box-shadow: $shadow-lg !important;
+  min-width: 320px;
+  padding: 14px 20px;
+}
+
+.el-message--success {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.el-message--warning {
+  background: #fffbeb;
+  border-color: #fde68a;
+}
+
+.el-message--error {
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+// --- Notification ---
+.el-notification {
+  border-radius: $radius-lg;
+  border: 1px solid $border-lighter;
+  box-shadow: $shadow-xl !important;
+  padding: $space-5;
+}
+
+// --- MessageBox ---
+.el-message-box {
+  border-radius: $radius-lg;
+  border: none;
+  box-shadow: $shadow-2xl;
+  padding-bottom: 0;
+
+  .el-message-box__header {
+    padding: $space-6 $space-6 $space-4;
+    border-bottom: 1px solid $border-lighter;
+  }
+
+  .el-message-box__title {
+    font-size: $fs-lg;
+    font-weight: $fw-semibold;
+  }
+
+  .el-message-box__content {
+    padding: $space-6;
+  }
+
+  .el-message-box__btns {
+    padding: $space-4 $space-6 $space-6;
+    border-top: 1px solid $border-lighter;
+  }
+
+  .el-message-box__status {
+    font-size: 28px !important;
+  }
+}
+
+// --- Dropdown ---
+.el-dropdown-menu {
+  border-radius: $radius-sm;
+  border: 1px solid $border-lighter;
+  box-shadow: $shadow-lg;
+  padding: $space-1;
+}
+
+.el-dropdown-menu__item {
+  border-radius: $radius-xs;
+  margin: 2px 0;
+  padding: 8px 12px;
+  font-size: $fs-sm;
+  color: $text-regular;
+  transition: all $duration-fast $ease;
+
+  &:not(.is-disabled):hover {
+    background: $bg-subtle;
+    color: $text-primary;
+  }
+
+  i {
+    margin-right: $space-2;
+  }
+}
+
+// --- Table ---
+.el-table__body-wrapper .el-table__empty-block {
+  min-height: 200px;
+}
+
+.el-table__empty-text {
+  color: $gray-400;
+  font-size: $fs-base;
+}
+
+// --- Tree ---
+.el-tree {
+  background: transparent;
+  border-radius: $radius-sm;
+}
+
+.el-tree-node__content {
+  height: 36px;
+  border-radius: $radius-xs;
+  transition: background $duration-fast $ease;
+
+  &:hover {
+    background: $bg-subtle;
+  }
+}
+
+.el-tree-node.is-current > .el-tree-node__content {
+  background: $brand-bg;
+  color: $brand;
+}
+
+// --- Upload ---
+.el-upload-dragger {
+  border-radius: $radius-base;
+  border: 2px dashed $border-light;
+  transition: all $duration-fast $ease;
+
+  &:hover {
+    border-color: $brand;
+    background: $brand-subtle;
+  }
+}
+
+.el-upload-dragger .el-icon-upload {
+  font-size: 48px;
+  color: $gray-300;
+  margin-bottom: $space-3;
+}
+
+.el-upload__tip {
+  font-size: $fs-xs;
+  color: $text-placeholder;
+}
+
+// --- Collapse ---
+.el-collapse {
+  border: none;
+}
+
+.el-collapse-item__header {
+  border-bottom: 1px solid $border-lighter;
+  font-weight: $fw-medium;
+  font-size: $fs-base;
+  height: 48px;
+  line-height: 48px;
+  padding: 0 $space-4;
+}
+
+.el-collapse-item__wrap {
+  border-bottom: 1px solid $border-lighter;
+}
+
+.el-collapse-item__content {
+  padding: $space-4;
+  font-size: $fs-base;
+  color: $text-regular;
+  line-height: 1.8;
+}
+
+// --- Alert ---
+.el-alert {
+  border-radius: $radius-sm;
+  padding: $space-3 $space-4;
+
+  &.el-alert--success {
+    background: $success-light;
+  }
+  &.el-alert--warning {
+    background: $warning-light;
+  }
+  &.el-alert--error {
+    background: $danger-light;
+  }
+}
+
+// --- Step ---
+.el-step__head.is-process {
+  color: $brand;
+  border-color: $brand;
+}
+
+.el-step__title.is-process {
+  color: $brand;
+  font-weight: $fw-semibold;
+}
+
+// --- Badge ---
+.el-badge__content {
+  border: none;
+  border-radius: 10px;
+  font-size: $fs-xs;
+  padding: 0 6px;
+  height: 18px;
+  line-height: 18px;
+}
+
+// --- Progress ---
+.el-progress-bar__inner {
+  border-radius: $radius-full;
+  transition: width 0.6s $ease;
+}
+
+.el-progress--line .el-progress-bar__outer {
+  border-radius: $radius-full;
+  height: 8px !important;
+}
+
+// --- Drawer ---
+.el-drawer {
+  box-shadow: $shadow-xl;
+}
+
+.el-drawer__header {
+  margin-bottom: $space-4;
+  padding: $space-5 $space-5 0;
+  font-size: $fs-lg;
+  font-weight: $fw-semibold;
+  color: $text-primary;
+}
+
+.el-drawer__body {
+  padding: 0 $space-5 $space-5;
+}
+
+// --- Popover ---
+.el-popover {
+  border-radius: $radius-base;
+  border: 1px solid $border-lighter;
+  box-shadow: $shadow-lg;
+  padding: $space-4;
+}
+
+// --- Card ---
+.el-card {
+  border-radius: $radius-lg;
+  border: 1px solid $border-lighter;
+  box-shadow: $shadow-xs;
+  transition: all $duration-base $ease;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+.el-card__header {
+  padding: $space-4 $space-5;
+  border-bottom: 1px solid $border-lighter;
+  font-weight: $fw-semibold;
+  font-size: $fs-md;
+  color: $text-primary;
+}
+
+.el-card__body {
+  padding: $space-5;
+}
+
+// --- Slider ---
+.el-slider__bar {
+  background: $brand;
+}
+
+.el-slider__button {
+  border-color: $brand;
+  width: 14px;
+  height: 14px;
+  transition: all $duration-fast $ease;
+  box-shadow: $shadow-sm;
+
+  &:hover, &.hover {
+    transform: scale(1.2);
+  }
+}
+
+// --- Rate ---
+.el-rate__icon {
+  font-size: 18px;
+  transition: transform $duration-fast $ease;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+// --- Timeline ---
+.el-timeline-item__node {
+  box-shadow: 0 0 0 3px $brand-bg;
+}
+
+.el-timeline-item__tail {
+  border-left: 2px solid $border-lighter;
+}
+
+// --- Divider ---
+.el-divider {
+  background: $border-lighter;
+}
+
+.el-divider__text {
+  font-size: $fs-xs;
+  color: $text-placeholder;
+}
+
+// --- Backtop ---
+.el-backtop {
+  border-radius: $radius-full;
+  width: 44px;
+  height: 44px;
+  box-shadow: $shadow-md;
+  transition: all $duration-fast $ease;
+  background: $bg-surface;
+  border: 1px solid $border-lighter;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+    color: $brand;
+  }
+}
+
+// --- PageHeader ---
+.el-page-header {
+  padding: $space-4 0;
+}
+
+.el-page-header__title {
+  font-size: $fs-lg;
+  font-weight: $fw-semibold;
+}
+
+// --- Descriptions ---
+.el-descriptions__title {
+  font-size: $fs-md;
+  font-weight: $fw-semibold;
+  color: $text-primary;
+}
+
+.el-descriptions__body {
+  background: $bg-surface;
+  border-radius: $radius-base;
+  padding: $space-4;
+}
+
+// --- Result ---
+.el-result__title {
+  font-size: $fs-2xl;
+  font-weight: $fw-semibold;
+}
+
+// ============ 滚动条 ============
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -224,8 +766,14 @@
 ::-webkit-scrollbar-thumb {
   background: $gray-200;
   border-radius: $radius-full;
+  transition: background $duration-fast $ease;
 
   &:hover {
     background: $gray-300;
   }
+}
+
+// ============ Element Drawer 滚动条修复 ============
+.el-drawer__container ::-webkit-scrollbar {
+  width: 4px;
 }

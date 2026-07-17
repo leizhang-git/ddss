@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" label-width="68px" size="small">
+    <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" label-width="80px" size="small">
       <el-form-item label="文件名">
         <el-input
           v-model="queryParams.fileName"
@@ -37,30 +37,32 @@
           <span>{{ parseTime(scope.row.lastModified) }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="180">
+      <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="260">
         <template slot-scope="scope">
-          <el-button
-            v-hasPermi="['system:resource:list']"
-            icon="el-icon-download"
-            size="mini"
-            type="text"
-            @click="handleDownload(scope.row)"
-          >下载</el-button>
-          <el-button
-            v-if="isImage(scope.row.fileType)"
-            v-hasPermi="['system:resource:list']"
-            icon="el-icon-view"
-            size="mini"
-            type="text"
-            @click="handlePreview(scope.row)"
-          >预览</el-button>
-          <el-button
-            v-hasPermi="['system:resource:remove']"
-            icon="el-icon-delete"
-            size="mini"
-            type="text"
-            @click="handleDelete(scope.row)"
-          >删除</el-button>
+          <div class="table-ops">
+            <el-button
+              v-hasPermi="['system:resource:list']"
+              icon="el-icon-download"
+              size="mini"
+              type="text"
+              @click="handleDownload(scope.row)"
+            >下载</el-button>
+            <el-button
+              v-if="isImage(scope.row.fileType)"
+              v-hasPermi="['system:resource:list']"
+              icon="el-icon-view"
+              size="mini"
+              type="text"
+              @click="handlePreview(scope.row)"
+            >预览</el-button>
+            <el-button
+              v-hasPermi="['system:resource:remove']"
+              icon="el-icon-delete"
+              size="mini"
+              type="text"
+              @click="handleDelete(scope.row)"
+            >删除</el-button>
+          </div>
         </template>
       </el-table-column>
     </el-table>

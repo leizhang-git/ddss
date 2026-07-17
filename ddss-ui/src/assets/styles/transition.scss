@@ -1,9 +1,9 @@
-// global transition css
+@import './variables.scss';
 
 /* fade */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.28s;
+  transition: opacity 0.3s $ease;
 }
 
 .fade-enter,
@@ -12,38 +12,61 @@
 }
 
 /* fade-transform */
-.fade-transform--move,
 .fade-transform-leave-active,
 .fade-transform-enter-active {
-  transition: all .5s;
+  transition: all 0.4s $ease;
 }
 
 .fade-transform-enter {
   opacity: 0;
-  transform: translateX(-30px);
+  transform: translateX(-24px);
 }
 
 .fade-transform-leave-to {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(24px);
 }
 
 /* breadcrumb transition */
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-  transition: all .5s;
+  transition: all 0.4s $ease;
 }
 
 .breadcrumb-enter,
 .breadcrumb-leave-active {
   opacity: 0;
-  transform: translateX(20px);
+  transform: translateX(16px);
 }
 
 .breadcrumb-move {
-  transition: all .5s;
+  transition: all 0.4s $ease;
 }
 
 .breadcrumb-leave-active {
   position: absolute;
+}
+
+/* scale fade */
+.scale-fade-enter-active,
+.scale-fade-leave-active {
+  transition: all 0.3s $ease-out;
+}
+
+.scale-fade-enter,
+.scale-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* slide fade */
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 0.3s $ease-out;
+}
+
+.slide-fade-enter,
+.slide-fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
 }

@@ -19,7 +19,7 @@
         <!--用户数据-->
         <pane size="84">
           <el-col>
-            <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" label-width="68px"
+            <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" label-width="80px"
                      size="small">
               <el-form-item label="用户名称" prop="userName">
                 <el-input v-model="queryParams.userName" clearable placeholder="请输入用户名称" style="width: 240px"
@@ -99,26 +99,28 @@
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
               </el-table-column>
-              <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="160">
+              <el-table-column align="center" class-name="small-padding fixed-width" label="操作" width="240">
                 <template v-if="scope.row.userId !== 1" slot-scope="scope">
-                  <el-button v-hasPermi="['system:user:edit']" icon="el-icon-edit" size="mini" type="text"
-                             @click="handleUpdate(scope.row)">修改
-                  </el-button>
-                  <el-button v-hasPermi="['system:user:remove']" icon="el-icon-delete" size="mini" type="text"
-                             @click="handleDelete(scope.row)">删除
-                  </el-button>
-                  <el-dropdown v-hasPermi="['system:user:resetPwd', 'system:user:edit']" size="mini"
-                               @command="(command) => handleCommand(command, scope.row)">
-                    <el-button icon="el-icon-d-arrow-right" size="mini" type="text">更多</el-button>
-                    <el-dropdown-menu slot="dropdown">
-                      <el-dropdown-item v-hasPermi="['system:user:resetPwd']" command="handleResetPwd"
-                                        icon="el-icon-key">重置密码
-                      </el-dropdown-item>
-                      <el-dropdown-item v-hasPermi="['system:user:edit']" command="handleAuthRole"
-                                        icon="el-icon-circle-check">分配角色
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
+                  <div class="table-ops">
+                    <el-button v-hasPermi="['system:user:edit']" icon="el-icon-edit" size="mini" type="text"
+                               @click="handleUpdate(scope.row)">修改
+                    </el-button>
+                    <el-button v-hasPermi="['system:user:remove']" icon="el-icon-delete" size="mini" type="text"
+                               @click="handleDelete(scope.row)">删除
+                    </el-button>
+                    <el-dropdown v-hasPermi="['system:user:resetPwd', 'system:user:edit']" size="mini"
+                                 @command="(command) => handleCommand(command, scope.row)">
+                      <el-button icon="el-icon-d-arrow-right" size="mini" type="text">更多</el-button>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item v-hasPermi="['system:user:resetPwd']" command="handleResetPwd"
+                                          icon="el-icon-key">重置密码
+                        </el-dropdown-item>
+                        <el-dropdown-item v-hasPermi="['system:user:edit']" command="handleAuthRole"
+                                          icon="el-icon-circle-check">分配角色
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
                 </template>
               </el-table-column>
             </el-table>

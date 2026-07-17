@@ -112,4 +112,18 @@ export default {
 .mobile .fixed-header {
   width: 100%;
 }
+
+// Premium 增强
+::v-deep .el-scrollbar__bar.is-vertical {
+  width: 4px;
+}
+
+::v-deep .el-scrollbar__thumb {
+  background: rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+}
 </style>

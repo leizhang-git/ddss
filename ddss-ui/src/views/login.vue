@@ -209,9 +209,9 @@ export default {
 <style lang="scss" scoped>
 @import '~@/assets/styles/variables.scss';
 
-$primary: $brand;
-$primary-light: $brand-light;
-$secondary: $brand-light;
+$primary: #0071e3;
+$primary-light: #2997ff;
+$secondary: #2997ff;
 
 .login-page {
   display: flex;

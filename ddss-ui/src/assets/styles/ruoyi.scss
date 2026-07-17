@@ -1,5 +1,5 @@
 // ============================================================
-// DDSS 全局业务样式 — Premium
+// DDSS 全局业务样式 — Premium v2.0
 // ============================================================
 @import './variables.scss';
 
@@ -9,10 +9,16 @@
 .mb8  { margin-bottom: 8px; }
 .mt10 { margin-top: 10px; }   .mr10 { margin-right: 10px; }
 .mb10 { margin-bottom: 10px; }.ml10 { margin-left: 10px; }
+.mt15 { margin-top: 15px; }   .mr15 { margin-right: 15px; }
+.mb15 { margin-bottom: 15px; }.ml15 { margin-left: 15px; }
 .mt20 { margin-top: 20px; }   .mr20 { margin-right: 20px; }
 .mb20 { margin-bottom: 20px; }.ml20 { margin-left: 20px; }
+
 .pt5  { padding-top: 5px; }   .pr5  { padding-right: 5px; }
 .pb5  { padding-bottom: 5px; }
+.pt10 { padding-top: 10px; }  .pb10 { padding-bottom: 10px; }
+.pt15 { padding-top: 15px; }  .pb15 { padding-bottom: 15px; }
+.pt20 { padding-top: 20px; }  .pb20 { padding-bottom: 20px; }
 
 // ============ 标题 ============
 h1, h2, h3, h4, h5, h6 {
@@ -20,34 +26,72 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: $fw-semibold;
   line-height: 1.3;
   color: $text-primary;
+  margin-top: 0;
 }
+
+h1 { font-size: $fs-4xl; }
+h2 { font-size: $fs-3xl; }
+h3 { font-size: $fs-2xl; }
+h4 { font-size: $fs-xl; }
+h5 { font-size: $fs-lg; }
+h6 { font-size: $fs-base; }
 
 // ============ Dialog ============
 .el-dialog:not(.is-fullscreen) {
-  margin-top: 8vh !important;
+  margin-top: 6vh !important;
   border-radius: $radius-lg !important;
   overflow: hidden;
-  box-shadow: $shadow-xl !important;
+  box-shadow: $shadow-2xl !important;
 }
 
 .el-dialog__header {
-  padding: $space-6 $space-6 $space-5;
+  padding: $space-5 $space-6 $space-4;
   border-bottom: 1px solid $border-lighter;
 
   .el-dialog__title {
-    font-size: $fs-xl;
+    font-size: $fs-lg;
     font-weight: $fw-semibold;
     color: $text-primary;
+    line-height: 1.4;
+  }
+
+  .el-dialog__headerbtn {
+    top: $space-5;
+    right: $space-5;
+    font-size: 18px;
+
+    .el-dialog__close {
+      color: $gray-400;
+      transition: all $duration-fast $ease;
+
+      &:hover {
+        color: $text-primary;
+        transform: rotate(90deg);
+      }
+    }
   }
 }
 
 .el-dialog__body {
-  padding: $space-6;
+  padding: $space-5 $space-6;
+  color: $text-regular;
+  line-height: 1.7;
 }
 
 .el-dialog__footer {
-  padding: $space-5 $space-6 $space-6;
+  padding: $space-4 $space-6 $space-6;
   border-top: 1px solid $border-lighter;
+
+  .el-button + .el-button {
+    margin-left: $space-3;
+  }
+}
+
+// Dialog 内部分栏表单
+.el-dialog__body .el-form {
+  .el-row {
+    margin-bottom: 0;
+  }
 }
 
 .el-dialog__wrapper.scrollbar .el-dialog .el-dialog__body {
@@ -62,6 +106,7 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: $radius-base;
   box-shadow: $shadow-xs;
   border: 1px solid $border-lighter;
+  overflow: visible;
 
   // 表头
   .el-table__header-wrapper,
@@ -69,16 +114,21 @@ h1, h2, h3, h4, h5, h6 {
     th {
       background: $bg-subtle;
       color: $text-secondary;
-      height: 52px;
+      height: 48px;
       font-size: $fs-xs;
       font-weight: $fw-semibold;
       border-bottom: 1px solid $border-light;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
       padding: 0;
 
       .cell {
         padding: 0 $space-4;
         line-height: 1.5;
+      }
+
+      &:first-child .cell {
+        padding-left: $space-5;
       }
     }
   }
@@ -89,7 +139,11 @@ h1, h2, h3, h4, h5, h6 {
       transition: background-color $duration-fast $ease;
 
       &:hover > td {
-        background-color: $bg-subtle !important;
+        background-color: rgba(59, 130, 246, 0.04) !important;
+      }
+
+      &:last-child td {
+        border-bottom: none;
       }
     }
 
@@ -97,18 +151,22 @@ h1, h2, h3, h4, h5, h6 {
       border-bottom: 1px solid $border-lighter;
       font-size: $fs-base;
       color: $text-regular;
-      padding: 16px 0;
+      padding: 12px 0;
 
       .cell {
         padding: 0 $space-4;
         line-height: 1.6;
+      }
+
+      &:first-child .cell {
+        padding-left: $space-5;
       }
     }
   }
 
   // 斑马纹
   &--striped .el-table__body tr.el-table__row--striped td {
-    background-color: rgba(245, 245, 247, 0.5);
+    background-color: rgba(249, 250, 251, 0.5);
   }
 
   // 合计行
@@ -118,6 +176,37 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: $fw-semibold;
     font-size: $fs-sm;
     border-top: 1px solid $border-light;
+    padding: 12px 0;
+  }
+
+  // 固定列阴影
+  .el-table__fixed-right::before,
+  .el-table__fixed::before {
+    background: $border-lighter;
+    height: 1px;
+  }
+
+  // 边框线
+  &--border {
+    border: 1px solid $border-lighter;
+
+    td, th {
+      border-right: 1px solid $border-lighter;
+    }
+  }
+
+  // 操作列按钮间距
+  .el-button--text {
+    padding: 0 4px;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+
+  .el-button--mini {
+    padding: 6px 12px;
   }
 }
 
@@ -126,33 +215,77 @@ h1, h2, h3, h4, h5, h6 {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-top: $space-6;
-  padding: $space-5 0;
+  margin-top: $space-5;
+  padding: $space-4 0;
 
   ::v-deep .el-pagination {
     .el-pager li {
       border-radius: $radius-sm;
-      margin: 0 2px;
+      margin: 0 3px;
       font-weight: $fw-medium;
-      min-width: 32px;
-      height: 32px;
-      line-height: 32px;
+      min-width: 34px;
+      height: 34px;
+      line-height: 34px;
+      font-size: $fs-sm;
+      border: 1px solid transparent;
+      transition: all $duration-fast $ease;
+
+      &:hover {
+        color: $brand;
+        border-color: $brand-bg;
+        background: $brand-subtle;
+      }
 
       &.active {
         background: $brand;
         color: #fff;
-      }
+        border-color: $brand;
 
-      &:hover:not(.active) {
-        color: $brand;
+        &:hover {
+          background: $brand-hover;
+          border-color: $brand-hover;
+        }
       }
     }
 
     .btn-prev, .btn-next {
       border-radius: $radius-sm;
-      min-width: 32px;
-      height: 32px;
-      line-height: 32px;
+      min-width: 34px;
+      height: 34px;
+      line-height: 34px;
+      border: 1px solid $border-lighter;
+      transition: all $duration-fast $ease;
+
+      &:hover {
+        color: $brand;
+        border-color: $brand-bg;
+        background: $brand-subtle;
+      }
+    }
+
+    .el-pagination__editor {
+      border-radius: $radius-sm;
+      height: 34px;
+
+      &.el-input .el-input__inner {
+        height: 34px;
+        border-radius: $radius-sm;
+      }
+    }
+
+    .el-pagination__total,
+    .el-pagination__jump {
+      color: $text-secondary;
+      font-size: $fs-sm;
+    }
+
+    .el-select .el-input .el-input__inner {
+      border-radius: $radius-sm;
+      height: 34px;
+    }
+
+    .el-pagination__sizes .el-input .el-input__inner {
+      font-size: $fs-sm;
     }
   }
 }
@@ -164,20 +297,21 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-// ============ Card ============
+// ============ Card (override from element-ui.scss) ============
 .el-card {
   border-radius: $radius-lg !important;
   border: 1px solid $border-lighter !important;
   box-shadow: $shadow-xs !important;
-  transition: box-shadow $duration-base $ease;
+  transition: all $duration-base $ease;
+  overflow: hidden;
 
   &:hover {
-    box-shadow: $shadow-sm !important;
+    box-shadow: $shadow-md !important;
   }
 }
 
 .el-card__header {
-  padding: $space-5 $space-6;
+  padding: $space-4 $space-5;
   border-bottom: 1px solid $border-lighter;
   font-weight: $fw-semibold;
   font-size: $fs-md;
@@ -185,7 +319,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .el-card__body {
-  padding: $space-6;
+  padding: $space-5;
 }
 
 .card-box {
@@ -200,13 +334,74 @@ h1, h2, h3, h4, h5, h6 {
   overflow: hidden;
 }
 
+// ============ 搜索表单 — 标签不换行、对齐 ============
+.el-form--inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  .el-form-item {
+    margin-right: $space-5;
+    margin-bottom: $space-4;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+  }
+
+  // 标签强制单行，不被挤换行
+  .el-form-item__label {
+    white-space: nowrap !important;
+    float: none;
+    display: inline-block;
+    line-height: 32px;
+    height: auto;
+    padding: 0 12px 0 0;
+  }
+
+  .el-form-item__content {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 32px;
+
+    .el-input,
+    .el-select,
+    .el-date-editor.el-input,
+    .el-date-editor.el-input__inner {
+      min-width: 200px;
+    }
+  }
+
+  // 搜索/重置按钮与输入框垂直对齐
+  .el-form-item:last-child {
+    margin-right: 0;
+
+    .el-form-item__content {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-2;
+    }
+
+    .el-button {
+      margin-left: 0;
+      padding: 7px 16px;
+    }
+  }
+}
+
+// app-container 内搜索卡片
+.app-container > .el-form--inline {
+  .el-form-item {
+    margin-bottom: $space-3;
+  }
+}
+
 // ============ Form Header ============
 .form-header {
   font-size: $fs-md;
   font-weight: $fw-semibold;
   color: $brand;
   border-bottom: 2px solid $brand-bg;
-  margin: $space-2 $space-3 $space-6;
+  margin: $space-2 $space-3 $space-5;
   padding-bottom: $space-2;
 }
 
@@ -220,9 +415,90 @@ h1, h2, h3, h4, h5, h6 {
 .text-muted     { color: $gray-400; }
 
 // ============ 其他 ============
-.el-table .fixed-width .el-button--mini {
-  padding-left: 0;
-  padding-right: 0;
+// 表格操作列 — 单行完整显示，不被裁切
+.el-table {
+  .el-table__body-wrapper,
+  .el-table__header-wrapper {
+    overflow-x: auto;
+  }
+
+  .fixed-width {
+    min-width: 220px !important;
+  }
+
+  .fixed-width .cell,
+  .small-padding.fixed-width .cell {
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    word-break: keep-all;
+  }
+
+  .table-ops {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 0;
+    white-space: nowrap;
+    max-width: none;
+  }
+
+  .cell .el-button--text,
+  .table-ops .el-button--text {
+    display: inline-flex !important;
+    align-items: center;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+    height: 28px;
+    line-height: 28px;
+    width: auto !important;
+    min-width: auto !important;
+    overflow: visible !important;
+
+    & + .el-button--text {
+      margin-left: 0 !important;
+      position: relative;
+      padding-left: 10px !important;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 12px;
+        background: $border-light;
+      }
+    }
+  }
+
+  .el-button--text + .el-dropdown {
+    margin-left: 4px;
+    flex-shrink: 0;
+  }
+}
+
+// 表格工具栏按钮行 — 防止 el-col span="1.5" 把按钮挤没
+.el-row.mb8 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: $space-2;
+
+  .el-col {
+    float: none;
+    flex: none;
+    width: auto !important;
+  }
+
+  .el-button--mini {
+    padding: 6px 14px;
+    white-space: nowrap;
+  }
 }
 
 .el-table .el-dropdown-link,
@@ -253,7 +529,7 @@ h1, h2, h3, h4, h5, h6 {
   border-bottom: 1px solid $border-light;
   border-top: 1px solid $border-light;
   margin-bottom: -1px;
-  padding: 11px 0;
+  padding: 12px 0;
   font-size: $fs-sm;
 }
 
@@ -289,4 +565,99 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 50%;
   box-shadow: $shadow-md;
   overflow: hidden;
+}
+
+// ============ Splitpanes ============
+.splitpanes.default-theme {
+  .splitpanes__splitter {
+    background: $border-lighter;
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 32px;
+      background: $gray-200;
+      border-radius: $radius-full;
+      transition: background $duration-fast $ease;
+    }
+
+    &:hover::before {
+      background: $brand-light;
+    }
+  }
+}
+
+// 操作列中 dropdown 触发的更多按钮
+.el-table .el-dropdown {
+  margin-left: 4px;
+  vertical-align: middle;
+}
+
+// ============ Description list ============
+.description-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: $space-4 $space-8;
+
+  .description-item {
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+
+    .description-label {
+      font-size: $fs-xs;
+      color: $text-secondary;
+      font-weight: $fw-medium;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .description-value {
+      font-size: $fs-base;
+      color: $text-primary;
+      font-weight: $fw-medium;
+    }
+  }
+}
+
+// ============ Stats Grid (Dashboard) ============
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: $space-5;
+  margin-bottom: $space-6;
+}
+
+// ============ Empty State ============
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: $space-16 $space-6;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 48px;
+    color: $gray-200;
+    margin-bottom: $space-5;
+  }
+
+  .empty-title {
+    font-size: $fs-lg;
+    font-weight: $fw-semibold;
+    color: $text-primary;
+    margin-bottom: $space-2;
+  }
+
+  .empty-description {
+    font-size: $fs-sm;
+    color: $text-secondary;
+    max-width: 300px;
+  }
 }

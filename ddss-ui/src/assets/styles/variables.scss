@@ -1,5 +1,5 @@
 // ============================================================
-// DDSS Design System — Premium Design Tokens
+// DDSS Design System — Premium Design Tokens v2.0
 // ============================================================
 
 // ---- 品牌主色 ----
@@ -7,51 +7,56 @@ $brand: #0071e3;
 $brand-hover: #0077ed;
 $brand-active: #006edb;
 $brand-light: #2997ff;
+$brand-lighter: #6ab5ff;
 $brand-bg: #e8f0fe;
+$brand-subtle: #f0f6ff;
 
 // ---- 语义色 ----
-$success: #34c759;
-$warning: #ff9f0a;
-$danger: #ff3b30;
+$success: #10b981;
+$success-light: #d1fae5;
+$warning: #f59e0b;
+$warning-light: #fef3c7;
+$danger: #ef4444;
+$danger-light: #fee2e2;
 $info: #8e8e93;
 
 // ---- 中性色阶 ----
-$gray-50: #f5f5f7;
-$gray-100: #e8e8ed;
-$gray-200: #d2d2d7;
-$gray-300: #b0b0b5;
-$gray-400: #86868b;
-$gray-500: #6e6e73;
-$gray-600: #515154;
-$gray-700: #3a3a3c;
-$gray-800: #1d1d1f;
-$gray-900: #1d1d1f;
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
 
 // ---- 文本 ----
-$text-primary: #1d1d1f;
-$text-regular: #424245;
-$text-secondary: #6e6e73;
-$text-placeholder: #aeaeb2;
+$text-primary: #111827;
+$text-regular: #374151;
+$text-secondary: #6b7280;
+$text-placeholder: #9ca3af;
 $text-inverse: #ffffff;
 
 // ---- 背景 ----
-$bg-base: #f5f5f7;
+$bg-base: #f6f8fa;
 $bg-surface: #ffffff;
-$bg-subtle: #f5f5f7;
-$bg-hover: #f5f5f7;
-$bg-overlay: rgba(0, 0, 0, 0.4);
+$bg-subtle: #f3f4f6;
+$bg-hover: #f0f2f5;
+$bg-overlay: rgba(0, 0, 0, 0.45);
 
 // ---- 边框 ----
-$border-base: #d2d2d7;
-$border-light: #e8e8ed;
-$border-lighter: #f5f5f7;
+$border-base: #d1d5db;
+$border-light: #e5e7eb;
+$border-lighter: #f3f4f6;
 
 // ---- 圆角 ----
 $radius-xs: 6px;
 $radius-sm: 8px;
 $radius-base: 12px;
 $radius-lg: 16px;
-$radius-xl: 20px;
+$radius-xl: 24px;
 $radius-full: 9999px;
 
 // ---- 阴影 ----
@@ -61,21 +66,25 @@ $shadow-base: 0 2px 8px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
 $shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
 $shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1), 0 4px 12px rgba(0, 0, 0, 0.06);
 $shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12), 0 8px 24px rgba(0, 0, 0, 0.08);
+$shadow-2xl: 0 24px 64px rgba(0, 0, 0, 0.14), 0 12px 32px rgba(0, 0, 0, 0.1);
 
 // ---- 间距 ----
 $space-1: 4px;
 $space-2: 8px;
 $space-3: 12px;
 $space-4: 16px;
-$space-5: 24px;
-$space-6: 32px;
-$space-8: 40px;
-$space-10: 48px;
-$space-12: 64px;
+$space-5: 20px;
+$space-6: 24px;
+$space-7: 28px;
+$space-8: 32px;
+$space-10: 40px;
+$space-12: 48px;
+$space-14: 56px;
+$space-16: 64px;
 
 // ---- 字体 ----
-$font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-$font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', Consolas, monospace;
+$font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+$font-mono: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
 
 $fs-xs: 12px;
 $fs-sm: 13px;
@@ -86,6 +95,7 @@ $fs-xl: 18px;
 $fs-2xl: 20px;
 $fs-3xl: 24px;
 $fs-4xl: 30px;
+$fs-5xl: 36px;
 
 $fw-normal: 400;
 $fw-medium: 500;
@@ -93,30 +103,32 @@ $fw-semibold: 600;
 $fw-bold: 700;
 
 // ---- 布局 ----
-$sidebar-width: 240px;
+$sidebar-width: 260px;
 $sidebar-collapsed: 64px;
-$header-height: 60px;
-$tags-height: 46px;
+$header-height: 56px;
+$tags-height: 42px;
 
 // ---- 侧边栏 ----
-$menu-bg: #1d1d1f;
-$menu-bg-gradient: linear-gradient(180deg, #1d1d1f 0%, #2c2c2e 100%);
-$menu-color: rgba(255, 255, 255, 0.72);
+$menu-bg: #111827;
+$menu-bg-gradient: linear-gradient(180deg, #111827 0%, #1e293b 100%);
+$menu-color: rgba(255, 255, 255, 0.7);
 $menu-color-active: #ffffff;
-$menu-hover-bg: rgba(255, 255, 255, 0.08);
-$menu-active-bg: rgba(255, 255, 255, 0.12);
+$menu-hover-bg: rgba(255, 255, 255, 0.06);
+$menu-active-bg: rgba(59, 130, 246, 0.2);
+$menu-active-border: #3b82f6;
 $menu-border: rgba(255, 255, 255, 0.06);
 
 $menu-light-bg: #ffffff;
-$menu-light-color: #1d1d1f;
-$menu-light-color-active: #0071e3;
-$menu-light-hover-bg: #f5f5f7;
-$menu-light-active-bg: #e8f0fe;
-$menu-light-border: #e8e8ed;
+$menu-light-color: #374151;
+$menu-light-color-active: #3b82f6;
+$menu-light-hover-bg: #f3f4f6;
+$menu-light-active-bg: #eff6ff;
+$menu-light-border: #e5e7eb;
 
 // ---- 动画 ----
 $ease: cubic-bezier(0.4, 0, 0.2, 1);
 $ease-out: cubic-bezier(0, 0, 0.2, 1);
+$ease-in: cubic-bezier(0.4, 0, 1, 1);
 $ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 $duration-fast: 0.15s;
 $duration-base: 0.25s;
@@ -129,11 +141,11 @@ $duration-slow: 0.4s;
   menuColorActive: $menu-color-active;
   menuBackground: $menu-bg;
   menuLightBackground: $menu-light-bg;
-  menuSubtle: #2c2c2e;
+  menuSubtle: #1e293b;
   menuBorder: $menu-border;
   menuLightSubtle: $bg-subtle;
   menuLightBorder: $menu-light-border;
-  subMenuBackground: #2c2c2e;
+  subMenuBackground: #1e293b;
   subMenuHover: $menu-hover-bg;
   sideBarWidth: $sidebar-width;
   sideBarCollapsed: $sidebar-collapsed;

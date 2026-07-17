@@ -302,69 +302,90 @@ export default {
 
     .tags-scroll-container {
       flex: 1;
+      height: 100%;
       overflow: hidden;
       white-space: nowrap;
       padding: 0 28px;
-
-      ::v-deep .el-scrollbar__bar { display: none; }
-      ::v-deep .el-scrollbar__wrap { height: 100%; overflow: hidden; }
+      min-width: 0;
     }
   }
 
   .tags-view-item {
     display: inline-flex;
     align-items: center;
-    height: 30px;
-    line-height: 30px;
-    padding: 0 14px;
-    margin: 0 4px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 12px;
+    margin: 0 4px 0 0;
     font-size: $fs-sm;
     color: $text-secondary;
-    background: transparent;
-    border: none;
+    background: $bg-subtle;
+    border: 1px solid $border-light;
     border-radius: $radius-full;
     cursor: pointer;
     transition: all $duration-fast $ease;
     white-space: nowrap;
+    vertical-align: middle;
 
     &:hover {
-      background: $bg-subtle;
-      color: $text-primary;
+      color: $brand;
+      border-color: rgba(0, 113, 227, 0.25);
+      background: $brand-bg;
     }
 
-    &.active {
-      background: $brand;
-      color: #fff;
-      font-weight: $fw-medium;
-    }
-
+    // 固定首页：淡蓝底
     &.affix {
       background: $brand-bg;
       color: $brand;
+      border-color: transparent;
+      font-weight: $fw-medium;
 
       &:hover {
         background: darken($brand-bg, 3%);
       }
     }
 
-    .el-icon-close {
-      width: 16px;
-      height: 16px;
-      line-height: 16px;
-      border-radius: $radius-full;
-      text-align: center;
-      margin-left: 6px;
-      font-size: 12px;
-      transition: all $duration-fast $ease;
+    // 当前激活：实心蓝，优先级高于 affix
+    &.active {
+      background: $brand;
+      color: #fff;
+      border-color: $brand;
+      font-weight: $fw-medium;
+      box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
 
       &:hover {
-        background: rgba(255, 255, 255, 0.3);
+        background: $brand-hover;
+        border-color: $brand-hover;
         color: #fff;
       }
     }
 
-    &.active .el-icon-close:hover {
-      background: rgba(255, 255, 255, 0.25);
+    .el-icon-close {
+      width: 14px;
+      height: 14px;
+      line-height: 14px;
+      border-radius: $radius-full;
+      text-align: center;
+      margin-left: 6px;
+      font-size: 12px;
+      color: inherit;
+      opacity: 0.7;
+      transition: all $duration-fast $ease;
+
+      &:hover {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.08);
+        color: inherit;
+      }
+    }
+
+    &.active .el-icon-close {
+      opacity: 0.85;
+
+      &:hover {
+        background: rgba(255, 255, 255, 0.25);
+        color: #fff;
+      }
     }
   }
 

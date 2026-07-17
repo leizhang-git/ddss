@@ -167,27 +167,60 @@ export default {
 </script>
 
 <style lang="scss">
-.topmenu-container.el-menu--horizontal > .el-menu-item {
-  float: left;
-  height: 50px !important;
-  line-height: 50px !important;
-  color: #999093 !important;
-  padding: 0 5px !important;
-  margin: 0 10px !important;
-}
+@import '~@/assets/styles/variables.scss';
 
-.topmenu-container.el-menu--horizontal > .el-menu-item.is-active, .el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
-  border-bottom: 2px solid #{'var(--theme)'} !important;
-  color: #303133;
-}
+.topmenu-container.el-menu--horizontal {
+  border-bottom: 1px solid $border-lighter !important;
 
-/* submenu item */
-.topmenu-container.el-menu--horizontal > .el-submenu .el-submenu__title {
-  float: left;
-  height: 50px !important;
-  line-height: 50px !important;
-  color: #999093 !important;
-  padding: 0 5px !important;
-  margin: 0 10px !important;
+  > .el-menu-item {
+    float: left;
+    height: 50px !important;
+    line-height: 50px !important;
+    color: $text-secondary !important;
+    padding: 0 16px !important;
+    margin: 0 4px !important;
+    border-radius: $radius-xs;
+    font-size: $fs-base;
+    transition: all $duration-fast $ease;
+
+    &:hover {
+      background: $bg-subtle !important;
+      color: $text-primary !important;
+    }
+
+    &.is-active {
+      border-bottom: 2px solid #{'var(--theme)'} !important;
+      color: $text-primary !important;
+      background: transparent !important;
+      font-weight: $fw-medium;
+    }
+  }
+
+  > .el-submenu {
+    float: left;
+
+    .el-submenu__title {
+      height: 50px !important;
+      line-height: 50px !important;
+      color: $text-secondary !important;
+      padding: 0 16px !important;
+      margin: 0 4px !important;
+      border-radius: $radius-xs;
+      font-size: $fs-base;
+      transition: all $duration-fast $ease;
+      border-bottom: none !important;
+
+      &:hover {
+        background: $bg-subtle !important;
+        color: $text-primary !important;
+      }
+    }
+
+    &.is-active .el-submenu__title {
+      border-bottom: 2px solid #{'var(--theme)'} !important;
+      color: $text-primary !important;
+      font-weight: $fw-medium;
+    }
+  }
 }
 </style>

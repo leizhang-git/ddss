@@ -91,15 +91,35 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '~@/assets/styles/variables.scss';
+
 .app-breadcrumb.el-breadcrumb {
   display: inline-block;
-  font-size: 14px;
-  line-height: 50px;
-  margin-left: 8px;
+  font-size: $fs-sm;
+  line-height: 56px;
+  margin-left: 4px;
+
+  .el-breadcrumb__inner {
+    color: $text-secondary;
+
+    &.is-link {
+      color: $text-secondary;
+
+      &:hover {
+        color: $brand;
+      }
+    }
+  }
 
   .no-redirect {
-    color: #97a8be;
+    color: $text-primary;
     cursor: text;
+    font-weight: $fw-medium;
+  }
+
+  .el-breadcrumb__separator {
+    color: $gray-200;
+    font-weight: $fw-normal;
   }
 }
 </style>
