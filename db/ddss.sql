@@ -1,10 +1,10 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : 192.168.52.100
+ Source Server         : 192.168.83.100
  Source Server Type    : MySQL
  Source Server Version : 80034 (8.0.34)
- Source Host           : 192.168.52.100:3306
+ Source Host           : 192.168.83.100:3306
  Source Schema         : ddss
 
  Target Server Type    : MySQL
@@ -666,11 +666,11 @@ INSERT INTO `sys_logininfor` VALUES (134, 'admin', '127.0.0.1', '内网IP', 'Chr
 INSERT INTO `sys_logininfor` VALUES (135, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 12:59:49');
 INSERT INTO `sys_logininfor` VALUES (136, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 12:59:56');
 INSERT INTO `sys_logininfor` VALUES (137, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 15:37:05');
-INSERT INTO `sys_logininfor` VALUES (138, 'admin', '192.168.52.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 16:03:47');
-INSERT INTO `sys_logininfor` VALUES (139, 'admin', '192.168.52.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-28 17:13:11');
+INSERT INTO `sys_logininfor` VALUES (138, 'admin', '192.168.83.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-26 16:03:47');
+INSERT INTO `sys_logininfor` VALUES (139, 'admin', '192.168.83.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-28 17:13:11');
 INSERT INTO `sys_logininfor` VALUES (140, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '1', '验证码错误', '2026-06-28 17:57:35');
 INSERT INTO `sys_logininfor` VALUES (141, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-06-28 17:57:40');
-INSERT INTO `sys_logininfor` VALUES (142, 'admin', '192.168.52.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 11:10:26');
+INSERT INTO `sys_logininfor` VALUES (142, 'admin', '192.168.83.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 11:10:26');
 INSERT INTO `sys_logininfor` VALUES (143, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 11:24:54');
 INSERT INTO `sys_logininfor` VALUES (144, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 12:59:33');
 INSERT INTO `sys_logininfor` VALUES (145, 'admin', '127.0.0.1', '内网IP', 'Chrome 14', 'Windows 10', '0', '登录成功', '2026-07-01 14:20:51');

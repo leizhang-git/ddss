@@ -19,6 +19,27 @@
             <groupId>com.ddss</groupId>
             <artifactId>ddss-common</artifactId>
         </dependency>
+
+        <!-- excel工具（PdfUtil依赖：解析.docx） -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+        <!-- 处理.doc（OLE2）（PdfUtil依赖：HWPFDocument/WordExtractor） -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+        </dependency>
+        <!-- 辅助判断文件格式（PdfUtil依赖：POIFSFileSystem） -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+        </dependency>
+        <!-- OpenPDF 生成 PDF（PdfUtil依赖：com.lowagie.text.*） -->
+        <dependency>
+            <groupId>com.github.librepdf</groupId>
+            <artifactId>openpdf</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

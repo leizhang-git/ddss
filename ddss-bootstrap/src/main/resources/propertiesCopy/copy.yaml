@@ -70,14 +70,14 @@ spring:
       # 哨兵监控的主节点名称（必须和你配置的 mymaster 一致）
       master: mymaster
       # 哨兵节点地址（多个用逗号分隔）
-      nodes: 192.168.52.100:26379,192.168.52.100:26380,192.168.52.100:26381
+      nodes: 192.168.83.100:26379,192.168.83.100:26380,192.168.83.100:26381
     # Redis 密码（和你配置的 123456 一致）
     password: 123456
     # 超时配置
     timeout: 10000ms
   kafka:
     producer:
-      bootstrap-servers: 192.168.52.100:9092 #服务器地址
+      bootstrap-servers: 192.168.83.100:9092 #服务器地址
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       acks: all # 所有副本都确认才算写入成功，保证高可靠性
@@ -96,7 +96,7 @@ spring:
     #        max.in.flight.requests.per.connection: 5  单个连接最大未确认请求数
     #      transaction-id-prefix: tx- #事务配置，不同的生产者必须使用不同的事务ID
     consumer:
-      bootstrap-servers: 192.168.52.100:9092 #服务器地址
+      bootstrap-servers: 192.168.83.100:9092 #服务器地址
       group-id: ddss-server-group #消费者组id，同一组的消费者协同消费消息
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -191,7 +191,7 @@ mybatis-plus:
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 minio:
-  endpoint: http://192.168.52.100:9000
+  endpoint: http://192.168.83.100:9000
   access-key: admin
   secret-key: 12345678
   bucket-name: app
@@ -201,7 +201,7 @@ xxl:
   job:
     admin:
       # Admin 控制台地址（多个用逗号分隔，填你部署的 Admin 地址）
-      addresses: http://192.168.52.100:8888/xxl-job-admin
+      addresses: http://192.168.83.100:8888/xxl-job-admin
     executor:
       # 执行器名称（自定义，会显示在 Admin 控制台）
       appname: ddss-executor

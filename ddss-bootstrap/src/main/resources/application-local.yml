@@ -66,19 +66,19 @@ spring:
       primary: master
       datasource:
         master:
-          url: jdbc:mysql://192.168.52.100:3306/ddss?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+          url: jdbc:mysql://192.168.83.100:3306/ddss?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
           username: root
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
         ddss:
-          url: jdbc:mysql://192.168.52.100:3306/ddss?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+          url: jdbc:mysql://192.168.83.100:3306/ddss?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
           username: root
           password: 123456
           driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     sentinel:
       master: mymaster
-      nodes: 192.168.52.100:26379,192.168.52.100:26380,192.168.52.100:26381
+      nodes: 192.168.83.100:26379,192.168.83.100:26380,192.168.83.100:26381
     password: 123456
     lettuce:
       pool:
@@ -89,7 +89,7 @@ spring:
     timeout: 10000ms
   kafka:
     producer:
-      bootstrap-servers: 192.168.52.100:9092
+      bootstrap-servers: 192.168.83.100:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       acks: all
@@ -98,7 +98,7 @@ spring:
       buffer-memory: 33554432
       compression-type: snappy
     consumer:
-      bootstrap-servers: 192.168.52.100:9092
+      bootstrap-servers: 192.168.83.100:9092
       group-id: ddss-server-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -163,7 +163,7 @@ tablePrefix: sys_
 allowOverwrite: false
 
 minio:
-  endpoint: http://192.168.52.100:9000
+  endpoint: http://192.168.83.100:9000
   access-key: admin
   secret-key: admin123
   bucket-name: app
@@ -172,7 +172,7 @@ minio:
 xxl:
   job:
     admin:
-      addresses: http://192.168.52.100:8888/xxl-job-admin
+      addresses: http://192.168.83.100:8888/xxl-job-admin
     executor:
       appname: ddss-executor
       ip:
