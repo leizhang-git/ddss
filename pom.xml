@@ -45,6 +45,8 @@
         <commons-pool2.version>2.11.2</commons-pool2.version>
         <spring-security.version>5.7.14</spring-security.version>
         <spring-framework.version>5.3.39</spring-framework.version>
+        <!-- 工作流引擎（Flowable 6.6.0 适配 Spring Boot 2.5.x / H2 1.4.x） -->
+        <flowable.version>6.6.0</flowable.version>
     </properties>
 
     <!-- 依赖声明 -->
@@ -127,6 +129,18 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+
+            <!-- 统一 MyBatis 版本（mybatis-plus 3.5.3.1 需要 3.5.10+，Flowable 传递依赖为 3.5.5，会缺少 setArgNameBasedConstructorAutoMapping 等新方法） -->
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>3.5.10</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>2.0.7</version>
             </dependency>
 
             <!-- 覆盖SpringFramework的依赖配置-->
@@ -340,6 +354,13 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>1.26.0</version>
+            </dependency>
+
+            <!-- Flowable 工作流引擎 -->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter-process</artifactId>
+                <version>${flowable.version}</version>
             </dependency>
 
         </dependencies>

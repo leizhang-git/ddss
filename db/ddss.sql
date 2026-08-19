@@ -1,21 +1,26 @@
 /*
- Navicat Premium Dump SQL
+ =====================================================================
+  DDSS 全量初始化脚本（可重复执行 / 幂等）
+ =====================================================================
+  使用方式：
+    1) 每次执行前，脚本会先 DROP DATABASE 再 CREATE DATABASE，并 USE 该库，
+       因此无论执行多少次，结果都一致（先删库、再建库、再建表、再灌数据）。
+    2) 直接运行本脚本即可，无需手工删库。重复执行不会报错。
 
- Source Server         : 192.168.83.100
- Source Server Type    : MySQL
- Source Server Version : 80034 (8.0.34)
- Source Host           : 192.168.83.100:3306
- Source Schema         : ddss
-
- Target Server Type    : MySQL
- Target Server Version : 80034 (8.0.34)
- File Encoding         : 65001
-
- Date: 23/07/2026 09:49:23
+  注意：
+    - 需要具备 DROP / CREATE DATABASE 的权限（建议使用 root 或具备该权限的账号执行）。
+    - 该脚本会清空整个 DDSS 业务库，生产环境请谨慎执行。
+ =====================================================================
 */
 
+-- 关闭外键检查，保证建表顺序无关
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- 先删库再建库 + 使用该库（保证可重复执行）
+DROP DATABASE IF EXISTS `ddss`;
+CREATE DATABASE `ddss` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `ddss`;
 
 -- ----------------------------
 -- Table structure for ddss_resource
@@ -67,6 +72,48 @@ CREATE TABLE `ddss_video`  (
 -- Records of ddss_video
 -- ----------------------------
 INSERT INTO `ddss_video` VALUES (1, '1', '2', NULL, NULL, NULL, '0', NULL, 'admin', '2026-06-23 19:08:19', '', '2026-06-23 19:08:19');
+
+-- ----------------------------
+-- Table structure for ddss_leave（工作流演示）
+-- ----------------------------
+DROP TABLE IF EXISTS `ddss_leave`;
+CREATE TABLE `ddss_leave`  (
+  `leave_id` bigint NOT NULL AUTO_INCREMENT COMMENT '请假单ID',
+  `apply_user` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '申请人账号',
+  `apply_user_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '申请人姓名',
+  `leave_days` int NULL DEFAULT NULL COMMENT '请假天数',
+  `start_date` date NULL DEFAULT NULL COMMENT '开始日期',
+  `reason` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请假事由',
+  `leader` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '一级审批人（部门经理）账号',
+  `boss` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '二级审批人（总经理）账号',
+  `process_instance_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '流程实例ID',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0待审批 1已通过 2已驳回）',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`leave_id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '请假申请单（工作流演示）' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for ddss_flow_design（流程模型/设计器）
+-- ----------------------------
+DROP TABLE IF EXISTS `ddss_flow_design`;
+CREATE TABLE `ddss_flow_design`  (
+  `flow_id` bigint NOT NULL AUTO_INCREMENT COMMENT '流程模型ID',
+  `flow_key` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '流程Key（BPMN process id）',
+  `flow_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '流程名称',
+  `bpmn_xml` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL COMMENT 'BPMN XML 内容',
+  `version` int NULL DEFAULT 1 COMMENT '版本号',
+  `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '0' COMMENT '状态（0草稿 1已发布）',
+  `deployment_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '最近一次发布的部署ID',
+  `create_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '创建者',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `update_by` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '更新者',
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`flow_id`) USING BTREE,
+  UNIQUE INDEX `uk_flow_key`(`flow_key` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '流程模型表（工作流设计器）' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -832,6 +879,21 @@ INSERT INTO `sys_menu` VALUES (3008, 'SQL查询', 3007, 1, '', NULL, NULL, '', 1
 INSERT INTO `sys_menu` VALUES (3009, 'SQL新增', 3007, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'system:sql:add', '#', 'admin', '2026-07-09 00:00:00', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (3010, 'SQL修改', 3007, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'system:sql:edit', '#', 'admin', '2026-07-09 00:00:00', '', NULL, '');
 INSERT INTO `sys_menu` VALUES (3011, 'SQL删除', 3007, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'system:sql:remove', '#', 'admin', '2026-07-09 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3012, '工作流', 3006, 2, 'workflow', NULL, '', '', 1, 0, 'M', '0', '0', '', 'tree', 'admin', '2026-08-18 00:00:00', '', NULL, '工作流演示目录');
+INSERT INTO `sys_menu` VALUES (3013, '请假申请', 3012, 1, 'leave', 'workflow/leave/index', '', '', 1, 0, 'C', '0', '0', 'workflow:leave:list', 'form', 'admin', '2026-08-18 00:00:00', '', NULL, '请假申请菜单');
+INSERT INTO `sys_menu` VALUES (3014, '待办审批', 3012, 2, 'todo', 'workflow/todo/index', '', '', 1, 0, 'C', '0', '0', 'workflow:task:list', 'checkbox', 'admin', '2026-08-18 00:00:00', '', NULL, '待办审批菜单');
+INSERT INTO `sys_menu` VALUES (3015, '流程定义', 3012, 3, 'definition', 'workflow/definition/index', '', '', 1, 0, 'C', '0', '0', 'workflow:definition:list', 'documentation', 'admin', '2026-08-18 00:00:00', '', NULL, '流程定义菜单');
+INSERT INTO `sys_menu` VALUES (3016, '请假新增', 3013, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:leave:add', '#', 'admin', '2026-08-18 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3017, '请假删除', 3013, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:leave:remove', '#', 'admin', '2026-08-18 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3018, '任务审批', 3014, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:task:approve', '#', 'admin', '2026-08-18 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3019, '流程部署', 3015, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:definition:add', '#', 'admin', '2026-08-18 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3020, '流程删除', 3015, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:definition:remove', '#', 'admin', '2026-08-18 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3021, '流程管理', 3012, 4, 'model', 'workflow/model/index', '', '', 1, 0, 'C', '0', '0', 'workflow:model:list', 'guide', 'admin', '2026-08-19 00:00:00', '', NULL, '流程模型管理菜单');
+INSERT INTO `sys_menu` VALUES (3022, '流程新增', 3021, 1, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:model:add', '#', 'admin', '2026-08-19 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3023, '流程编辑', 3021, 2, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:model:edit', '#', 'admin', '2026-08-19 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3024, '流程发布', 3021, 3, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:model:publish', '#', 'admin', '2026-08-19 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3025, '流程删除', 3021, 4, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:model:remove', '#', 'admin', '2026-08-19 00:00:00', '', NULL, '');
+INSERT INTO `sys_menu` VALUES (3026, '流程导入', 3021, 5, '', NULL, NULL, '', 1, 0, 'F', '0', '0', 'workflow:model:import', '#', 'admin', '2026-08-19 00:00:00', '', NULL, '');
 
 -- ----------------------------
 -- Table structure for sys_notice
@@ -1231,6 +1293,21 @@ INSERT INTO `sys_role_menu` VALUES (1, 3008);
 INSERT INTO `sys_role_menu` VALUES (1, 3009);
 INSERT INTO `sys_role_menu` VALUES (1, 3010);
 INSERT INTO `sys_role_menu` VALUES (1, 3011);
+INSERT INTO `sys_role_menu` VALUES (1, 3012);
+INSERT INTO `sys_role_menu` VALUES (1, 3013);
+INSERT INTO `sys_role_menu` VALUES (1, 3014);
+INSERT INTO `sys_role_menu` VALUES (1, 3015);
+INSERT INTO `sys_role_menu` VALUES (1, 3016);
+INSERT INTO `sys_role_menu` VALUES (1, 3017);
+INSERT INTO `sys_role_menu` VALUES (1, 3018);
+INSERT INTO `sys_role_menu` VALUES (1, 3019);
+INSERT INTO `sys_role_menu` VALUES (1, 3020);
+INSERT INTO `sys_role_menu` VALUES (1, 3021);
+INSERT INTO `sys_role_menu` VALUES (1, 3022);
+INSERT INTO `sys_role_menu` VALUES (1, 3023);
+INSERT INTO `sys_role_menu` VALUES (1, 3024);
+INSERT INTO `sys_role_menu` VALUES (1, 3025);
+INSERT INTO `sys_role_menu` VALUES (1, 3026);
 INSERT INTO `sys_role_menu` VALUES (2, 1);
 INSERT INTO `sys_role_menu` VALUES (2, 2);
 INSERT INTO `sys_role_menu` VALUES (2, 3);
@@ -1328,6 +1405,11 @@ INSERT INTO `sys_role_menu` VALUES (2, 1060);
 INSERT INTO `sys_role_menu` VALUES (2, 3006);
 INSERT INTO `sys_role_menu` VALUES (2, 3007);
 INSERT INTO `sys_role_menu` VALUES (2, 3008);
+INSERT INTO `sys_role_menu` VALUES (2, 3012);
+INSERT INTO `sys_role_menu` VALUES (2, 3013);
+INSERT INTO `sys_role_menu` VALUES (2, 3014);
+INSERT INTO `sys_role_menu` VALUES (2, 3015);
+INSERT INTO `sys_role_menu` VALUES (2, 3021);
 
 -- ----------------------------
 -- Table structure for sys_sql_record

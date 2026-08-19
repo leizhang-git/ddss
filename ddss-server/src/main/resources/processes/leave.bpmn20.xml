@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns:flowable="http://flowable.org/bpmn"
+             targetNamespace="http://www.ddss.com/process/leave">
+
+    <process id="leaveDemo" name="请假申请流程" isExecutable="true">
+
+        <!-- 发起（申请人发起请假申请，leader/boss 为表单选择的审批人账号） -->
+        <startEvent id="startEvent" name="发起申请"/>
+
+        <userTask id="leaderApproval" name="部门经理审批" flowable:assignee="${leader}"/>
+
+        <exclusiveGateway id="leaderGateway" name="部门经理审批结果" default="flow_gw_reject1"/>
+
+        <userTask id="bossApproval" name="总经理审批" flowable:assignee="${boss}"/>
+
+        <exclusiveGateway id="bossGateway" name="总经理审批结果" default="flow_gw_reject2"/>
+
+        <endEvent id="endApproved" name="审批通过"/>
+
+        <endEvent id="endRejected" name="审批驳回"/>
+
+        <sequenceFlow id="flow_start_leader" sourceRef="startEvent" targetRef="leaderApproval"/>
+        <sequenceFlow id="flow_leader_gw" sourceRef="leaderApproval" targetRef="leaderGateway"/>
+        <sequenceFlow id="flow_gw_boss" sourceRef="leaderGateway" targetRef="bossApproval">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approved == true}]]></conditionExpression>
+        </sequenceFlow>
+        <!-- 默认流转（无条件）：approved != true 时驳回终止 -->
+        <sequenceFlow id="flow_gw_reject1" sourceRef="leaderGateway" targetRef="endRejected"/>
+        <sequenceFlow id="flow_boss_gw" sourceRef="bossApproval" targetRef="bossGateway"/>
+        <sequenceFlow id="flow_gw_end" sourceRef="bossGateway" targetRef="endApproved">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${approved == true}]]></conditionExpression>
+        </sequenceFlow>
+        <!-- 默认流转（无条件）：approved != true 时驳回终止 -->
+        <sequenceFlow id="flow_gw_reject2" sourceRef="bossGateway" targetRef="endRejected"/>
+
+    </process>
+
+</definitions>

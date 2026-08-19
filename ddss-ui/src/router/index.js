@@ -160,6 +160,20 @@ export const dynamicRoutes = [
         meta: {title: '修改生成配置', activeMenu: '/tool/gen'}
       }
     ]
+  },
+  {
+    path: '/workflow/model-edit',
+    component: Layout,
+    hidden: true,
+    permissions: ['workflow:model:list'],
+    children: [
+      {
+        path: 'index/:flowId(\\d+)',
+        component: () => import('@/views/workflow/model/designer'),
+        name: 'WorkflowModelEdit',
+        meta: {title: '流程设计器', activeMenu: '/workflow/model', noCache: true}
+      }
+    ]
   }
 ]
 

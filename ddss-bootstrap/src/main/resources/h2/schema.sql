@@ -374,6 +374,48 @@ CREATE TABLE ddss_video (
 CREATE INDEX idx_video_name ON ddss_video (video_name);
 
 -- ----------------------------
+-- 请假申请单（工作流演示）
+-- ----------------------------
+DROP TABLE IF EXISTS ddss_leave;
+CREATE TABLE ddss_leave (
+  leave_id BIGINT NOT NULL AUTO_INCREMENT,
+  apply_user VARCHAR(64) NOT NULL,
+  apply_user_name VARCHAR(64) DEFAULT '',
+  leave_days INT DEFAULT NULL,
+  start_date DATE DEFAULT NULL,
+  reason VARCHAR(500) DEFAULT NULL,
+  leader VARCHAR(64) DEFAULT NULL,
+  boss VARCHAR(64) DEFAULT NULL,
+  process_instance_id VARCHAR(64) DEFAULT NULL,
+  status CHAR(1) DEFAULT '0',
+  create_by VARCHAR(64) DEFAULT '',
+  create_time DATETIME DEFAULT NULL,
+  update_by VARCHAR(64) DEFAULT '',
+  update_time DATETIME DEFAULT NULL,
+  PRIMARY KEY (leave_id)
+);
+
+-- ----------------------------
+-- 流程模型表（工作流设计器）
+-- ----------------------------
+DROP TABLE IF EXISTS ddss_flow_design;
+CREATE TABLE ddss_flow_design (
+  flow_id BIGINT NOT NULL AUTO_INCREMENT,
+  flow_key VARCHAR(100) NOT NULL,
+  flow_name VARCHAR(100) NOT NULL,
+  bpmn_xml CLOB,
+  version INT DEFAULT 1,
+  status CHAR(1) DEFAULT '0',
+  deployment_id VARCHAR(64) DEFAULT NULL,
+  create_by VARCHAR(64) DEFAULT '',
+  create_time DATETIME DEFAULT NULL,
+  update_by VARCHAR(64) DEFAULT '',
+  update_time DATETIME DEFAULT NULL,
+  PRIMARY KEY (flow_id)
+);
+CREATE UNIQUE INDEX uk_flow_key ON ddss_flow_design (flow_key);
+
+-- ----------------------------
 -- 资源管理表
 -- ----------------------------
 DROP TABLE IF EXISTS ddss_resource;

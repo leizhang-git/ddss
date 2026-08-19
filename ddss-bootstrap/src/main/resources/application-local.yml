@@ -41,6 +41,17 @@ spring:
   devtools:
     restart:
       enabled: true
+  # ==================== Flowable 工作流引擎 ====================
+  # 引擎表（ACT_*）随使用的主数据源自动创建；classpath:/processes/ 下 *.bpmn20.xml 启动时自动部署
+  flowable:
+    database-schema-update: true
+    async-executor-activate: false
+    history-level: audit
+    deploy-resources: true
+    process-definition-location-prefix: classpath:/processes/
+    process-definition-location-suffixes:
+      - .bpmn20.xml
+      - .bpmn
   datasource:
     druid:
       initial-size: 5
