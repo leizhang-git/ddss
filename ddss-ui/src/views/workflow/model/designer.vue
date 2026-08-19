@@ -28,10 +28,9 @@
       </div>
     </div>
 
-    <!-- 画布 + 属性面板 -->
+    <!-- 画布 -->
     <div class="designer-body">
       <div ref="canvas" class="canvas"></div>
-      <div class="properties-panel" id="js-properties-panel"></div>
     </div>
 
     <input
@@ -45,17 +44,12 @@
 </template>
 
 <script>
-// 兼容 webpack4 构建：静态 require 模块与样式
 const BpmnModeler = require('bpmn-js/lib/Modeler').default
-const propertiesPanelModule = require('bpmn-js-properties-panel')
-const propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/bpmn')
 
 require('bpmn-js/dist/assets/diagram-js.css')
 require('bpmn-js/dist/assets/bpmn-font/css/bpmn.css')
 require('bpmn-js/dist/assets/bpmn-font/css/bpmn-codes.css')
 require('bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css')
-require('bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css')
-require('@/styles/bpmn-panel.css')
 
 import { getModel, getModelXml, saveModelXml, publishModel, getModelTemplate } from '@/api/workflowModel'
 
@@ -70,8 +64,10 @@ export default {
       bpmnModeler: null
     }
   },
-  async mounted() {
-    await this.init()
+  mounted() {
+    this.init().catch(err => {
+      console.error('流程设计器初始化失败:', err)
+    })
   },
   beforeDestroy() {
     if (this.bpmnModeler) {
@@ -95,29 +91,20 @@ export default {
       }
       try {
         await this.bpmnModeler.importXML(xml)
+        this.bpmnModeler.get('canvas').zoom('fit-viewport', 'auto')
       } catch (err) {
-        // 加载失败时展示真实原因，便于排查（画布空白通常就是这里）
         const message = (err && (err.message || err)) || String(err)
         this.$notify.error({
           title: '流程加载失败',
           message: 'XML 内容或解析错误：' + message,
           duration: 0
         })
-        throw err
       }
-      this.bpmnModeler.get('canvas').zoom('fit-viewport', 'auto')
     },
 
     createModeler() {
       this.bpmnModeler = new BpmnModeler({
-        container: this.$refs.canvas,
-        propertiesPanel: {
-          parent: '#js-properties-panel'
-        },
-        additionalModules: [
-          propertiesPanelModule,
-          propertiesProviderModule
-        ]
+        container: this.$refs.canvas
       })
     },
 
@@ -246,18 +233,5 @@ export default {
   flex: 1;
   min-width: 0;
   background: #f2f4f7;
-}
-.properties-panel {
-  width: 300px;
-  border-left: 1px solid #ebeef5;
-  overflow: auto;
-  background: #f8f9fb;
-}
-.panel-placeholder {
-  padding: 40px 20px;
-  color: #909399;
-  text-align: center;
-  font-size: 13px;
-  line-height: 1.8;
 }
 </style>

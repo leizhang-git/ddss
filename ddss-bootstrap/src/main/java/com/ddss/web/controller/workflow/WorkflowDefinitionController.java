@@ -69,7 +69,7 @@ public class WorkflowDefinitionController extends BaseController {
             throw new ServiceException("读取 BPMN 文件失败");
         }
         String deploymentId = workflowDefinitionService.deployProcess(fileName, content);
-        return AjaxResult.success(deploymentId);
+        return AjaxResult.success("操作成功", (Object) deploymentId);
     }
 
     /**
@@ -78,7 +78,7 @@ public class WorkflowDefinitionController extends BaseController {
     @PreAuthorize("@ss.hasPermi('workflow:definition:list')")
     @GetMapping("/xml")
     public AjaxResult xml(@RequestParam String deploymentId, @RequestParam String resourceName) {
-        return AjaxResult.success(workflowDefinitionService.getDefinitionXml(deploymentId, resourceName));
+        return AjaxResult.success("操作成功", (Object) workflowDefinitionService.getDefinitionXml(deploymentId, resourceName));
     }
 
     /**

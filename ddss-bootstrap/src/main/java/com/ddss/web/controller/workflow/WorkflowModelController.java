@@ -55,7 +55,7 @@ public class WorkflowModelController extends BaseController {
     @PreAuthorize("@ss.hasPermi('workflow:model:list')")
     @GetMapping("/template")
     public AjaxResult template() {
-        return AjaxResult.success(workflowModelService.getDefaultTemplate());
+        return AjaxResult.success("操作成功", (Object) workflowModelService.getDefaultTemplate());
     }
 
     /**
@@ -64,7 +64,7 @@ public class WorkflowModelController extends BaseController {
     @PreAuthorize("@ss.hasPermi('workflow:model:list')")
     @GetMapping("/{flowId}/xml")
     public AjaxResult xml(@PathVariable Long flowId) {
-        return AjaxResult.success(workflowModelService.getModelXml(flowId));
+        return AjaxResult.success("操作成功", (Object) workflowModelService.getModelXml(flowId));
     }
 
     /**
