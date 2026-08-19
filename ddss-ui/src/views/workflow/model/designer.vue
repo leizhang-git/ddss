@@ -57,7 +57,7 @@ require('bpmn-js/dist/assets/bpmn-font/css/bpmn-embedded.css')
 require('bpmn-js-properties-panel/dist/assets/bpmn-js-properties-panel.css')
 require('@/styles/bpmn-panel.css')
 
-import { getModel, getModelXml, saveModelXml, publishModel } from '@/api/workflowModel'
+import { getModel, getModelXml, saveModelXml, publishModel, getModelTemplate } from '@/api/workflowModel'
 
 export default {
   name: 'WorkflowDesigner',
@@ -87,8 +87,24 @@ export default {
       document.title = '流程设计器 - ' + this.modelName
 
       this.createModeler()
-      const xml = await getModelXml(this.modelId)
-      await this.bpmnModeler.importXML(xml)
+      let xml = (await getModelXml(this.modelId)).data
+      // 数据库未存 XML 时（常为 NULL）自动加载默认模板，保证画布可用
+      if (!xml || typeof xml !== 'string' || !String(xml).trim().startsWith('<')) {
+        const tpl = await getModelTemplate()
+        xml = tpl.data || ''
+      }
+      try {
+        await this.bpmnModeler.importXML(xml)
+      } catch (err) {
+        // 加载失败时展示真实原因，便于排查（画布空白通常就是这里）
+        const message = (err && (err.message || err)) || String(err)
+        this.$notify.error({
+          title: '流程加载失败',
+          message: 'XML 内容或解析错误：' + message,
+          duration: 0
+        })
+        throw err
+      }
       this.bpmnModeler.get('canvas').zoom('fit-viewport', 'auto')
     },
 
