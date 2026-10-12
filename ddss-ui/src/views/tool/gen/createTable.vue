@@ -1,17 +1,38 @@
 <template>
   <!-- 创建表 -->
-  <el-dialog :visible.sync="visible" append-to-body title="创建表" top="5vh" width="800px">
+  <el-dialog
+    :visible.sync="visible"
+    append-to-body
+    title="创建表"
+    top="5vh"
+    width="800px"
+  >
     <span>创建表语句(支持多个建表语句)：</span>
-    <el-input v-model="content" :rows="10" placeholder="请输入文本" type="textarea"></el-input>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="handleCreateTable">确 定</el-button>
-      <el-button @click="visible = false">取 消</el-button>
+    <el-input
+      v-model="content"
+      :rows="10"
+      placeholder="请输入文本"
+      type="textarea"
+    />
+    <div
+      slot="footer"
+      class="dialog-footer"
+    >
+      <el-button
+        type="primary"
+        @click="handleCreateTable"
+      >
+        确 定
+      </el-button>
+      <el-button @click="visible = false">
+        取 消
+      </el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import {createTable} from "@/api/tool/gen"
+import {createTable} from '@/api/tool/gen'
 
 export default {
   data() {
@@ -19,7 +40,7 @@ export default {
       // 遮罩层
       visible: false,
       // 文本内容
-      content: ""
+      content: ''
     }
   },
   methods: {
@@ -29,15 +50,15 @@ export default {
     },
     /** 创建按钮操作 */
     handleCreateTable() {
-      if (this.content === "") {
-        this.$modal.msgError("请输入建表语句")
+      if (this.content === '') {
+        this.$modal.msgError('请输入建表语句')
         return
       }
       createTable({sql: this.content}).then(res => {
         this.$modal.msgSuccess(res.msg)
         if (res.code === 200) {
           this.visible = false
-          this.$emit("ok")
+          this.$emit('ok')
         }
       })
     }

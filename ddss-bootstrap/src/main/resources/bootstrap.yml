@@ -15,10 +15,10 @@ ddss:
     xxl-job:
       enabled: true       # XXL-Job 开关
 
-  # 开发模式认证后门开关：仅 mysql=false 时生效（默认 true 自动放行 admin）
-  # 生产环境保持 mysql=true 即可，此项不影响生产
+  # 开发模式认证后门开关：仅 mysql=false 时生效，默认关闭
+  # 仅在本地开发 profile 中按需显式开启，生产环境严禁开启
   dev:
-    login-enabled: true
+    login-enabled: false
 
 spring:
   application:

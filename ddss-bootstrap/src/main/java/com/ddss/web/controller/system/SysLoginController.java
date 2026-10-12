@@ -46,7 +46,7 @@ public class SysLoginController {
     @Value("${ddss.middleware.mysql.enabled:true}")
     private boolean mysqlEnabled;
 
-    @Value("${ddss.dev.login-enabled:true}")
+    @Value("${ddss.dev.login-enabled:false}")
     private boolean devLoginEnabled;
 
     /**

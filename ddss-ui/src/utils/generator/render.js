@@ -29,7 +29,7 @@ const componentChild = {
   'el-button': {
     default(h, conf, key) {
       return conf[key]
-    },
+    }
   },
   'el-input': {
     prepend(h, conf, key) {
@@ -81,7 +81,7 @@ const componentChild = {
       }
       if (conf.showTip) {
         list.push(<div slot="tip"
-                       class="el-upload__tip">只能上传不超过 {conf.fileSize}{conf.sizeUnit} 的{conf.accept}文件</div>)
+          class="el-upload__tip">只能上传不超过 {conf.fileSize}{conf.sizeUnit} 的{conf.accept}文件</div>)
       }
       return list
     }

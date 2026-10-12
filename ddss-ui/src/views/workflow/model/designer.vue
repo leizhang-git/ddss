@@ -3,26 +3,64 @@
     <!-- 顶部工具栏 -->
     <div class="designer-toolbar">
       <div class="toolbar-left">
-        <el-button icon="el-icon-back" size="mini" @click="handleBack">返回</el-button>
+        <el-button
+          icon="el-icon-back"
+          size="mini"
+          @click="handleBack"
+        >
+          返回
+        </el-button>
         <el-divider direction="vertical" />
         <span class="title">{{ modelName }}</span>
-        <el-tag v-if="modelStatus === '1'" size="mini" type="success">已发布</el-tag>
-        <el-tag v-else size="mini" type="warning">草稿</el-tag>
+        <el-tag
+          v-if="modelStatus === '1'"
+          size="mini"
+          type="success"
+        >
+          已发布
+        </el-tag>
+        <el-tag
+          v-else
+          size="mini"
+          type="warning"
+        >
+          草稿
+        </el-tag>
       </div>
       <div class="toolbar-right">
-        <el-button size="mini" @click="handleImport">
+        <el-button
+          size="mini"
+          @click="handleImport"
+        >
           <i class="el-icon-upload2" /> 导入
         </el-button>
-        <el-button size="mini" @click="handleExportXml">
+        <el-button
+          size="mini"
+          @click="handleExportXml"
+        >
           <i class="el-icon-download" /> 导出XML
         </el-button>
-        <el-button size="mini" @click="handleExportSvg">
+        <el-button
+          size="mini"
+          @click="handleExportSvg"
+        >
           <i class="el-icon-picture-outline" /> 导出SVG
         </el-button>
-        <el-button v-hasPermi="['workflow:model:edit']" type="primary" size="mini" plain @click="handleSave">
+        <el-button
+          v-hasPermi="['workflow:model:edit']"
+          type="primary"
+          size="mini"
+          plain
+          @click="handleSave"
+        >
           <i class="el-icon-check" /> 保存
         </el-button>
-        <el-button v-hasPermi="['workflow:model:publish']" type="success" size="mini" @click="handlePublish">
+        <el-button
+          v-hasPermi="['workflow:model:publish']"
+          type="success"
+          size="mini"
+          @click="handlePublish"
+        >
           <i class="el-icon-upload2" /> 发布
         </el-button>
       </div>
@@ -30,7 +68,10 @@
 
     <!-- 画布 -->
     <div class="designer-body">
-      <div ref="canvas" class="canvas"></div>
+      <div
+        ref="canvas"
+        class="canvas"
+      />
     </div>
 
     <input
@@ -39,7 +80,7 @@
       accept=".bpmn20.xml,.bpmn"
       style="display: none"
       @change="handleFileChange"
-    />
+    >
   </div>
 </template>
 

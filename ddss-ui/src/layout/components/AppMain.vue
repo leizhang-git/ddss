@@ -1,18 +1,24 @@
 <template>
   <section class="app-main">
-    <transition mode="out-in" name="fade-transform">
+    <transition
+      mode="out-in"
+      name="fade-transform"
+    >
       <keep-alive :include="cachedViews">
-        <router-view v-if="!$route.meta.link" :key="key"/>
+        <router-view
+          v-if="!$route.meta.link"
+          :key="key"
+        />
       </keep-alive>
     </transition>
-    <iframe-toggle/>
-    <copyright/>
+    <iframe-toggle />
+    <copyright />
   </section>
 </template>
 
 <script>
-import copyright from "./Copyright/index"
-import iframeToggle from "./IframeToggle/index"
+import copyright from './Copyright/index'
+import iframeToggle from './IframeToggle/index'
 
 export default {
   name: 'AppMain',

@@ -3,104 +3,246 @@
     <!-- 顶栏 -->
     <div class="hero-bar">
       <div class="hero-left">
-        <div class="hero-icon"><i class="el-icon-monitor"></i></div>
+        <div class="hero-icon">
+          <i class="el-icon-monitor" />
+        </div>
         <div>
-          <h3 class="page-title">中间件监控中心</h3>
+          <h3 class="page-title">
+            中间件监控中心
+          </h3>
           <p class="page-desc">
             实时探测 MySQL / Redis / MinIO / Nacos / Kafka / XXL-Job
-            <span v-if="lastTime" class="last-time">· 上次检测 {{ lastTime }}</span>
+            <span
+              v-if="lastTime"
+              class="last-time"
+            >· 上次检测 {{ lastTime }}</span>
           </p>
         </div>
       </div>
       <div class="hero-right">
-        <div v-if="autoRefresh" class="countdown">{{ countdown }}s 后刷新</div>
-        <el-select v-model="refreshInterval" size="small" style="width: 110px; margin-right: 10px" :disabled="!autoRefresh">
-          <el-option :value="10" label="每 10 秒" />
-          <el-option :value="15" label="每 15 秒" />
-          <el-option :value="30" label="每 30 秒" />
-          <el-option :value="60" label="每 60 秒" />
+        <div
+          v-if="autoRefresh"
+          class="countdown"
+        >
+          {{ countdown }}s 后刷新
+        </div>
+        <el-select
+          v-model="refreshInterval"
+          size="small"
+          style="width: 110px; margin-right: 10px"
+          :disabled="!autoRefresh"
+        >
+          <el-option
+            :value="10"
+            label="每 10 秒"
+          />
+          <el-option
+            :value="15"
+            label="每 15 秒"
+          />
+          <el-option
+            :value="30"
+            label="每 30 秒"
+          />
+          <el-option
+            :value="60"
+            label="每 60 秒"
+          />
         </el-select>
-        <el-switch v-model="autoRefresh" active-text="自动" style="margin-right: 12px" />
-        <el-button icon="el-icon-refresh" size="small" type="primary" :loading="loading" @click="refreshAll">立即检测</el-button>
+        <el-switch
+          v-model="autoRefresh"
+          active-text="自动"
+          style="margin-right: 12px"
+        />
+        <el-button
+          icon="el-icon-refresh"
+          size="small"
+          type="primary"
+          :loading="loading"
+          @click="refreshAll"
+        >
+          立即检测
+        </el-button>
       </div>
     </div>
 
     <!-- 概览 KPI -->
-    <el-row :gutter="16" class="kpi-row">
-      <el-col :xs="12" :sm="6" :md="4">
-        <div class="kpi-card score" :class="scoreLevel">
+    <el-row
+      :gutter="16"
+      class="kpi-row"
+    >
+      <el-col
+        :xs="12"
+        :sm="6"
+        :md="4"
+      >
+        <div
+          class="kpi-card score"
+          :class="scoreLevel"
+        >
           <div class="kpi-ring">
-            <div ref="scoreChart" class="mini-chart"></div>
+            <div
+              ref="scoreChart"
+              class="mini-chart"
+            />
           </div>
           <div class="kpi-meta">
-            <div class="kpi-label">健康评分</div>
-            <div class="kpi-sub">{{ scoreTip }}</div>
+            <div class="kpi-label">
+              健康评分
+            </div>
+            <div class="kpi-sub">
+              {{ scoreTip }}
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="6" :md="5">
+      <el-col
+        :xs="12"
+        :sm="6"
+        :md="5"
+      >
         <div class="kpi-card up">
-          <div class="kpi-icon"><i class="el-icon-success"></i></div>
+          <div class="kpi-icon">
+            <i class="el-icon-success" />
+          </div>
           <div>
-            <div class="kpi-num">{{ countBy('UP') }}</div>
-            <div class="kpi-label">运行正常</div>
+            <div class="kpi-num">
+              {{ countBy('UP') }}
+            </div>
+            <div class="kpi-label">
+              运行正常
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="6" :md="5">
+      <el-col
+        :xs="12"
+        :sm="6"
+        :md="5"
+      >
         <div class="kpi-card down">
-          <div class="kpi-icon"><i class="el-icon-error"></i></div>
+          <div class="kpi-icon">
+            <i class="el-icon-error" />
+          </div>
           <div>
-            <div class="kpi-num">{{ countBy('DOWN') }}</div>
-            <div class="kpi-label">连接异常</div>
+            <div class="kpi-num">
+              {{ countBy('DOWN') }}
+            </div>
+            <div class="kpi-label">
+              连接异常
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="6" :md="5">
+      <el-col
+        :xs="12"
+        :sm="6"
+        :md="5"
+      >
         <div class="kpi-card disabled">
-          <div class="kpi-icon"><i class="el-icon-remove-outline"></i></div>
+          <div class="kpi-icon">
+            <i class="el-icon-remove-outline" />
+          </div>
           <div>
-            <div class="kpi-num">{{ countBy('DISABLED') }}</div>
-            <div class="kpi-label">配置关闭</div>
+            <div class="kpi-num">
+              {{ countBy('DISABLED') }}
+            </div>
+            <div class="kpi-label">
+              配置关闭
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="12" :md="5">
+      <el-col
+        :xs="24"
+        :sm="12"
+        :md="5"
+      >
         <div class="kpi-card latency">
-          <div class="kpi-icon"><i class="el-icon-odometer"></i></div>
+          <div class="kpi-icon">
+            <i class="el-icon-odometer" />
+          </div>
           <div>
-            <div class="kpi-num">{{ avgLatency }}<small>ms</small></div>
-            <div class="kpi-label">平均延迟</div>
+            <div class="kpi-num">
+              {{ avgLatency }}<small>ms</small>
+            </div>
+            <div class="kpi-label">
+              平均延迟
+            </div>
           </div>
         </div>
       </el-col>
     </el-row>
 
     <!-- 图表区 -->
-    <el-row :gutter="16" class="chart-row">
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-hd">
-            <span><i class="el-icon-pie-chart"></i> 状态分布</span>
+    <el-row
+      :gutter="16"
+      class="chart-row"
+    >
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-hd"
+          >
+            <span><i class="el-icon-pie-chart" /> 状态分布</span>
           </div>
-          <div ref="pieChart" class="chart-box"></div>
+          <div
+            ref="pieChart"
+            class="chart-box"
+          />
         </el-card>
       </el-col>
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-hd">
-            <span><i class="el-icon-data-analysis"></i> 延迟对比</span>
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-hd"
+          >
+            <span><i class="el-icon-data-analysis" /> 延迟对比</span>
           </div>
-          <div ref="barChart" class="chart-box"></div>
+          <div
+            ref="barChart"
+            class="chart-box"
+          />
         </el-card>
       </el-col>
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-hd">
-            <span><i class="el-icon-data-line"></i> 延迟趋势</span>
-            <el-tag size="mini" type="info">最近 {{ historyLabels.length }} 次</el-tag>
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-hd"
+          >
+            <span><i class="el-icon-data-line" /> 延迟趋势</span>
+            <el-tag
+              size="mini"
+              type="info"
+            >
+              最近 {{ historyLabels.length }} 次
+            </el-tag>
           </div>
-          <div ref="lineChart" class="chart-box"></div>
+          <div
+            ref="lineChart"
+            class="chart-box"
+          />
         </el-card>
       </el-col>
     </el-row>
@@ -108,11 +250,22 @@
     <!-- 中间件卡片 -->
     <div class="section-title">
       <span>组件详情</span>
-      <el-radio-group v-model="filterStatus" size="mini">
-        <el-radio-button label="ALL">全部</el-radio-button>
-        <el-radio-button label="UP">正常</el-radio-button>
-        <el-radio-button label="DOWN">异常</el-radio-button>
-        <el-radio-button label="DISABLED">关闭</el-radio-button>
+      <el-radio-group
+        v-model="filterStatus"
+        size="mini"
+      >
+        <el-radio-button label="ALL">
+          全部
+        </el-radio-button>
+        <el-radio-button label="UP">
+          正常
+        </el-radio-button>
+        <el-radio-button label="DOWN">
+          异常
+        </el-radio-button>
+        <el-radio-button label="DISABLED">
+          关闭
+        </el-radio-button>
       </el-radio-group>
     </div>
 
@@ -125,31 +278,59 @@
         :lg="8"
         class="card-box"
       >
-        <el-card shadow="hover" :class="['mw-card', statusClass(item.status)]" v-loading="loading && !list.length">
+        <el-card
+          v-loading="loading && !list.length"
+          shadow="hover"
+          :class="['mw-card', statusClass(item.status)]"
+        >
           <div class="mw-top">
             <div class="mw-identity">
-              <div class="mw-avatar" :class="statusClass(item.status)">
-                <i :class="iconOf(item.code)"></i>
+              <div
+                class="mw-avatar"
+                :class="statusClass(item.status)"
+              >
+                <i :class="iconOf(item.code)" />
               </div>
               <div>
-                <div class="mw-name">{{ item.name }}</div>
-                <div class="mw-type">{{ item.type }}</div>
+                <div class="mw-name">
+                  {{ item.name }}
+                </div>
+                <div class="mw-type">
+                  {{ item.type }}
+                </div>
               </div>
             </div>
             <div class="mw-status-wrap">
-              <span class="pulse-dot" :class="statusClass(item.status)"></span>
-              <el-tag :type="tagType(item.status)" size="mini" effect="dark">{{ statusText(item.status) }}</el-tag>
+              <span
+                class="pulse-dot"
+                :class="statusClass(item.status)"
+              />
+              <el-tag
+                :type="tagType(item.status)"
+                size="mini"
+                effect="dark"
+              >
+                {{ statusText(item.status) }}
+              </el-tag>
             </div>
           </div>
 
           <div class="mw-gauge-row">
-            <div :ref="'gauge_' + item.code" class="gauge-mini"></div>
+            <div
+              :ref="'gauge_' + item.code"
+              class="gauge-mini"
+            />
             <div class="mw-latency-info">
-              <div class="lat-val" :class="latencyLevel(item.latencyMs)">
+              <div
+                class="lat-val"
+                :class="latencyLevel(item.latencyMs)"
+              >
                 {{ item.latencyMs != null ? item.latencyMs : '-' }}
                 <small v-if="item.latencyMs != null">ms</small>
               </div>
-              <div class="lat-label">响应延迟</div>
+              <div class="lat-label">
+                响应延迟
+              </div>
               <el-progress
                 v-if="item.latencyMs != null"
                 :percentage="latencyPercent(item.latencyMs)"
@@ -162,69 +343,163 @@
 
           <div class="mw-body">
             <div class="mw-row">
-              <span class="label"><i class="el-icon-link"></i> 地址</span>
-              <span class="value mono" :title="item.endpoint">{{ item.endpoint || '-' }}</span>
+              <span class="label"><i class="el-icon-link" /> 地址</span>
+              <span
+                class="value mono"
+                :title="item.endpoint"
+              >{{ item.endpoint || '-' }}</span>
             </div>
             <div class="mw-row">
-              <span class="label"><i class="el-icon-chat-line-square"></i> 说明</span>
-              <span class="value" :title="item.message">{{ item.message || '-' }}</span>
+              <span class="label"><i class="el-icon-chat-line-square" /> 说明</span>
+              <span
+                class="value"
+                :title="item.message"
+              >{{ item.message || '-' }}</span>
             </div>
             <template v-if="item.detail && Object.keys(item.detail).length">
               <div class="detail-grid">
-                <div v-for="(val, key) in item.detail" :key="key" class="detail-item">
-                  <div class="d-label">{{ detailLabel(key) }}</div>
-                  <div class="d-value" :title="String(val)">{{ formatDetail(val) }}</div>
+                <div
+                  v-for="(val, key) in item.detail"
+                  :key="key"
+                  class="detail-item"
+                >
+                  <div class="d-label">
+                    {{ detailLabel(key) }}
+                  </div>
+                  <div
+                    class="d-value"
+                    :title="String(val)"
+                  >
+                    {{ formatDetail(val) }}
+                  </div>
                 </div>
               </div>
             </template>
           </div>
 
           <div class="mw-footer">
-            <el-button type="text" size="mini" icon="el-icon-refresh" @click="refreshOne(item)">重新探测</el-button>
-            <el-button type="text" size="mini" icon="el-icon-document-copy" @click="copyEndpoint(item)">复制地址</el-button>
+            <el-button
+              type="text"
+              size="mini"
+              icon="el-icon-refresh"
+              @click="refreshOne(item)"
+            >
+              重新探测
+            </el-button>
+            <el-button
+              type="text"
+              size="mini"
+              icon="el-icon-document-copy"
+              @click="copyEndpoint(item)"
+            >
+              复制地址
+            </el-button>
           </div>
         </el-card>
       </el-col>
     </el-row>
 
     <!-- 明细表 -->
-    <el-card shadow="never" class="table-card">
-      <div slot="header" class="card-hd">
-        <span><i class="el-icon-s-grid"></i> 检测明细表</span>
-        <el-button type="text" size="mini" icon="el-icon-download" @click="exportCsv">导出 CSV</el-button>
+    <el-card
+      shadow="never"
+      class="table-card"
+    >
+      <div
+        slot="header"
+        class="card-hd"
+      >
+        <span><i class="el-icon-s-grid" /> 检测明细表</span>
+        <el-button
+          type="text"
+          size="mini"
+          icon="el-icon-download"
+          @click="exportCsv"
+        >
+          导出 CSV
+        </el-button>
       </div>
-      <el-table :data="list" stripe size="small" v-loading="loading" empty-text="暂无数据">
-        <el-table-column label="组件" min-width="120">
+      <el-table
+        v-loading="loading"
+        :data="list"
+        stripe
+        size="small"
+        empty-text="暂无数据"
+      >
+        <el-table-column
+          label="组件"
+          min-width="120"
+        >
           <template slot-scope="{ row }">
-            <i :class="iconOf(row.code)" style="margin-right: 6px; color: #0071e3"></i>
+            <i
+              :class="iconOf(row.code)"
+              style="margin-right: 6px; color: #0071e3"
+            />
             <b>{{ row.name }}</b>
           </template>
         </el-table-column>
-        <el-table-column prop="type" label="类型" width="130" />
-        <el-table-column label="状态" width="100" align="center">
+        <el-table-column
+          prop="type"
+          label="类型"
+          width="130"
+        />
+        <el-table-column
+          label="状态"
+          width="100"
+          align="center"
+        >
           <template slot-scope="{ row }">
-            <el-tag :type="tagType(row.status)" size="mini" effect="plain">{{ statusText(row.status) }}</el-tag>
+            <el-tag
+              :type="tagType(row.status)"
+              size="mini"
+              effect="plain"
+            >
+              {{ statusText(row.status) }}
+            </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="延迟" width="110" align="center" sortable :sort-method="sortLatency">
+        <el-table-column
+          label="延迟"
+          width="110"
+          align="center"
+          sortable
+          :sort-method="sortLatency"
+        >
           <template slot-scope="{ row }">
             <span :class="['lat-cell', latencyLevel(row.latencyMs)]">
               {{ row.latencyMs != null ? row.latencyMs + ' ms' : '-' }}
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="endpoint" label="连接地址" min-width="200" show-overflow-tooltip />
-        <el-table-column prop="message" label="探测结果" min-width="160" show-overflow-tooltip />
-        <el-table-column label="关键指标" min-width="180">
+        <el-table-column
+          prop="endpoint"
+          label="连接地址"
+          min-width="200"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          prop="message"
+          label="探测结果"
+          min-width="160"
+          show-overflow-tooltip
+        />
+        <el-table-column
+          label="关键指标"
+          min-width="180"
+        >
           <template slot-scope="{ row }">
-            <span v-if="!row.detail || !Object.keys(row.detail).length" class="text-muted">-</span>
+            <span
+              v-if="!row.detail || !Object.keys(row.detail).length"
+              class="text-muted"
+            >-</span>
             <el-tag
               v-for="(val, key) in pickDetail(row.detail)"
               :key="key"
               size="mini"
               type="info"
               style="margin: 2px 4px 2px 0"
-            >{{ detailLabel(key) }}: {{ formatDetail(val) }}</el-tag>
+            >
+              {{ detailLabel(key) }}: {{ formatDetail(val) }}
+            </el-tag>
           </template>
         </el-table-column>
       </el-table>

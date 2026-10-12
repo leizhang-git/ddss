@@ -11,14 +11,14 @@
             <property name="log.path" value="/data/applogs/app"/>
         </else>
     </if>
-    <!-- 日志输出格式 -->
-    <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] %-5level %logger{20} - [%method,%line] - %msg%n"/>
+    <!-- 日志输出格式（%X{traceId:-} 取 MDC 链路 ID，无则留空） -->
+    <property name="log.pattern" value="%d{HH:mm:ss.SSS} [%thread] [%X{traceId:-}] %-5level %logger{20} - [%method,%line] - %msg%n"/>
 
     <!-- 控制台输出 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <!-- 输出编码 -->
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] [%X{traceId:-}] %-5level %logger{50} - %msg%n</pattern>
             <charset>UTF-8</charset>
         </encoder>
         <!-- 2. 核心配置：设置过滤器，只打印 INFO 及以上级别 -->

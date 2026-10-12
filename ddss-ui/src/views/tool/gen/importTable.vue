@@ -1,8 +1,22 @@
 <template>
   <!-- 导入表 -->
-  <el-dialog :visible.sync="visible" append-to-body title="导入表" top="5vh" width="800px">
-    <el-form ref="queryForm" :inline="true" :model="queryParams" size="small">
-      <el-form-item label="表名称" prop="tableName">
+  <el-dialog
+    :visible.sync="visible"
+    append-to-body
+    title="导入表"
+    top="5vh"
+    width="800px"
+  >
+    <el-form
+      ref="queryForm"
+      :inline="true"
+      :model="queryParams"
+      size="small"
+    >
+      <el-form-item
+        label="表名称"
+        prop="tableName"
+      >
         <el-input
           v-model="queryParams.tableName"
           clearable
@@ -10,7 +24,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="表描述" prop="tableComment">
+      <el-form-item
+        label="表描述"
+        prop="tableComment"
+      >
         <el-input
           v-model="queryParams.tableComment"
           clearable
@@ -19,18 +36,53 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button icon="el-icon-search" size="mini" type="primary" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          icon="el-icon-search"
+          size="mini"
+          type="primary"
+          @click="handleQuery"
+        >
+          搜索
+        </el-button>
+        <el-button
+          icon="el-icon-refresh"
+          size="mini"
+          @click="resetQuery"
+        >
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
     <el-row>
-      <el-table ref="table" :data="dbTableList" height="260px" @row-click="clickRow"
-                @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="表名称" prop="tableName"></el-table-column>
-        <el-table-column :show-overflow-tooltip="true" label="表描述" prop="tableComment"></el-table-column>
-        <el-table-column label="创建时间" prop="createTime"></el-table-column>
-        <el-table-column label="更新时间" prop="updateTime"></el-table-column>
+      <el-table
+        ref="table"
+        :data="dbTableList"
+        height="260px"
+        @row-click="clickRow"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column
+          type="selection"
+          width="55"
+        />
+        <el-table-column
+          :show-overflow-tooltip="true"
+          label="表名称"
+          prop="tableName"
+        />
+        <el-table-column
+          :show-overflow-tooltip="true"
+          label="表描述"
+          prop="tableComment"
+        />
+        <el-table-column
+          label="创建时间"
+          prop="createTime"
+        />
+        <el-table-column
+          label="更新时间"
+          prop="updateTime"
+        />
       </el-table>
       <pagination
         v-show="total>0"
@@ -40,15 +92,25 @@
         @pagination="getList"
       />
     </el-row>
-    <div slot="footer" class="dialog-footer">
-      <el-button type="primary" @click="handleImportTable">确 定</el-button>
-      <el-button @click="visible = false">取 消</el-button>
+    <div
+      slot="footer"
+      class="dialog-footer"
+    >
+      <el-button
+        type="primary"
+        @click="handleImportTable"
+      >
+        确 定
+      </el-button>
+      <el-button @click="visible = false">
+        取 消
+      </el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import {importTable, listDbTable} from "@/api/tool/gen"
+import {importTable, listDbTable} from '@/api/tool/gen'
 
 export default {
   data() {
@@ -99,21 +161,21 @@ export default {
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm("queryForm")
+      this.resetForm('queryForm')
       this.handleQuery()
     },
     /** 导入按钮操作 */
     handleImportTable() {
-      const tableNames = this.tables.join(",")
-      if (tableNames == "") {
-        this.$modal.msgError("请选择要导入的表")
+      const tableNames = this.tables.join(',')
+      if (tableNames == '') {
+        this.$modal.msgError('请选择要导入的表')
         return
       }
       importTable({tables: tableNames}).then(res => {
         this.$modal.msgSuccess(res.msg)
         if (res.code === 200) {
           this.visible = false
-          this.$emit("ok")
+          this.$emit('ok')
         }
       })
     }

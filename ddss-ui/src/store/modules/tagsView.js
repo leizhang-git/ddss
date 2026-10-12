@@ -217,7 +217,7 @@ const actions = {
       commit('DEL_LEFT_VIEWS', view)
       resolve([...state.visitedViews])
     })
-  },
+  }
 }
 
 export default {

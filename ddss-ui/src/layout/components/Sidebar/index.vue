@@ -1,6 +1,12 @@
 <template>
-  <div class="sidebar-wrapper" :class="settings.sideTheme">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+  <div
+    class="sidebar-wrapper"
+    :class="settings.sideTheme"
+  >
+    <logo
+      v-if="showLogo"
+      :collapse="isCollapse"
+    />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"

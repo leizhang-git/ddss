@@ -1,9 +1,21 @@
 <template>
   <div class="app-container workflow-definition-page">
     <!-- 工具栏 -->
-    <el-row :gutter="10" class="mb8">
+    <el-row
+      :gutter="10"
+      class="mb8"
+    >
       <el-col :span="1.5">
-        <el-button v-hasPermi="['workflow:definition:add']" icon="el-icon-upload2" plain size="mini" type="primary" @click="handleDeploy">部署流程</el-button>
+        <el-button
+          v-hasPermi="['workflow:definition:add']"
+          icon="el-icon-upload2"
+          plain
+          size="mini"
+          type="primary"
+          @click="handleDeploy"
+        >
+          部署流程
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -14,7 +26,9 @@
           size="mini"
           type="danger"
           @click="handleDelete"
-        >删除</el-button>
+        >
+          删除
+        </el-button>
       </el-col>
       <right-toolbar @queryTable="getList" />
     </el-row>
@@ -28,26 +42,88 @@
     />
 
     <!-- 数据表格 -->
-    <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="流程名称" prop="name" min-width="160" show-overflow-tooltip />
-      <el-table-column label="流程Key" prop="key" width="130" align="center" />
-      <el-table-column label="版本" prop="version" width="70" align="center">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      />
+      <el-table-column
+        label="流程名称"
+        prop="name"
+        min-width="160"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        label="流程Key"
+        prop="key"
+        width="130"
+        align="center"
+      />
+      <el-table-column
+        label="版本"
+        prop="version"
+        width="70"
+        align="center"
+      >
         <template slot-scope="scope">
-          <el-tag size="mini">v{{ scope.row.version }}</el-tag>
+          <el-tag size="mini">
+            v{{ scope.row.version }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="资源文件" prop="resourceName" min-width="180" show-overflow-tooltip />
-      <el-table-column label="部署时间" prop="deploymentTime" width="165" align="center">
+      <el-table-column
+        label="资源文件"
+        prop="resourceName"
+        min-width="180"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        label="部署时间"
+        prop="deploymentTime"
+        width="165"
+        align="center"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.deploymentTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        width="200"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
-          <el-button icon="el-icon-document" size="mini" type="text" @click="handleViewXml(scope.row)">查看XML</el-button>
-          <el-button icon="el-icon-download" size="mini" type="text" @click="handleExport(scope.row)">导出</el-button>
-          <el-button v-hasPermi="['workflow:definition:remove']" icon="el-icon-delete" size="mini" type="text" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button
+            icon="el-icon-document"
+            size="mini"
+            type="text"
+            @click="handleViewXml(scope.row)"
+          >
+            查看XML
+          </el-button>
+          <el-button
+            icon="el-icon-download"
+            size="mini"
+            type="text"
+            @click="handleExport(scope.row)"
+          >
+            导出
+          </el-button>
+          <el-button
+            v-hasPermi="['workflow:definition:remove']"
+            icon="el-icon-delete"
+            size="mini"
+            type="text"
+            @click="handleDelete(scope.row)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,13 +143,23 @@
       accept=".bpmn20.xml,.bpmn"
       style="display: none"
       @change="handleFileChange"
-    />
+    >
 
     <!-- 查看 XML 对话框 -->
-    <el-dialog title="流程定义 XML" :visible.sync="xmlOpen" width="720px" append-to-body>
+    <el-dialog
+      title="流程定义 XML"
+      :visible.sync="xmlOpen"
+      width="720px"
+      append-to-body
+    >
       <pre class="xml-viewer">{{ xmlContent }}</pre>
       <div slot="footer">
-        <el-button type="primary" @click="xmlOpen = false">关 闭</el-button>
+        <el-button
+          type="primary"
+          @click="xmlOpen = false"
+        >
+          关 闭
+        </el-button>
       </div>
     </el-dialog>
   </div>

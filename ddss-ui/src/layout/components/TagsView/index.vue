@@ -1,11 +1,22 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div
+    id="tags-view-container"
+    class="tags-view-container"
+  >
     <div class="tags-wrapper">
-      <div v-show="showLeftArrow" class="scroll-arrow left-arrow" @click="scrollLeft">
-        <i class="el-icon-arrow-left"></i>
+      <div
+        v-show="showLeftArrow"
+        class="scroll-arrow left-arrow"
+        @click="scrollLeft"
+      >
+        <i class="el-icon-arrow-left" />
       </div>
 
-      <scroll-pane ref="scrollPane" class="tags-scroll-container" @scroll="handleScroll">
+      <scroll-pane
+        ref="scrollPane"
+        class="tags-scroll-container"
+        @scroll="handleScroll"
+      >
         <router-link
           v-for="tag in visitedViews"
           ref="tag"
@@ -18,22 +29,55 @@
           @contextmenu.prevent.native="openMenu(tag, $event)"
         >
           {{ tag.title }}
-          <i v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"></i>
+          <i
+            v-if="!isAffix(tag)"
+            class="el-icon-close"
+            @click.prevent.stop="closeSelectedTag(tag)"
+          />
         </router-link>
       </scroll-pane>
 
-      <div v-show="showRightArrow" class="scroll-arrow right-arrow" @click="scrollRight">
-        <i class="el-icon-arrow-right"></i>
+      <div
+        v-show="showRightArrow"
+        class="scroll-arrow right-arrow"
+        @click="scrollRight"
+      >
+        <i class="el-icon-arrow-right" />
       </div>
     </div>
 
-    <ul v-show="visible" :style="{left: left+'px', top: top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)"><i class="el-icon-refresh"></i> 刷新页面</li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)"><i class="el-icon-close"></i> 关闭当前</li>
-      <li @click="closeOthersTags"><i class="el-icon-circle-close"></i> 关闭其他</li>
-      <li v-if="!isFirstView()" @click="closeLeftTags"><i class="el-icon-back"></i> 关闭左侧</li>
-      <li v-if="!isLastView()" @click="closeRightTags"><i class="el-icon-right"></i> 关闭右侧</li>
-      <li @click="closeAllTags(selectedTag)"><i class="el-icon-delete"></i> 全部关闭</li>
+    <ul
+      v-show="visible"
+      :style="{left: left+'px', top: top+'px'}"
+      class="contextmenu"
+    >
+      <li @click="refreshSelectedTag(selectedTag)">
+        <i class="el-icon-refresh" /> 刷新页面
+      </li>
+      <li
+        v-if="!isAffix(selectedTag)"
+        @click="closeSelectedTag(selectedTag)"
+      >
+        <i class="el-icon-close" /> 关闭当前
+      </li>
+      <li @click="closeOthersTags">
+        <i class="el-icon-circle-close" /> 关闭其他
+      </li>
+      <li
+        v-if="!isFirstView()"
+        @click="closeLeftTags"
+      >
+        <i class="el-icon-back" /> 关闭左侧
+      </li>
+      <li
+        v-if="!isLastView()"
+        @click="closeRightTags"
+      >
+        <i class="el-icon-right" /> 关闭右侧
+      </li>
+      <li @click="closeAllTags(selectedTag)">
+        <i class="el-icon-delete" /> 全部关闭
+      </li>
     </ul>
   </div>
 </template>

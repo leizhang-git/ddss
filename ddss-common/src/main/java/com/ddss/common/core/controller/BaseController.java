@@ -1,7 +1,9 @@
 package com.ddss.common.core.controller;
 
 import com.ddss.common.constant.HttpStatus;
+import com.ddss.common.core.code.GlobalErrorCode;
 import com.ddss.common.core.domain.AjaxResult;
+import com.ddss.common.core.domain.R;
 import com.ddss.common.core.domain.model.LoginUser;
 import com.ddss.common.core.page.PageDomain;
 import com.ddss.common.core.page.TableDataInfo;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import java.beans.PropertyEditorSupport;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * web层通用数据处理
@@ -46,9 +49,35 @@ public class BaseController {
 
     /**
      * 设置请求分页数据
+     *
+     * @deprecated 分页查询请使用 {@link #pageQuery(Supplier)}，它会保证 ThreadLocal 被清理
      */
+    @Deprecated
     protected void startPage() {
         PageUtils.startPage();
+    }
+
+    /**
+     * 分页查询统一出口：一行完成 分页上下文 → 执行查询 → 提取 total → finally 清理 ThreadLocal
+     * <p>
+     * 用法：{@code return pageQuery(() -> financeService.selectFinanceList(finance)); }
+     *
+     * @param query 业务列表查询（内部已按 PageHelper 上下文分页）
+     * @param <T>   行类型
+     */
+    protected <T> TableDataInfo pageQuery(Supplier<List<T>> query) {
+        PageUtils.startPage();
+        try {
+            List<T> list = query.get();
+            TableDataInfo rspData = new TableDataInfo();
+            rspData.setCode(HttpStatus.SUCCESS);
+            rspData.setMsg("查询成功");
+            rspData.setRows(list);
+            rspData.setTotal(new PageInfo(list).getTotal());
+            return rspData;
+        } finally {
+            PageUtils.clearPage();
+        }
     }
 
     /**
@@ -132,6 +161,13 @@ public class BaseController {
      */
     protected AjaxResult toAjax(int rows) {
         return rows > 0 ? AjaxResult.success() : AjaxResult.error();
+    }
+
+    /**
+     * R 契约版：按影响行数判定成败（新代码用）
+     */
+    protected <T> R<T> toResult(int rows) {
+        return rows > 0 ? R.ok() : R.fail(GlobalErrorCode.SYSTEM_ERROR);
     }
 
     /**

@@ -1,36 +1,76 @@
 <template>
   <el-form size="small">
     <el-form-item>
-      <el-radio v-model='radioValue' :label="1">
+      <el-radio
+        v-model="radioValue"
+        :label="1"
+      >
         小时，允许的通配符[, - * /]
       </el-radio>
     </el-form-item>
 
     <el-form-item>
-      <el-radio v-model='radioValue' :label="2">
+      <el-radio
+        v-model="radioValue"
+        :label="2"
+      >
         周期从
-        <el-input-number v-model='cycle01' :max="22" :min="0"/>
+        <el-input-number
+          v-model="cycle01"
+          :max="22"
+          :min="0"
+        />
         -
-        <el-input-number v-model='cycle02' :max="23" :min="cycle01 ? cycle01 + 1 : 1"/>
+        <el-input-number
+          v-model="cycle02"
+          :max="23"
+          :min="cycle01 ? cycle01 + 1 : 1"
+        />
         小时
       </el-radio>
     </el-form-item>
 
     <el-form-item>
-      <el-radio v-model='radioValue' :label="3">
+      <el-radio
+        v-model="radioValue"
+        :label="3"
+      >
         从
-        <el-input-number v-model='average01' :max="22" :min="0"/>
+        <el-input-number
+          v-model="average01"
+          :max="22"
+          :min="0"
+        />
         小时开始，每
-        <el-input-number v-model='average02' :max="23 - average01 || 0" :min="1"/>
+        <el-input-number
+          v-model="average02"
+          :max="23 - average01 || 0"
+          :min="1"
+        />
         小时执行一次
       </el-radio>
     </el-form-item>
 
     <el-form-item>
-      <el-radio v-model='radioValue' :label="4">
+      <el-radio
+        v-model="radioValue"
+        :label="4"
+      >
         指定
-        <el-select v-model="checkboxList" clearable multiple placeholder="可多选" style="width:100%">
-          <el-option v-for="item in 24" :key="item" :value="item-1">{{ item - 1 }}</el-option>
+        <el-select
+          v-model="checkboxList"
+          clearable
+          multiple
+          placeholder="可多选"
+          style="width:100%"
+        >
+          <el-option
+            v-for="item in 24"
+            :key="item"
+            :value="item-1"
+          >
+            {{ item - 1 }}
+          </el-option>
         </el-select>
       </el-radio>
     </el-form-item>
@@ -39,6 +79,8 @@
 
 <script>
 export default {
+  name: 'CrontabHour',
+  props: ['check', 'cron'],
   data() {
     return {
       radioValue: 1,
@@ -50,8 +92,31 @@ export default {
       checkNum: this.$options.propsData.check
     }
   },
-  name: 'crontab-hour',
-  props: ['check', 'cron'],
+  computed: {
+    // 计算两个周期值
+    cycleTotal: function () {
+      const cycle01 = this.checkNum(this.cycle01, 0, 22)
+      const cycle02 = this.checkNum(this.cycle02, cycle01 ? cycle01 + 1 : 1, 23)
+      return cycle01 + '-' + cycle02
+    },
+    // 计算平均用到的值
+    averageTotal: function () {
+      const average01 = this.checkNum(this.average01, 0, 22)
+      const average02 = this.checkNum(this.average02, 1, 23 - average01 || 0)
+      return average01 + '/' + average02
+    },
+    // 计算勾选的checkbox值合集
+    checkboxString: function () {
+      let str = this.checkboxList.join()
+      return str == '' ? '*' : str
+    }
+  },
+  watch: {
+    'radioValue': 'radioChange',
+    'cycleTotal': 'cycleChange',
+    'averageTotal': 'averageChange',
+    'checkboxString': 'checkboxChange'
+  },
   methods: {
     // 单选按钮值变化时
     radioChange() {
@@ -93,31 +158,6 @@ export default {
       if (this.radioValue == '4') {
         this.$emit('update', 'hour', this.checkboxString)
       }
-    }
-  },
-  watch: {
-    'radioValue': 'radioChange',
-    'cycleTotal': 'cycleChange',
-    'averageTotal': 'averageChange',
-    'checkboxString': 'checkboxChange'
-  },
-  computed: {
-    // 计算两个周期值
-    cycleTotal: function () {
-      const cycle01 = this.checkNum(this.cycle01, 0, 22)
-      const cycle02 = this.checkNum(this.cycle02, cycle01 ? cycle01 + 1 : 1, 23)
-      return cycle01 + '-' + cycle02
-    },
-    // 计算平均用到的值
-    averageTotal: function () {
-      const average01 = this.checkNum(this.average01, 0, 22)
-      const average02 = this.checkNum(this.average02, 1, 23 - average01 || 0)
-      return average01 + '/' + average02
-    },
-    // 计算勾选的checkbox值合集
-    checkboxString: function () {
-      let str = this.checkboxList.join()
-      return str == '' ? '*' : str
     }
   }
 }

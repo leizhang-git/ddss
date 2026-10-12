@@ -1,11 +1,29 @@
 <template>
   <div>
-    <div class="user-info-head" @click="editCropper()"><img class="img-circle img-lg" title="点击上传头像"
-                                                            v-bind:src="options.img"/></div>
-    <el-dialog :title="title" :visible.sync="open" append-to-body width="800px" @close="closeDialog"
-               @opened="modalOpened">
+    <div
+      class="user-info-head"
+      @click="editCropper()"
+    >
+      <img
+        class="img-circle img-lg"
+        title="点击上传头像"
+        :src="options.img"
+      >
+    </div>
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      append-to-body
+      width="800px"
+      @close="closeDialog"
+      @opened="modalOpened"
+    >
       <el-row>
-        <el-col :md="12" :style="{height: '350px'}" :xs="24">
+        <el-col
+          :md="12"
+          :style="{height: '350px'}"
+          :xs="24"
+        >
           <vue-cropper
             v-if="visible"
             ref="cropper"
@@ -19,36 +37,94 @@
             @realTime="realTime"
           />
         </el-col>
-        <el-col :md="12" :style="{height: '350px'}" :xs="24">
+        <el-col
+          :md="12"
+          :style="{height: '350px'}"
+          :xs="24"
+        >
           <div class="avatar-upload-preview">
-            <img :src="previews.url" :style="previews.img"/>
+            <img
+              :src="previews.url"
+              :style="previews.img"
+            >
           </div>
         </el-col>
       </el-row>
-      <br/>
+      <br>
       <el-row>
-        <el-col :lg="2" :sm="3" :xs="3">
-          <el-upload :before-upload="beforeUpload" :http-request="requestUpload" :show-file-list="false" action="#">
+        <el-col
+          :lg="2"
+          :sm="3"
+          :xs="3"
+        >
+          <el-upload
+            :before-upload="beforeUpload"
+            :http-request="requestUpload"
+            :show-file-list="false"
+            action="#"
+          >
             <el-button size="small">
               选择
-              <i class="el-icon-upload el-icon--right"></i>
+              <i class="el-icon-upload el-icon--right" />
             </el-button>
           </el-upload>
         </el-col>
-        <el-col :lg="{span: 1, offset: 2}" :sm="2" :xs="2">
-          <el-button icon="el-icon-plus" size="small" @click="changeScale(1)"></el-button>
+        <el-col
+          :lg="{span: 1, offset: 2}"
+          :sm="2"
+          :xs="2"
+        >
+          <el-button
+            icon="el-icon-plus"
+            size="small"
+            @click="changeScale(1)"
+          />
         </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :sm="2" :xs="2">
-          <el-button icon="el-icon-minus" size="small" @click="changeScale(-1)"></el-button>
+        <el-col
+          :lg="{span: 1, offset: 1}"
+          :sm="2"
+          :xs="2"
+        >
+          <el-button
+            icon="el-icon-minus"
+            size="small"
+            @click="changeScale(-1)"
+          />
         </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :sm="2" :xs="2">
-          <el-button icon="el-icon-refresh-left" size="small" @click="rotateLeft()"></el-button>
+        <el-col
+          :lg="{span: 1, offset: 1}"
+          :sm="2"
+          :xs="2"
+        >
+          <el-button
+            icon="el-icon-refresh-left"
+            size="small"
+            @click="rotateLeft()"
+          />
         </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :sm="2" :xs="2">
-          <el-button icon="el-icon-refresh-right" size="small" @click="rotateRight()"></el-button>
+        <el-col
+          :lg="{span: 1, offset: 1}"
+          :sm="2"
+          :xs="2"
+        >
+          <el-button
+            icon="el-icon-refresh-right"
+            size="small"
+            @click="rotateRight()"
+          />
         </el-col>
-        <el-col :lg="{span: 2, offset: 6}" :sm="2" :xs="2">
-          <el-button size="small" type="primary" @click="uploadImg()">提 交</el-button>
+        <el-col
+          :lg="{span: 2, offset: 6}"
+          :sm="2"
+          :xs="2"
+        >
+          <el-button
+            size="small"
+            type="primary"
+            @click="uploadImg()"
+          >
+            提 交
+          </el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -56,9 +132,9 @@
 </template>
 
 <script>
-import store from "@/store"
-import {VueCropper} from "vue-cropper"
-import {uploadAvatar} from "@/api/system/user"
+import store from '@/store'
+import {VueCropper} from 'vue-cropper'
+import {uploadAvatar} from '@/api/system/user'
 import {debounce} from '@/utils'
 
 export default {
@@ -70,14 +146,14 @@ export default {
       // 是否显示cropper
       visible: false,
       // 弹出层标题
-      title: "修改头像",
+      title: '修改头像',
       options: {
         img: store.getters.avatar,  //裁剪图片的地址
         autoCrop: true,             // 是否默认生成截图框
         autoCropWidth: 200,         // 默认生成截图框宽度
         autoCropHeight: 200,        // 默认生成截图框高度
         fixedBox: true,             // 固定截图框大小 不允许改变
-        outputType: "png",           // 默认生成截图为PNG格式
+        outputType: 'png',           // 默认生成截图为PNG格式
         filename: 'avatar'          // 文件名称
       },
       previews: {},
@@ -97,7 +173,7 @@ export default {
           this.refresh()
         }, 100)
       }
-      window.addEventListener("resize", this.resizeHandler)
+      window.addEventListener('resize', this.resizeHandler)
     },
     // 刷新组件
     refresh() {
@@ -121,8 +197,8 @@ export default {
     },
     // 上传预处理
     beforeUpload(file) {
-      if (file.type.indexOf("image/") == -1) {
-        this.$modal.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。")
+      if (file.type.indexOf('image/') == -1) {
+        this.$modal.msgError('文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。')
       } else {
         const reader = new FileReader()
         reader.readAsDataURL(file)
@@ -136,12 +212,12 @@ export default {
     uploadImg() {
       this.$refs.cropper.getCropBlob(data => {
         let formData = new FormData()
-        formData.append("avatarfile", data, this.options.filename)
+        formData.append('avatarfile', data, this.options.filename)
         uploadAvatar(formData).then(response => {
           this.open = false
           this.options.img = process.env.VUE_APP_BASE_API + response.imgUrl
           store.commit('SET_AVATAR', this.options.img)
-          this.$modal.msgSuccess("修改成功")
+          this.$modal.msgSuccess('修改成功')
           this.visible = false
         })
       })
@@ -154,7 +230,7 @@ export default {
     closeDialog() {
       this.options.img = store.getters.avatar
       this.visible = false
-      window.removeEventListener("resize", this.resizeHandler)
+      window.removeEventListener('resize', this.resizeHandler)
     }
   }
 }

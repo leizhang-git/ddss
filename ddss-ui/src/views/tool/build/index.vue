@@ -3,13 +3,16 @@
     <div class="left-board">
       <div class="logo-wrapper">
         <div class="logo">
-          <img :src="logo" alt="logo"> Form Generator
+          <img
+            :src="logo"
+            alt="logo"
+          > Form Generator
         </div>
       </div>
       <el-scrollbar class="left-scrollbar">
         <div class="components-list">
           <div class="components-title">
-            <svg-icon icon-class="component"/>
+            <svg-icon icon-class="component" />
             输入型组件
           </div>
           <draggable
@@ -22,17 +25,19 @@
             @end="onEnd"
           >
             <div
-              v-for="(element, index) in inputComponents" :key="index" class="components-item"
+              v-for="(element, index) in inputComponents"
+              :key="index"
+              class="components-item"
               @click="addComponent(element)"
             >
               <div class="components-body">
-                <svg-icon :icon-class="element.tagIcon"/>
+                <svg-icon :icon-class="element.tagIcon" />
                 {{ element.label }}
               </div>
             </div>
           </draggable>
           <div class="components-title">
-            <svg-icon icon-class="component"/>
+            <svg-icon icon-class="component" />
             选择型组件
           </div>
           <draggable
@@ -51,26 +56,32 @@
               @click="addComponent(element)"
             >
               <div class="components-body">
-                <svg-icon :icon-class="element.tagIcon"/>
+                <svg-icon :icon-class="element.tagIcon" />
                 {{ element.label }}
               </div>
             </div>
           </draggable>
           <div class="components-title">
-            <svg-icon icon-class="component"/>
+            <svg-icon icon-class="component" />
             布局型组件
           </div>
           <draggable
-            :clone="cloneComponent" :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
-            :list="layoutComponents" :sort="false"
-            class="components-draggable" draggable=".components-item" @end="onEnd"
+            :clone="cloneComponent"
+            :group="{ name: 'componentsGroup', pull: 'clone', put: false }"
+            :list="layoutComponents"
+            :sort="false"
+            class="components-draggable"
+            draggable=".components-item"
+            @end="onEnd"
           >
             <div
-              v-for="(element, index) in layoutComponents" :key="index" class="components-item"
+              v-for="(element, index) in layoutComponents"
+              :key="index"
+              class="components-item"
               @click="addComponent(element)"
             >
               <div class="components-body">
-                <svg-icon :icon-class="element.tagIcon"/>
+                <svg-icon :icon-class="element.tagIcon" />
                 {{ element.label }}
               </div>
             </div>
@@ -81,25 +92,47 @@
 
     <div class="center-board">
       <div class="action-bar">
-        <el-button icon="el-icon-download" type="text" @click="download">
+        <el-button
+          icon="el-icon-download"
+          type="text"
+          @click="download"
+        >
           导出vue文件
         </el-button>
-        <el-button class="copy-btn-main" icon="el-icon-document-copy" type="text" @click="copy">
+        <el-button
+          class="copy-btn-main"
+          icon="el-icon-document-copy"
+          type="text"
+          @click="copy"
+        >
           复制代码
         </el-button>
-        <el-button class="delete-btn" icon="el-icon-delete" type="text" @click="empty">
+        <el-button
+          class="delete-btn"
+          icon="el-icon-delete"
+          type="text"
+          @click="empty"
+        >
           清空
         </el-button>
       </div>
       <el-scrollbar class="center-scrollbar">
-        <el-row :gutter="formConf.gutter" class="center-board-row">
+        <el-row
+          :gutter="formConf.gutter"
+          class="center-board-row"
+        >
           <el-form
             :disabled="formConf.disabled"
             :label-position="formConf.labelPosition"
             :label-width="formConf.labelWidth + 'px'"
             :size="formConf.size"
           >
-            <draggable :animation="340" :list="drawingList" class="drawing-board" group="componentsGroup">
+            <draggable
+              :animation="340"
+              :list="drawingList"
+              class="drawing-board"
+              group="componentsGroup"
+            >
               <draggable-item
                 v-for="(element, index) in drawingList"
                 :key="element.renderKey"
@@ -113,7 +146,10 @@
                 @deleteItem="drawingItemDelete"
               />
             </draggable>
-            <div v-show="!drawingList.length" class="empty-info">
+            <div
+              v-show="!drawingList.length"
+              class="empty-info"
+            >
               从左侧拖入或点选组件进行表单设计
             </div>
           </el-form>
@@ -134,7 +170,10 @@
       title="选择生成类型"
       @confirm="generate"
     />
-    <input id="copyNode" type="hidden">
+    <input
+      id="copyNode"
+      type="hidden"
+    >
   </div>
 </template>
 
@@ -142,7 +181,6 @@
 import draggable from 'vuedraggable'
 import beautifier from 'js-beautify'
 import ClipboardJS from 'clipboard'
-import render from '@/utils/generator/render'
 import RightPanel from './RightPanel'
 import {formConf, inputComponents, layoutComponents, selectComponents} from '@/utils/generator/config'
 import {beautifierConf, titleCase} from '@/utils/index'
@@ -161,7 +199,6 @@ let clipboard = null
 export default {
   components: {
     draggable,
-    render,
     RightPanel,
     CodeTypeDialog,
     DraggableItem
@@ -186,16 +223,6 @@ export default {
       activeData: drawingDefaultValue[0]
     }
   },
-  beforeCreate() {
-    initDrawingDefaultValue()
-  },
-  created() {
-    // 防止 firefox 下 拖拽 会新打卡一个选项卡
-    document.body.ondrop = event => {
-      event.preventDefault()
-      event.stopPropagation()
-    }
-  },
   watch: {
     'activeData.label': function (val, oldVal) {
       if (
@@ -212,6 +239,16 @@ export default {
         oldActiveId = val
       },
       immediate: true
+    }
+  },
+  beforeCreate() {
+    initDrawingDefaultValue()
+  },
+  created() {
+    // 防止 firefox 下 拖拽 会新打卡一个选项卡
+    document.body.ondrop = event => {
+      event.preventDefault()
+      event.stopPropagation()
     }
   },
   mounted() {

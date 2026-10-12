@@ -21,7 +21,7 @@ $VM_KEY     = "$env:USERPROFILE\.ssh\id_rsa"  # SSH 私钥路径（配置免密�
 # 虚拟机上的路径
 $VM_JAR_DIR   = "/opt/ddss"                         # JAR 包存放目录
 $VM_START_CMD = "cd $VM_JAR_DIR && ./start.sh restart"  # 重启命令
-$VM_NGINX_DIR = "/usr/share/nginx/html"             # Nginx 静态文件目录
+$VM_NGINX_DIR = "/usr/local/nginx/html/ddss-ui"       # 必须与 file/nginx.conf 的 root 一致
 $VM_NGINX_RELOAD = "nginx -s reload"                # Nginx 重载命令
 
 # 本机路径（一般不用改）
@@ -62,7 +62,7 @@ function Invoke-SCP($localPath, $remotePath) {
 function Deploy-Backend {
     if (-not $SkipBuild) {
         Write-Step "编译后端..."
-        mvn clean package -pl ddss-bootstrap -am -DskipTests
+        mvn -pl ddss-bootstrap -am clean verify
         if ($LASTEXITCODE -ne 0) { Write-Err "编译失败"; exit 1 }
         Write-OK
     }

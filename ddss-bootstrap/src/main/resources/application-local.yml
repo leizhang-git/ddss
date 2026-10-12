@@ -70,27 +70,27 @@ spring:
       maxPoolPreparedStatementPerConnectionSize: 20
       filters: stat,slf4j
       stat-view-servlet:
-        enabled: true
-        loginUsername: admin
-        loginPassword: 123456
+        enabled: ${DDSS_DRUID_CONSOLE_ENABLED:false}
+        loginUsername: ${DDSS_DRUID_USERNAME:admin}
+        loginPassword: ${DDSS_DRUID_PASSWORD:}
     dynamic:
       primary: master
       datasource:
         master:
           url: jdbc:mysql://192.168.83.100:3306/ddss?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-          username: root
-          password: 123456
+          username: ${DDSS_MYSQL_USERNAME:root}
+          password: ${DDSS_MYSQL_PASSWORD:}
           driver-class-name: com.mysql.cj.jdbc.Driver
         ddss:
           url: jdbc:mysql://192.168.83.100:3306/ddss?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
-          username: root
-          password: 123456
+          username: ${DDSS_MYSQL_USERNAME:root}
+          password: ${DDSS_MYSQL_PASSWORD:}
           driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     sentinel:
       master: mymaster
       nodes: 192.168.83.100:26379,192.168.83.100:26380,192.168.83.100:26381
-    password: 123456
+    password: ${DDSS_REDIS_PASSWORD:}
     lettuce:
       pool:
         max-active: 8
@@ -123,8 +123,8 @@ spring:
 
 token:
   header: Authorization
-  # HS512 要求密钥 >= 64 字节；生产环境务必通过 Nacos 加密配置或环境变量 TOKEN_SECRET 覆盖，并定期轮换
-  secret: ZmY5N2E3YzQyLTEyMzQtNTY3OC05YWJjLWRkZWY5N2E3YzQyMTIwMjUtZGRzcy1zZWNyZXQta2V5LWhzNTEy
+  # HS512 要求密钥 >= 64 字节；通过环境变量注入，禁止提交真实密钥
+  secret: ${DDSS_TOKEN_SECRET:}
   expireTime: 30
 
 mybatis:
@@ -174,11 +174,13 @@ tablePrefix: sys_
 allowOverwrite: false
 
 minio:
-  endpoint: http://192.168.83.100:9000
-  access-key: admin
-  secret-key: admin123
-  bucket-name: app
-  secure: false
+  endpoint: ${DDSS_MINIO_ENDPOINT:http://127.0.0.1:9000}
+  access-key: ${DDSS_MINIO_ACCESS_KEY:}
+  secret-key: ${DDSS_MINIO_SECRET_KEY:}
+  bucket-name: ${DDSS_MINIO_BUCKET:app}
+  secure: ${DDSS_MINIO_SECURE:false}
+  max-presigned-url-days: ${DDSS_MINIO_MAX_PRESIGNED_DAYS:1}
+  max-file-size: ${DDSS_MINIO_MAX_FILE_SIZE:104857600}
 
 xxl:
   job:

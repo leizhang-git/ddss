@@ -3,7 +3,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ddss</artifactId>
+        <artifactId>ddss-parent</artifactId>
         <groupId>com.ddss</groupId>
         <version>1.0.0</version>
     </parent>
@@ -11,9 +11,27 @@
     <packaging>jar</packaging>
     <artifactId>ddss-bootstrap</artifactId>
 
-    <description>web服务入口</description>
+    <description>web服务入口 + 组装层（认证/基础设施 REST，对标 iuap desktop-bootstrap）</description>
 
     <dependencies>
+
+        <!-- Nacos 服务注册发现（DdssApplication @EnableDiscoveryClient） -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
+
+        <!-- Nacos 配置中心（bootstrap.yml 的 nacos:// 配置导入） -->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+
+        <!-- 启用 bootstrap.yml 上下文加载机制 -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-bootstrap</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.codehaus.janino</groupId>
@@ -48,24 +66,13 @@
         <!-- 核心模块-->
         <dependency>
             <groupId>com.ddss</groupId>
-            <artifactId>ddss-ry-framework</artifactId>
+            <artifactId>ddss-framework</artifactId>
         </dependency>
 
-        <!-- 定时任务-->
+        <!-- 实现总集（consumer 是它的传递依赖） -->
         <dependency>
             <groupId>com.ddss</groupId>
-            <artifactId>ddss-quartz</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ddss</groupId>
-            <artifactId>ddss-server</artifactId>
-        </dependency>
-
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.ddss</groupId>
-            <artifactId>ddss-generator</artifactId>
+            <artifactId>ddss-provider</artifactId>
         </dependency>
 
         <!-- ZIP 压缩工具 -->

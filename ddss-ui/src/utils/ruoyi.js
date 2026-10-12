@@ -71,7 +71,7 @@ export function addDateRange(params, dateRange, propName) {
 // 回显数据字典
 export function selectDictLabel(datas, value) {
   if (value === undefined) {
-    return ""
+    return ''
   }
   var actions = []
   Object.keys(datas).some((key) => {
@@ -89,13 +89,13 @@ export function selectDictLabel(datas, value) {
 // 回显数据字典（字符串、数组）
 export function selectDictLabels(datas, value, separator) {
   if (value === undefined || value.length === 0) {
-    return ""
+    return ''
   }
   if (Array.isArray(value)) {
-    value = value.join(",")
+    value = value.join(',')
   }
   var actions = []
-  var currentSeparator = undefined === separator ? "," : separator
+  var currentSeparator = undefined === separator ? ',' : separator
   var temp = value.split(currentSeparator)
   Object.keys(value.split(currentSeparator)).some((val) => {
     var match = false
@@ -128,8 +128,8 @@ export function sprintf(str) {
 
 // 转换字符串，undefined,null等转化为""
 export function parseStrEmpty(str) {
-  if (!str || str == "undefined" || str == "null") {
-    return ""
+  if (!str || str == 'undefined' || str == 'null') {
+    return ''
   }
   return str
 }
@@ -194,18 +194,18 @@ export function tansParams(params) {
   let result = ''
   for (const propName of Object.keys(params)) {
     const value = params[propName]
-    var part = encodeURIComponent(propName) + "="
-    if (value !== null && value !== "" && typeof (value) !== "undefined") {
+    var part = encodeURIComponent(propName) + '='
+    if (value !== null && value !== '' && typeof (value) !== 'undefined') {
       if (typeof value === 'object') {
         for (const key of Object.keys(value)) {
-          if (value[key] !== null && value[key] !== "" && typeof (value[key]) !== 'undefined') {
+          if (value[key] !== null && value[key] !== '' && typeof (value[key]) !== 'undefined') {
             let params = propName + '[' + key + ']'
-            var subPart = encodeURIComponent(params) + "="
-            result += subPart + encodeURIComponent(value[key]) + "&"
+            var subPart = encodeURIComponent(params) + '='
+            result += subPart + encodeURIComponent(value[key]) + '&'
           }
         }
       } else {
-        result += part + encodeURIComponent(value) + "&"
+        result += part + encodeURIComponent(value) + '&'
       }
     }
   }

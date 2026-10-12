@@ -9,7 +9,7 @@ const CompressionPlugin = require('compression-webpack-plugin')
 
 const name = process.env.VUE_APP_TITLE || 'DDSS 管理系统' // 网页标题
 
-const baseUrl = 'http://localhost:8088' // 后端接口
+const baseUrl = process.env.VUE_APP_API_TARGET || 'http://127.0.0.1:8088' // 后端接口
 
 const port = process.env.port || process.env.npm_config_port || 80 // 端口
 
@@ -20,7 +20,7 @@ module.exports = {
   // 部署生产环境和开发环境下的URL。
   // 默认情况下，Vue CLI 会假设你的应用是被部署在一个域名的根路径上
   // 例如 https://www.example.com/。如果应用被部署在一个子路径上，你就需要用这个选项指定这个子路径。例如，如果你的应用被部署在 https://www.example.com/admin/，则设置 baseUrl 为 /admin/。
-  publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
+  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
   // 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）（默认dist）
   outputDir: 'dist',
   // 用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
@@ -47,13 +47,12 @@ module.exports = {
         target: baseUrl,
         changeOrigin: true
       }
-    },
-    disableHostCheck: true
+    }
   },
   css: {
     loaderOptions: {
       sass: {
-        sassOptions: {outputStyle: "expanded"}
+        sassOptions: {outputStyle: 'expanded'}
       }
     }
   },
@@ -74,7 +73,7 @@ module.exports = {
         minRatio: 0.8,                                 // 压缩比例，小于 80% 的文件不会被压缩
         deleteOriginalAssets: false                    // 压缩后删除原文件
       })
-    ],
+    ]
   },
   chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test

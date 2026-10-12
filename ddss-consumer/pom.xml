@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>ddss-parent</artifactId>
+        <groupId>com.ddss</groupId>
+        <version>1.0.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>ddss-consumer</artifactId>
+
+    <description>
+        对外契约总集（consumer 层，对标 iuap-data-common 的 *-consumer）：
+        全部业务域（system/finance/video）的实体、Service 接口、Mapper 接口，零实现。
+        RPC 框架升级时：此模块独立发布为契约 jar，消费方依赖它，provider 换注入方式即可（REST ↔ RPC）
+    </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ddss</groupId>
+            <artifactId>ddss-common</artifactId>
+        </dependency>
+
+        <!-- 契约层实体/接口依赖 MyBatis-Plus 注解与 BaseMapper/IService -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
+        <!-- Mapper 契约使用 @DS 多数据源注解 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>

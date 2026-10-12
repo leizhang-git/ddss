@@ -71,8 +71,8 @@ spring:
       master: mymaster
       # 哨兵节点地址（多个用逗号分隔）
       nodes: 192.168.83.100:26379,192.168.83.100:26380,192.168.83.100:26381
-    # Redis 密码（和你配置的 123456 一致）
-    password: 123456
+    # Redis 密码通过环境变量注入
+    password: ${DDSS_REDIS_PASSWORD:}
     # 超时配置
     timeout: 10000ms
   kafka:
@@ -119,8 +119,8 @@ spring:
 token:
   # 令牌自定义标识
   header: Authorization
-  # 令牌密钥
-  secret: abcdefghijklmnopqrstuvwxyz
+  # 令牌密钥通过环境变量注入
+  secret: ${DDSS_TOKEN_SECRET:}
   # 令牌有效期（默认30分钟）
   expireTime: 30
 
@@ -182,7 +182,7 @@ xss:
   urlPatterns: /system/*,/monitor/*,/tool/*
 mybatis-plus:
   # 实体扫描，多个package用逗号或者分号分隔
-  type-aliases-package: com.ddss.server.domain.po
+  type-aliases-package: com.ddss
   # mapper.xml 文件位置
   mapper-locations: classpath*:/mapper/**/*.xml
   configuration:
@@ -191,11 +191,11 @@ mybatis-plus:
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 minio:
-  endpoint: http://192.168.83.100:9000
-  access-key: admin
-  secret-key: 12345678
-  bucket-name: app
-  secure: false
+  endpoint: ${DDSS_MINIO_ENDPOINT:http://127.0.0.1:9000}
+  access-key: ${DDSS_MINIO_ACCESS_KEY:}
+  secret-key: ${DDSS_MINIO_SECRET_KEY:}
+  bucket-name: ${DDSS_MINIO_BUCKET:app}
+  secure: ${DDSS_MINIO_SECURE:false}
 # XXL-Job 配置
 xxl:
   job:

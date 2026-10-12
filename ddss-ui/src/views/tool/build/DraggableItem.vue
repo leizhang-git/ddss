@@ -7,13 +7,13 @@ const components = {
     const {copyItem, deleteItem} = this.$listeners
     return [
       <span class="drawing-item-copy" title="复制" onClick={event => {
-        copyItem(element, parent);
+        copyItem(element, parent)
         event.stopPropagation()
       }}>
         <i class="el-icon-copy-document"/>
       </span>,
       <span class="drawing-item-delete" title="删除" onClick={event => {
-        deleteItem(index, parent);
+        deleteItem(index, parent)
         event.stopPropagation()
       }}>
         <i class="el-icon-delete"/>
@@ -28,12 +28,12 @@ const layouts = {
     if (this.formConf.unFocusedComponentBorder) className += ' unfocus-bordered'
     return (
       <el-col span={element.span} class={className}
-              nativeOnClick={event => {
-                activeItem(element);
-                event.stopPropagation()
-              }}>
+        nativeOnClick={event => {
+          activeItem(element)
+          event.stopPropagation()
+        }}>
         <el-form-item label-width={element.labelWidth ? `${element.labelWidth}px` : null}
-                      label={element.label} required={element.required}>
+          label={element.label} required={element.required}>
           <render key={element.renderKey} conf={element} onInput={event => {
             this.$set(element, 'defaultValue', event)
           }}/>
@@ -54,10 +54,10 @@ const layouts = {
     return (
       <el-col span={element.span}>
         <el-row gutter={element.gutter} class={className}
-                nativeOnClick={event => {
-                  activeItem(element);
-                  event.stopPropagation()
-                }}>
+          nativeOnClick={event => {
+            activeItem(element)
+            event.stopPropagation()
+          }}>
           <span class="component-name">{element.componentName}</span>
           <draggable list={element.children} animation={340} group="componentsGroup" class="drag-wrapper">
             {child}

@@ -7,8 +7,7 @@
           :key="item.value"
           :class="item.raw.cssClass"
           :index="index"
-        >{{ item.label + ' ' }}</span
-        >
+        >{{ item.label + ' ' }}</span>
         <el-tag
           v-else
           :key="item.value"
@@ -29,26 +28,34 @@
 
 <script>
 export default {
-  name: "DictTag",
+  name: 'DictTag',
+  filters: {
+    handleArray(array) {
+      if (array.length === 0) return ''
+      return array.reduce((pre, cur) => {
+        return pre + ' ' + cur
+      })
+    }
+  },
   props: {
     options: {
       type: Array,
-      default: null,
+      default: null
     },
     value: [Number, String, Array],
     // 当未找到匹配的数据时，显示value
     showValue: {
       type: Boolean,
-      default: true,
+      default: true
     },
     separator: {
       type: String,
-      default: ","
+      default: ','
     }
   },
   data() {
     return {
-      unmatchArray: [], // 记录未匹配的项
+      unmatchArray: [] // 记录未匹配的项
     }
   },
   computed: {
@@ -69,16 +76,8 @@ export default {
         }
       })
       return unmatch // 返回标志的值
-    },
+    }
 
-  },
-  filters: {
-    handleArray(array) {
-      if (array.length === 0) return ''
-      return array.reduce((pre, cur) => {
-        return pre + ' ' + cur
-      })
-    },
   }
 }
 </script>

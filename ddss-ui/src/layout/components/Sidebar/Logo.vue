@@ -1,18 +1,46 @@
 <template>
-  <div :class="{'collapse':collapse}" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }"
-       class="sidebar-logo-container">
+  <div
+    :class="{'collapse':collapse}"
+    :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }"
+    class="sidebar-logo-container"
+  >
     <transition name="sidebarLogoFade">
-      <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo"/>
-        <h1 v-else :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }"
-            class="sidebar-title">
-          {{ title }} </h1>
+      <router-link
+        v-if="collapse"
+        key="collapse"
+        class="sidebar-logo-link"
+        to="/"
+      >
+        <img
+          v-if="logo"
+          :src="logo"
+          class="sidebar-logo"
+        >
+        <h1
+          v-else
+          :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }"
+          class="sidebar-title"
+        >
+          {{ title }}
+        </h1>
       </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo"/>
-        <h1 :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }"
-            class="sidebar-title">
-          {{ title }} </h1>
+      <router-link
+        v-else
+        key="expand"
+        class="sidebar-logo-link"
+        to="/"
+      >
+        <img
+          v-if="logo"
+          :src="logo"
+          class="sidebar-logo"
+        >
+        <h1
+          :style="{ color: sideTheme === 'theme-dark' ? variables.logoTitleColor : variables.logoLightTitleColor }"
+          class="sidebar-title"
+        >
+          {{ title }}
+        </h1>
       </router-link>
     </transition>
   </div>
@@ -30,18 +58,18 @@ export default {
       required: true
     }
   },
+  data() {
+    return {
+      title: process.env.VUE_APP_TITLE,
+      logo: logoImg
+    }
+  },
   computed: {
     variables() {
       return variables
     },
     sideTheme() {
       return this.$store.state.settings.sideTheme
-    }
-  },
-  data() {
-    return {
-      title: process.env.VUE_APP_TITLE,
-      logo: logoImg
     }
   }
 }

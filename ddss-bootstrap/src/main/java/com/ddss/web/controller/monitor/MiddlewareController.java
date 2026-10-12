@@ -1,7 +1,7 @@
 package com.ddss.web.controller.monitor;
 
 import com.ddss.common.core.domain.AjaxResult;
-import com.ddss.server.minio.util.MinioUtil;
+import com.ddss.framework.minio.util.MinioUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;

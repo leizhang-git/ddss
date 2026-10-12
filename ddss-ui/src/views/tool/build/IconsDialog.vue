@@ -26,7 +26,7 @@
           :class="active===icon?'active-item':''"
           @click="onSelect(icon)"
         >
-          <i :class="icon"/>
+          <i :class="icon" />
           <div>{{ icon }}</div>
         </li>
       </ul>

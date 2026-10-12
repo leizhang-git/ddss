@@ -76,7 +76,7 @@ function buildAttributes(el, dataList, ruleList, optionsList, methodList, propsL
 }
 
 function mixinMethod(type) {
-  const list = [];
+  const list = []
   const
     minxins = {
       file: confGlobal.formBtns ? {
@@ -169,9 +169,9 @@ function buildProps(conf, propsList) {
 }
 
 function buildBeforeUpload(conf) {
-  const unitNum = units[conf.sizeUnit];
-  let rightSizeCode = '';
-  let acceptCode = '';
+  const unitNum = units[conf.sizeUnit]
+  let rightSizeCode = ''
+  let acceptCode = ''
   const
     returnList = []
   if (conf.fileSize) {

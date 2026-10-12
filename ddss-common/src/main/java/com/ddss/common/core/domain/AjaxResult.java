@@ -10,7 +10,9 @@ import java.util.Objects;
  * 操作消息提醒
  *
  * @author ruoyi
+ * @deprecated 存量接口兼容用，新代码一律使用 {@link R}（强类型 + traceId）
  */
+@Deprecated
 public class AjaxResult extends HashMap<String, Object> {
     /**
      * 状态码

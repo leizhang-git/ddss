@@ -1,26 +1,81 @@
 <template>
   <div class="app-container workflow-todo-page">
-    <el-tabs v-model="activeTab" type="border-card" @tab-click="handleTabClick">
+    <el-tabs
+      v-model="activeTab"
+      type="border-card"
+      @tab-click="handleTabClick"
+    >
       <!-- 待办任务 -->
-      <el-tab-pane label="我的待办" name="todo">
-        <el-table v-loading="loading" :data="todoList">
-          <el-table-column label="审批节点" prop="taskName" width="140" align="center">
+      <el-tab-pane
+        label="我的待办"
+        name="todo"
+      >
+        <el-table
+          v-loading="loading"
+          :data="todoList"
+        >
+          <el-table-column
+            label="审批节点"
+            prop="taskName"
+            width="140"
+            align="center"
+          >
             <template slot-scope="scope">
-              <el-tag size="mini">{{ scope.row.taskName }}</el-tag>
+              <el-tag size="mini">
+                {{ scope.row.taskName }}
+              </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="申请人" prop="applyUserName" width="120" align="center" />
-          <el-table-column label="请假事由" prop="reason" min-width="180" show-overflow-tooltip />
-          <el-table-column label="天数" prop="leaveDays" width="70" align="center" />
-          <el-table-column label="开始日期" prop="startDate" width="110" align="center" />
-          <el-table-column label="任务创建时间" prop="taskCreateTime" width="165" align="center">
+          <el-table-column
+            label="申请人"
+            prop="applyUserName"
+            width="120"
+            align="center"
+          />
+          <el-table-column
+            label="请假事由"
+            prop="reason"
+            min-width="180"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            label="天数"
+            prop="leaveDays"
+            width="70"
+            align="center"
+          />
+          <el-table-column
+            label="开始日期"
+            prop="startDate"
+            width="110"
+            align="center"
+          />
+          <el-table-column
+            label="任务创建时间"
+            prop="taskCreateTime"
+            width="165"
+            align="center"
+          >
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.taskCreateTime) }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="120" align="center" class-name="small-padding fixed-width">
+          <el-table-column
+            label="操作"
+            width="120"
+            align="center"
+            class-name="small-padding fixed-width"
+          >
             <template slot-scope="scope">
-              <el-button v-hasPermi="['workflow:task:approve']" icon="el-icon-check" size="mini" type="text" @click="handleApprove(scope.row)">审批</el-button>
+              <el-button
+                v-hasPermi="['workflow:task:approve']"
+                icon="el-icon-check"
+                size="mini"
+                type="text"
+                @click="handleApprove(scope.row)"
+              >
+                审批
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -34,25 +89,68 @@
       </el-tab-pane>
 
       <!-- 已办任务 -->
-      <el-tab-pane label="我的已办" name="done">
-        <el-table v-loading="doneLoading" :data="doneList">
-          <el-table-column label="审批节点" prop="taskName" width="140" align="center">
+      <el-tab-pane
+        label="我的已办"
+        name="done"
+      >
+        <el-table
+          v-loading="doneLoading"
+          :data="doneList"
+        >
+          <el-table-column
+            label="审批节点"
+            prop="taskName"
+            width="140"
+            align="center"
+          >
             <template slot-scope="scope">
-              <el-tag size="mini">{{ scope.row.taskName }}</el-tag>
+              <el-tag size="mini">
+                {{ scope.row.taskName }}
+              </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="申请人" prop="applyUserName" width="120" align="center" />
-          <el-table-column label="请假事由" prop="reason" min-width="180" show-overflow-tooltip />
-          <el-table-column label="天数" prop="leaveDays" width="70" align="center" />
-          <el-table-column label="结论" prop="approved" width="90" align="center">
+          <el-table-column
+            label="申请人"
+            prop="applyUserName"
+            width="120"
+            align="center"
+          />
+          <el-table-column
+            label="请假事由"
+            prop="reason"
+            min-width="180"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            label="天数"
+            prop="leaveDays"
+            width="70"
+            align="center"
+          />
+          <el-table-column
+            label="结论"
+            prop="approved"
+            width="90"
+            align="center"
+          >
             <template slot-scope="scope">
               <el-tag :type="scope.row.approved ? 'success' : 'danger'">
                 {{ scope.row.approved ? '通过' : '驳回' }}
               </el-tag>
             </template>
           </el-table-column>
-          <el-table-column label="审批意见" prop="comment" min-width="120" show-overflow-tooltip />
-          <el-table-column label="完成时间" prop="finishTime" width="165" align="center">
+          <el-table-column
+            label="审批意见"
+            prop="comment"
+            min-width="120"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            label="完成时间"
+            prop="finishTime"
+            width="165"
+            align="center"
+          >
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.finishTime) }}</span>
             </template>
@@ -69,8 +167,19 @@
     </el-tabs>
 
     <!-- 审批对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="520px" append-to-body :close-on-click-modal="false">
-      <el-form ref="approveForm" :model="approveForm" :rules="approveRules" label-width="110px">
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="520px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <el-form
+        ref="approveForm"
+        :model="approveForm"
+        :rules="approveRules"
+        label-width="110px"
+      >
         <el-form-item label="请假事由">
           <span>{{ currentTask.reason }}</span>
         </el-form-item>
@@ -80,19 +189,41 @@
         <el-form-item label="请假天数">
           <span>{{ currentTask.leaveDays }} 天，自 {{ currentTask.startDate }} 起</span>
         </el-form-item>
-        <el-form-item label="审批结果" prop="approved">
+        <el-form-item
+          label="审批结果"
+          prop="approved"
+        >
           <el-radio-group v-model="approveForm.approved">
-            <el-radio :label="true">通过</el-radio>
-            <el-radio :label="false">驳回</el-radio>
+            <el-radio :label="true">
+              通过
+            </el-radio>
+            <el-radio :label="false">
+              驳回
+            </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="审批意见" prop="comment">
-          <el-input v-model="approveForm.comment" type="textarea" :rows="3" placeholder="请输入审批意见（可选）" />
+        <el-form-item
+          label="审批意见"
+          prop="comment"
+        >
+          <el-input
+            v-model="approveForm.comment"
+            type="textarea"
+            :rows="3"
+            placeholder="请输入审批意见（可选）"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button type="primary" @click="submitApprove">确定</el-button>
-        <el-button @click="cancelApprove">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="submitApprove"
+        >
+          确定
+        </el-button>
+        <el-button @click="cancelApprove">
+          取 消
+        </el-button>
       </div>
     </el-dialog>
   </div>

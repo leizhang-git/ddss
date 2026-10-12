@@ -75,7 +75,7 @@ INSERT INTO sys_dict_data VALUES (28, 1, '成功', '0', 'sys_common_status', '',
 INSERT INTO sys_dict_data VALUES (29, 2, '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2026-06-14 21:43:55', '', NULL, '停用状态');
 
 -- ----------------------------
--- 用户（密码均为 admin123 的 BCrypt 值）
+-- 开发演示用户（请在本地启动后立即修改密码）
 -- ----------------------------
 INSERT INTO sys_user VALUES (1, 103, 'admin', 'DDSS管理员', '00', 'vip.p@live.com', '13888888888', '0', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-06-14 21:43:54', '', NULL, '管理员');
 INSERT INTO sys_user VALUES (2, 105, 'ry', '测试员', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', NULL, NULL, 'admin', '2026-06-14 21:43:54', '', NULL, '测试员');
@@ -344,9 +344,6 @@ INSERT INTO sys_role_menu VALUES (2, 1060);
 -- ----------------------------
 -- 定时任务
 -- ----------------------------
-INSERT INTO sys_job VALUES (1, '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams', '0/10 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
-INSERT INTO sys_job VALUES (2, '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')', '0/15 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
-INSERT INTO sys_job VALUES (3, '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)', '0/20 * * * * ?', '3', '1', '1', 'admin', '2026-06-14 21:43:55', '', NULL, '');
 
 -- ----------------------------
 -- 通知公告

@@ -5,25 +5,40 @@
     @select="handleSelect"
   >
     <template v-for="(item, index) in topMenus">
-      <el-menu-item v-if="index < visibleNumber" :key="index" :index="item.path" :style="{'--theme': theme}">
+      <el-menu-item
+        v-if="index < visibleNumber"
+        :key="index"
+        :index="item.path"
+        :style="{'--theme': theme}"
+      >
         <svg-icon
           v-if="item.meta && item.meta.icon && item.meta.icon !== '#'"
-          :icon-class="item.meta.icon"/>
+          :icon-class="item.meta.icon"
+        />
         {{ item.meta.title }}
       </el-menu-item>
     </template>
 
     <!-- 顶部菜单超出数量折叠 -->
-    <el-submenu v-if="topMenus.length > visibleNumber" :key="visibleNumber" :style="{'--theme': theme}" index="more">
-      <template slot="title">更多菜单</template>
+    <el-submenu
+      v-if="topMenus.length > visibleNumber"
+      :key="visibleNumber"
+      :style="{'--theme': theme}"
+      index="more"
+    >
+      <template slot="title">
+        更多菜单
+      </template>
       <template v-for="(item, index) in topMenus">
         <el-menu-item
           v-if="index >= visibleNumber"
           :key="index"
-          :index="item.path">
+          :index="item.path"
+        >
           <svg-icon
             v-if="item.meta && item.meta.icon && item.meta.icon !== '#'"
-            :icon-class="item.meta.icon"/>
+            :icon-class="item.meta.icon"
+          />
           {{ item.meta.title }}
         </el-menu-item>
       </template>
@@ -32,8 +47,8 @@
 </template>
 
 <script>
-import {constantRoutes} from "@/router"
-import {isHttp} from "@/utils/validate"
+import {constantRoutes} from '@/router'
+import {isHttp} from '@/utils/validate'
 
 // 隐藏侧边栏路由
 const hideList = ['/index', '/user/profile']
@@ -76,11 +91,11 @@ export default {
       this.routers.map((router) => {
         for (var item in router.children) {
           if (router.children[item].parentPath === undefined) {
-            if (router.path === "/") {
-              router.children[item].path = "/" + router.children[item].path
+            if (router.path === '/') {
+              router.children[item].path = '/' + router.children[item].path
             } else {
               if (!isHttp(router.children[item].path)) {
-                router.children[item].path = router.path + "/" + router.children[item].path
+                router.children[item].path = router.path + '/' + router.children[item].path
               }
             }
             router.children[item].parentPath = router.path
@@ -94,10 +109,10 @@ export default {
     activeMenu() {
       const path = this.$route.path
       let activePath = path
-      if (path !== undefined && path.lastIndexOf("/") > 0 && hideList.indexOf(path) === -1) {
+      if (path !== undefined && path.lastIndexOf('/') > 0 && hideList.indexOf(path) === -1) {
         const tmpPath = path.substring(1, path.length)
         if (!this.$route.meta.link) {
-          activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"))
+          activePath = '/' + tmpPath.substring(0, tmpPath.indexOf('/'))
           this.$store.dispatch('app/toggleSideBarHide', false)
         }
       } else if (!this.$route.children) {
@@ -106,7 +121,7 @@ export default {
       }
       this.activeRoutes(activePath)
       return activePath
-    },
+    }
   },
   beforeMount() {
     window.addEventListener('resize', this.setVisibleNumber)
@@ -129,7 +144,7 @@ export default {
       const route = this.routers.find(item => item.path === key)
       if (isHttp(key)) {
         // http(s):// 路径新窗口打开
-        window.open(key, "_blank")
+        window.open(key, '_blank')
       } else if (!route || !route.children) {
         // 没有子路由路径内部打开
         const routeMenu = this.childrenMenus.find(item => item.path === key)
@@ -151,18 +166,18 @@ export default {
       var routes = []
       if (this.childrenMenus && this.childrenMenus.length > 0) {
         this.childrenMenus.map((item) => {
-          if (key == item.parentPath || (key == "index" && "" == item.path)) {
+          if (key == item.parentPath || (key == 'index' && '' == item.path)) {
             routes.push(item)
           }
         })
       }
       if (routes.length > 0) {
-        this.$store.commit("SET_SIDEBAR_ROUTERS", routes)
+        this.$store.commit('SET_SIDEBAR_ROUTERS', routes)
       } else {
         this.$store.dispatch('app/toggleSideBarHide', true)
       }
     }
-  },
+  }
 }
 </script>
 

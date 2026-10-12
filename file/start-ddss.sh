@@ -7,13 +7,16 @@ APP_NAME="ddss-bootstrap.jar"
 APP_DIR="/data/app/"
 APP_PATH="${APP_DIR}${APP_NAME}"
 APP_PORT=8088
-DEBUG_PORT=5005
+DEBUG_PORT=${DEBUG_PORT:-5005}
 JVM_OPTS="-Xms512m -Xmx1024m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+HeapDumpOnOutOfMemoryError"
 LOGBACK_LOG_FILE="/data/applogs/app/ddss-app.log"
 # ======================== 配置项结束 =========================
 
-# Java8兼容的远程调试参数
-DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:${DEBUG_PORT}"
+# 生产默认关闭远程调试；仅显式设置 ENABLE_DEBUG=true 时启用
+DEBUG_OPTS=""
+if [ "${ENABLE_DEBUG:-false}" = "true" ]; then
+    DEBUG_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=127.0.0.1:${DEBUG_PORT}"
+fi
 
 # 修复：更健壮的进程检测逻辑（双维度验证）
 is_running() {
@@ -60,7 +63,7 @@ start() {
         echo "================================"
         echo "应用 ${APP_NAME} 已在运行中"
         echo "PID: ${pid}"
-        echo "远程调试端口: ${DEBUG_PORT}"
+        [ -n "${DEBUG_OPTS}" ] && echo "远程调试端口: ${DEBUG_PORT}"
         echo "================================"
         return
     fi
@@ -69,7 +72,7 @@ start() {
     echo "正在启动 ${APP_NAME} (Java8环境)..."
     echo "部署路径: ${APP_PATH}"
     echo "应用端口: ${APP_PORT}"
-    echo "远程调试已开启，调试端口: ${DEBUG_PORT}"
+        [ -n "${DEBUG_OPTS}" ] && echo "远程调试已开启，调试端口: ${DEBUG_PORT}"
     echo "日志文件路径: ${LOGBACK_LOG_FILE}"
     echo "================================"
     
@@ -151,7 +154,7 @@ logs() {
 
 usage() {
     echo "使用说明: $0 {start|stop|restart|status|logs}"
-    echo "  start   - 启动应用（开启远程调试）"
+    echo "  start   - 启动应用（生产默认关闭远程调试，ENABLE_DEBUG=true 可显式开启）"
     echo "  stop    - 停止应用"
     echo "  restart - 重启应用"
     echo "  status  - 查看应用状态"

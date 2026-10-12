@@ -18,7 +18,10 @@
           size="medium"
         >
           <el-col :span="24">
-            <el-form-item label="生成类型" prop="type">
+            <el-form-item
+              label="生成类型"
+              prop="type"
+            >
               <el-radio-group v-model="formData.type">
                 <el-radio-button
                   v-for="(item, index) in typeOptions"
@@ -30,8 +33,16 @@
                 </el-radio-button>
               </el-radio-group>
             </el-form-item>
-            <el-form-item v-if="showFileName" label="文件名" prop="fileName">
-              <el-input v-model="formData.fileName" clearable placeholder="请输入文件名"/>
+            <el-form-item
+              v-if="showFileName"
+              label="文件名"
+              prop="fileName"
+            >
+              <el-input
+                v-model="formData.fileName"
+                clearable
+                placeholder="请输入文件名"
+              />
             </el-form-item>
           </el-col>
         </el-form>
@@ -41,7 +52,10 @@
         <el-button @click="close">
           取消
         </el-button>
-        <el-button type="primary" @click="handleConfirm">
+        <el-button
+          type="primary"
+          @click="handleConfirm"
+        >
           确定
         </el-button>
       </div>

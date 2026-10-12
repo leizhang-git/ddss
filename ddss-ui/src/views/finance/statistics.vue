@@ -1,86 +1,209 @@
 <template>
   <div class="app-container">
-    <el-row :gutter="20" class="stats-cards">
-      <el-col :xs="12" :sm="6">
+    <el-row
+      :gutter="20"
+      class="stats-cards"
+    >
+      <el-col
+        :xs="12"
+        :sm="6"
+      >
         <div class="card card-indigo">
-          <div class="card-icon"><i class="el-icon-document"></i></div>
+          <div class="card-icon">
+            <i class="el-icon-document" />
+          </div>
           <div class="card-body">
-            <div class="card-value">{{ summary.totalCount || 0 }}</div>
-            <div class="card-label">借款笔数</div>
+            <div class="card-value">
+              {{ summary.totalCount || 0 }}
+            </div>
+            <div class="card-label">
+              借款笔数
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="6">
+      <el-col
+        :xs="12"
+        :sm="6"
+      >
         <div class="card card-blue">
-          <div class="card-icon"><i class="el-icon-coin"></i></div>
+          <div class="card-icon">
+            <i class="el-icon-coin" />
+          </div>
           <div class="card-body">
-            <div class="card-value">{{ fmt(summary.totalLoan) }}</div>
-            <div class="card-label">借款总额(万)</div>
+            <div class="card-value">
+              {{ fmt(summary.totalLoan) }}
+            </div>
+            <div class="card-label">
+              借款总额(万)
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="6">
+      <el-col
+        :xs="12"
+        :sm="6"
+      >
         <div class="card card-amber">
-          <div class="card-icon"><i class="el-icon-wallet"></i></div>
+          <div class="card-icon">
+            <i class="el-icon-wallet" />
+          </div>
           <div class="card-body">
-            <div class="card-value">{{ fmt(summary.totalRemaining) }}</div>
-            <div class="card-label">剩余未还(万)</div>
+            <div class="card-value">
+              {{ fmt(summary.totalRemaining) }}
+            </div>
+            <div class="card-label">
+              剩余未还(万)
+            </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="12" :sm="6">
+      <el-col
+        :xs="12"
+        :sm="6"
+      >
         <div class="card card-emerald">
-          <div class="card-icon"><i class="el-icon-data-line"></i></div>
+          <div class="card-icon">
+            <i class="el-icon-data-line" />
+          </div>
           <div class="card-body">
-            <div class="card-value">{{ fmt(summary.totalInterest) }}</div>
-            <div class="card-label">利息总额(万)</div>
+            <div class="card-value">
+              {{ fmt(summary.totalInterest) }}
+            </div>
+            <div class="card-label">
+              利息总额(万)
+            </div>
           </div>
         </div>
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" class="chart-row">
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header"><span class="chart-title">状态分布</span></div>
-          <div ref="pieChart" style="height:300px"></div>
+    <el-row
+      :gutter="20"
+      class="chart-row"
+    >
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="hover"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="chart-header"
+          >
+            <span class="chart-title">状态分布</span>
+          </div>
+          <div
+            ref="pieChart"
+            style="height:300px"
+          />
         </el-card>
       </el-col>
-      <el-col :xs="24" :lg="16">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header"><span class="chart-title">欠款方借款分布</span></div>
-          <div ref="barChart" style="height:300px"></div>
+      <el-col
+        :xs="24"
+        :lg="16"
+      >
+        <el-card
+          shadow="hover"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="chart-header"
+          >
+            <span class="chart-title">欠款方借款分布</span>
+          </div>
+          <div
+            ref="barChart"
+            style="height:300px"
+          />
         </el-card>
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" class="chart-row">
+    <el-row
+      :gutter="20"
+      class="chart-row"
+    >
       <el-col :span="24">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header"><span class="chart-title">每月还款趋势</span></div>
-          <div ref="trendChart" style="height:300px"></div>
+        <el-card
+          shadow="hover"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="chart-header"
+          >
+            <span class="chart-title">每月还款趋势</span>
+          </div>
+          <div
+            ref="trendChart"
+            style="height:300px"
+          />
         </el-card>
       </el-col>
     </el-row>
 
     <el-row class="chart-row">
       <el-col :span="24">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header">
+        <el-card
+          shadow="hover"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="chart-header"
+          >
             <span class="chart-title">欠款明细</span>
-            <el-button size="mini" type="primary" plain @click="refreshAll">刷新</el-button>
+            <el-button
+              size="mini"
+              type="primary"
+              plain
+              @click="refreshAll"
+            >
+              刷新
+            </el-button>
           </div>
-          <el-table :data="creditorList" size="small" stripe>
-            <el-table-column label="欠款方" prop="name"/>
-            <el-table-column label="借款总额(元)" prop="loanAmount" align="right">
-              <template slot-scope="s">{{ s.row.loanAmount | numFilter }}</template>
-            </el-table-column>
-            <el-table-column label="剩余未还(元)" prop="remainingAmount" align="right">
-              <template slot-scope="s">{{ s.row.remainingAmount | numFilter }}</template>
-            </el-table-column>
-            <el-table-column label="已还比例" align="center" width="160">
+          <el-table
+            :data="creditorList"
+            size="small"
+            stripe
+          >
+            <el-table-column
+              label="欠款方"
+              prop="name"
+            />
+            <el-table-column
+              label="借款总额(元)"
+              prop="loanAmount"
+              align="right"
+            >
               <template slot-scope="s">
-                <el-progress :percentage="calcPercent(s.row)" :color="progressColor(s.row)"/>
+                {{ s.row.loanAmount | numFilter }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="剩余未还(元)"
+              prop="remainingAmount"
+              align="right"
+            >
+              <template slot-scope="s">
+                {{ s.row.remainingAmount | numFilter }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="已还比例"
+              align="center"
+              width="160"
+            >
+              <template slot-scope="s">
+                <el-progress
+                  :percentage="calcPercent(s.row)"
+                  :color="progressColor(s.row)"
+                />
               </template>
             </el-table-column>
           </el-table>

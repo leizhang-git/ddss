@@ -31,10 +31,15 @@ router.beforeEach((to, from, next) => {
         // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetInfo').then(() => {
           isRelogin.show = false
-          store.dispatch('GenerateRoutes').then(accessRoutes => {
-            // 根据roles权限生成可访问的路由表
-            router.addRoutes(accessRoutes) // 动态添加可访问路由表
-            next({...to, replace: true}) // hack方法 确保addRoutes已完成
+          store.dispatch('GenerateRoutes').then(() => {
+            // GenerateRoutes 已负责注册动态路由；这里只重放当前导航
+            next({...to, replace: true}) // 确保 addRoutes 完成后再进入
+          }).catch(err => {
+            isRelogin.show = false
+            store.dispatch('LogOut').finally(() => {
+              Message.error(err && err.message ? err.message : '菜单加载失败，请重新登录')
+              next({path: '/login', query: {redirect: to.fullPath}})
+            })
           })
         }).catch(err => {
           store.dispatch('LogOut').then(() => {

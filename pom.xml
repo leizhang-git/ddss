@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ddss</groupId>
-    <artifactId>ddss</artifactId>
+    <artifactId>ddss-parent</artifactId>
     <version>1.0.0</version>
 
     <name>ddss</name>
-    <description>ddss服务</description>
+    <description>ddss服务（参照 iuap-data-common 的 consumer/domain/provider 架构改造）</description>
 
     <properties>
         <spring-cloud.version>2020.0.6</spring-cloud.version>
@@ -33,7 +33,6 @@
         <poi.version>5.2.5</poi.version>
         <openpdf.version>1.3.30</openpdf.version>
         <velocity.version>2.3</velocity.version>
-        <aspose-words.version>23.1</aspose-words.version>
         <jwt.version>0.9.1</jwt.version>
         <tomcat.version>9.0.112</tomcat.version>
         <logback.version>1.2.13</logback.version>
@@ -59,12 +58,6 @@
                 <version>${janino.version}</version>
             </dependency>
 
-            <!-- https://mvnrepository.com/artifact/com.luhuiguo/aspose-words -->
-            <dependency>
-                <groupId>com.luhuiguo</groupId>
-                <artifactId>aspose-words</artifactId>
-                <version>${aspose-words.version}</version>
-            </dependency>
             <!-- https://mvnrepository.com/artifact/org.springframework.kafka/spring-kafka -->
             <dependency>
                 <groupId>org.springframework.kafka</groupId>
@@ -302,31 +295,31 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
-            <!-- 定时任务-->
+            <!-- Flowable 工作流引擎 -->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-spring-boot-starter-process</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+
+            <!-- 核心模块（原 ddss-ry-framework）：Security/JWT/AOP/事件/消息/存储适配 -->
             <dependency>
                 <groupId>com.ddss</groupId>
-                <artifactId>ddss-quartz</artifactId>
+                <artifactId>ddss-framework</artifactId>
                 <version>${ddss.version}</version>
             </dependency>
 
-            <!-- 代码生成-->
+            <!-- 对外契约总集：全部业务域实体/Service/Mapper 接口 -->
             <dependency>
                 <groupId>com.ddss</groupId>
-                <artifactId>ddss-generator</artifactId>
+                <artifactId>ddss-consumer</artifactId>
                 <version>${ddss.version}</version>
             </dependency>
 
-            <!-- 核心模块-->
+            <!-- 实现总集：ServiceImpl/Mapper XML/REST/workflow/quartz/generator -->
             <dependency>
                 <groupId>com.ddss</groupId>
-                <artifactId>ddss-ry-framework</artifactId>
-                <version>${ddss.version}</version>
-            </dependency>
-
-            <!-- 系统模块-->
-            <dependency>
-                <groupId>com.ddss</groupId>
-                <artifactId>ddss-system</artifactId>
+                <artifactId>ddss-provider</artifactId>
                 <version>${ddss.version}</version>
             </dependency>
 
@@ -334,12 +327,6 @@
             <dependency>
                 <groupId>com.ddss</groupId>
                 <artifactId>ddss-common</artifactId>
-                <version>${ddss.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.ddss</groupId>
-                <artifactId>ddss-server</artifactId>
                 <version>${ddss.version}</version>
             </dependency>
 
@@ -356,24 +343,15 @@
                 <version>1.26.0</version>
             </dependency>
 
-            <!-- Flowable 工作流引擎 -->
-            <dependency>
-                <groupId>org.flowable</groupId>
-                <artifactId>flowable-spring-boot-starter-process</artifactId>
-                <version>${flowable.version}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
     <modules>
         <module>ddss-bootstrap</module>
-        <module>ddss-ry-framework</module>
-        <module>ddss-system</module>
-        <module>ddss-quartz</module>
-        <module>ddss-generator</module>
         <module>ddss-common</module>
-        <module>ddss-server</module>
+        <module>ddss-framework</module>
+        <module>ddss-consumer</module>
+        <module>ddss-provider</module>
     </modules>
     <packaging>pom</packaging>
 

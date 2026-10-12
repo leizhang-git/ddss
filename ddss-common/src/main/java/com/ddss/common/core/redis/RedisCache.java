@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Supplier;
 
 /**
@@ -97,18 +98,28 @@ public class RedisCache {
 
     private static final String LOCK_SUFFIX = ":lock";
     private static final long LOCK_EXPIRE = 10;
+    private static final String UNLOCK_SCRIPT =
+            "if redis.call('get', KEYS[1]) == ARGV[1] then " +
+                    "return redis.call('del', KEYS[1]) else return 0 end";
 
-    public boolean tryLock(String key) {
-        if (!isAvailable()) return false;
+    /**
+     * 尝试获取带唯一持有者标识的互斥锁。
+     * 返回值为空表示 Redis 不可用或获取失败，调用方不得释放其他线程的锁。
+     */
+    private String tryLock(String key) {
+        if (!isAvailable()) return null;
+        String token = UUID.randomUUID().toString();
         String lockKey = key + LOCK_SUFFIX;
         Boolean success = redisTemplate.opsForValue()
-                .setIfAbsent(lockKey, "1", LOCK_EXPIRE, TimeUnit.SECONDS);
-        return Boolean.TRUE.equals(success);
+                .setIfAbsent(lockKey, token, LOCK_EXPIRE, TimeUnit.SECONDS);
+        return Boolean.TRUE.equals(success) ? token : null;
     }
 
-    public void unlock(String key) {
-        if (!isAvailable()) return;
-        redisTemplate.delete(key + LOCK_SUFFIX);
+    private void unlock(String key, String token) {
+        if (!isAvailable() || token == null) return;
+        redisTemplate.execute(
+                new org.springframework.data.redis.core.script.DefaultRedisScript<>(UNLOCK_SCRIPT, Long.class),
+                Collections.singletonList(key + LOCK_SUFFIX), token);
     }
 
     // ==================== Cache-Aside 通用模板 ====================
@@ -145,7 +156,8 @@ public class RedisCache {
             return (T) cached;
         }
 
-        if (tryLock(key)) {
+        String lockToken = tryLock(key);
+        if (lockToken != null) {
             try {
                 cached = getCacheObject(key);
                 if (cached != null) {
@@ -160,11 +172,16 @@ public class RedisCache {
                 }
                 return value;
             } finally {
-                unlock(key);
+                unlock(key, lockToken);
             }
         }
 
-        try { Thread.sleep(50); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+        try {
+            Thread.sleep(ThreadLocalRandom.current().nextLong(25, 76));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return supplier.get();
+        }
         return getOrSet(key, supplier, ttl);
     }
 

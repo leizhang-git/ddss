@@ -1,8 +1,8 @@
 import router from '@/router'
-import {MessageBox,} from 'element-ui'
+import {MessageBox} from 'element-ui'
 import {getInfo, login, logout} from '@/api/login'
 import {getToken, removeToken, setToken} from '@/utils/auth'
-import {isEmpty, isHttp} from "@/utils/validate"
+import {isEmpty, isHttp} from '@/utils/validate'
 import defAva from '@/assets/images/profile.jpg'
 
 const user = {
@@ -63,7 +63,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getInfo().then(res => {
           const user = res.user
-          let avatar = user.avatar || ""
+          let avatar = user.avatar || ''
           if (!isHttp(avatar)) {
             avatar = (isEmpty(avatar)) ? defAva : process.env.VUE_APP_BASE_API + avatar
           }

@@ -1,5 +1,7 @@
 package com.ddss.common.exception;
 
+import com.ddss.common.core.code.ErrorCode;
+
 /**
  * 业务异常
  *
@@ -38,6 +40,14 @@ public final class ServiceException extends RuntimeException {
     public ServiceException(String message, Integer code) {
         this.message = message;
         this.code = code;
+    }
+
+    /**
+     * 按错误码抛出（新代码推荐）：throw new ServiceException(FinanceErrorCode.LOAN_OVER_LIMIT)
+     */
+    public ServiceException(ErrorCode errorCode) {
+        this.message = errorCode.getMessage();
+        this.code = errorCode.getCode();
     }
 
     public String getDetailMessage() {

@@ -1,30 +1,17 @@
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min'
 
-// 密钥对生成 http://web.chacuo.net/netrsakeypair
+// 浏览器端只保留公钥；私钥必须留在服务端，不能随前端构建产物发布。
+const publicKey = process.env.VUE_APP_RSA_PUBLIC_KEY || ''
 
-const publicKey = 'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKoR8mX0rGKLqzcWmOzbfj64K8ZIgOdH\n' +
-  'nzkXSOVOZbFu/TJhZ7rFAN+eaGkl3C4buccQd/EjEsj9ir7ijT7h96MCAwEAAQ=='
-
-const privateKey = 'MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAqhHyZfSsYourNxaY\n' +
-  '7Nt+PrgrxkiA50efORdI5U5lsW79MmFnusUA355oaSXcLhu5xxB38SMSyP2KvuKN\n' +
-  'PuH3owIDAQABAkAfoiLyL+Z4lf4Myxk6xUDgLaWGximj20CUf+5BKKnlrK+Ed8gA\n' +
-  'kM0HqoTt2UZwA5E2MzS4EI2gjfQhz5X28uqxAiEA3wNFxfrCZlSZHb0gn2zDpWow\n' +
-  'cSxQAgiCstxGUoOqlW8CIQDDOerGKH5OmCJ4Z21v+F25WaHYPxCFMvwxpcw99Ecv\n' +
-  'DQIgIdhDTIqD2jfYjPTY8Jj3EDGPbH2HHuffvflECt3Ek60CIQCFRlCkHpi7hthh\n' +
-  'YhovyloRYsM+IS9h/0BzlEAuO0ktMQIgSPT3aFAgJYwKpqRYKlLDVcflZFCKY7u3\n' +
-  'UP8iWi1Qw0Y='
-
-// 加密
+/**
+ * 使用服务端下发或构建时注入的公钥加密数据。
+ * 注意：公钥加密只用于传输保护，不能替代 HTTPS 或服务端认证。
+ */
 export function encrypt(txt) {
+  if (!publicKey) {
+    throw new Error('RSA 公钥未配置')
+  }
   const encryptor = new JSEncrypt()
-  encryptor.setPublicKey(publicKey) // 设置公钥
-  return encryptor.encrypt(txt) // 对数据进行加密
+  encryptor.setPublicKey(publicKey)
+  return encryptor.encrypt(txt)
 }
-
-// 解密
-export function decrypt(txt) {
-  const encryptor = new JSEncrypt()
-  encryptor.setPrivateKey(privateKey) // 设置私钥
-  return encryptor.decrypt(txt) // 对数据进行解密
-}
-

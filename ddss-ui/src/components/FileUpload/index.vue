@@ -17,25 +17,57 @@
       multiple
     >
       <!-- 涓婁紶鎸夐挳 -->
-      <el-button size="mini" type="primary">閫夊彇鏂囦欢</el-button>
+      <el-button
+        size="mini"
+        type="primary"
+      >
+        閫夊彇鏂囦欢
+      </el-button>
       <!-- 涓婁紶鎻愮ず -->
-      <div v-if="showTip" slot="tip" class="el-upload__tip">
+      <div
+        v-if="showTip"
+        slot="tip"
+        class="el-upload__tip"
+      >
         璇蜂笂浼?
-        <template v-if="fileSize"> 澶у皬涓嶈秴杩?<b style="color: #ff3b30">{{ fileSize }}MB</b></template>
-        <template v-if="fileType"> 鏍煎紡涓?<b style="color: #ff3b30">{{ fileType.join("/") }}</b></template>
+        <template v-if="fileSize">
+          澶у皬涓嶈秴杩?<b style="color: #ff3b30">{{ fileSize }}MB</b>
+        </template>
+        <template v-if="fileType">
+          鏍煎紡涓?<b style="color: #ff3b30">{{ fileType.join("/") }}</b>
+        </template>
         鐨勬枃浠?
       </div>
     </el-upload>
 
     <!-- 鏂囦欢鍒楄〃 -->
-    <transition-group ref="uploadFileList" class="upload-file-list el-upload-list el-upload-list--text"
-                      name="el-fade-in-linear" tag="ul">
-      <li v-for="(file, index) in fileList" :key="file.url" class="el-upload-list__item ele-upload-list__item-content">
-        <el-link :href="`${baseUrl}${file.url}`" :underline="false" target="_blank">
+    <transition-group
+      ref="uploadFileList"
+      class="upload-file-list el-upload-list el-upload-list--text"
+      name="el-fade-in-linear"
+      tag="ul"
+    >
+      <li
+        v-for="(file, index) in fileList"
+        :key="file.url"
+        class="el-upload-list__item ele-upload-list__item-content"
+      >
+        <el-link
+          :href="`${baseUrl}${file.url}`"
+          :underline="false"
+          target="_blank"
+        >
           <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
         </el-link>
         <div class="ele-upload-list__item-content-action">
-          <el-link v-if="!disabled" :underline="false" type="danger" @click="handleDelete(index)">鍒犻櫎</el-link>
+          <el-link
+            v-if="!disabled"
+            :underline="false"
+            type="danger"
+            @click="handleDelete(index)"
+          >
+            鍒犻櫎
+          </el-link>
         </div>
       </li>
     </transition-group>
@@ -43,18 +75,18 @@
 </template>
 
 <script>
-import {getToken} from "@/utils/auth"
+import {getToken} from '@/utils/auth'
 import Sortable from 'sortablejs'
 
 export default {
-  name: "FileUpload",
+  name: 'FileUpload',
   props: {
     // 鍊?
     value: [String, Object, Array],
     // 涓婁紶鎺ュ彛鍦板潃
     action: {
       type: String,
-      default: "/common/upload"
+      default: '/common/upload'
     },
     // 涓婁紶鎼哄甫鐨勫弬鏁?
     data: {
@@ -73,7 +105,7 @@ export default {
     // 鏂囦欢绫诲瀷, 渚嬪['png', 'jpg', 'jpeg']
     fileType: {
       type: Array,
-      default: () => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "pdf"]
+      default: () => ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt', 'pdf']
     },
     // 鏄惁鏄剧ず鎻愮ず
     isShowTip: {
@@ -98,24 +130,15 @@ export default {
       baseUrl: process.env.VUE_APP_BASE_API,
       uploadFileUrl: process.env.VUE_APP_BASE_API + this.action, // 涓婁紶鏂囦欢鏈嶅姟鍣ㄥ湴鍧€
       headers: {
-        Authorization: "Bearer " + getToken(),
+        Authorization: 'Bearer ' + getToken()
       },
       fileList: []
     }
   },
-  mounted() {
-    if (this.drag && !this.disabled) {
-      this.$nextTick(() => {
-        const element = this.$refs.uploadFileList?.$el || this.$refs.uploadFileList
-        Sortable.create(element, {
-          ghostClass: 'file-upload-darg',
-          onEnd: (evt) => {
-            const movedItem = this.fileList.splice(evt.oldIndex, 1)[0]
-            this.fileList.splice(evt.newIndex, 0, movedItem)
-            this.$emit("input", this.listToString(this.fileList))
-          }
-        })
-      })
+  computed: {
+    // 鏄惁鏄剧ず鎻愮ず
+    showTip() {
+      return this.isShowTip && (this.fileType || this.fileSize)
     }
   },
   watch: {
@@ -124,10 +147,10 @@ export default {
         if (val) {
           let temp = 1
           // 棣栧厛灏嗗€艰浆涓烘暟缁?
-          const list = Array.isArray(val) ? val : this.value.split(',')
+          const list = Array.isArray(val) ? val : (typeof val === 'string' ? val.split(',') : [val])
           // 鐒跺悗灏嗘暟缁勮浆涓哄璞℃暟缁?
           this.fileList = list.map(item => {
-            if (typeof item === "string") {
+            if (typeof item === 'string') {
               item = {name: item, url: item}
             }
             item.uid = item.uid || new Date().getTime() + temp++
@@ -142,11 +165,20 @@ export default {
       immediate: true
     }
   },
-  computed: {
-    // 鏄惁鏄剧ず鎻愮ず
-    showTip() {
-      return this.isShowTip && (this.fileType || this.fileSize)
-    },
+  mounted() {
+    if (this.drag && !this.disabled) {
+      this.$nextTick(() => {
+        const element = this.$refs.uploadFileList?.$el || this.$refs.uploadFileList
+        Sortable.create(element, {
+          ghostClass: 'file-upload-darg',
+          onEnd: (evt) => {
+            const movedItem = this.fileList.splice(evt.oldIndex, 1)[0]
+            this.fileList.splice(evt.newIndex, 0, movedItem)
+            this.$emit('input', this.listToString(this.fileList))
+          }
+        })
+      })
+    }
   },
   methods: {
     // 涓婁紶鍓嶆牎妫€鏍煎紡鍜屽ぇ灏?
@@ -157,7 +189,7 @@ export default {
         const fileExt = fileName[fileName.length - 1]
         const isTypeOk = this.fileType.indexOf(fileExt) >= 0
         if (!isTypeOk) {
-          this.$modal.msgError(`鏂囦欢鏍煎紡涓嶆纭紝璇蜂笂浼?{this.fileType.join("/")}鏍煎紡鏂囦欢!`)
+          this.$modal.msgError(`文件格式不正确，请上传 ${this.fileType.join('/')} 格式文件!`)
           return false
         }
       }
@@ -174,7 +206,7 @@ export default {
           return false
         }
       }
-      this.$modal.loading("姝ｅ湪涓婁紶鏂囦欢锛岃绋嶅€?..")
+      this.$modal.loading('姝ｅ湪涓婁紶鏂囦欢锛岃绋嶅€?..')
       this.number++
       return true
     },
@@ -184,7 +216,7 @@ export default {
     },
     // 涓婁紶澶辫触
     handleUploadError(err) {
-      this.$modal.msgError("涓婁紶鏂囦欢澶辫触锛岃閲嶈瘯")
+      this.$modal.msgError('涓婁紶鏂囦欢澶辫触锛岃閲嶈瘯')
       this.$modal.closeLoading()
     },
     // 涓婁紶鎴愬姛鍥炶皟
@@ -203,7 +235,7 @@ export default {
     // 鍒犻櫎鏂囦欢
     handleDelete(index) {
       this.fileList.splice(index, 1)
-      this.$emit("input", this.listToString(this.fileList))
+      this.$emit('input', this.listToString(this.fileList))
     },
     // 涓婁紶缁撴潫澶勭悊
     uploadedSuccessfully() {
@@ -211,23 +243,23 @@ export default {
         this.fileList = this.fileList.concat(this.uploadList)
         this.uploadList = []
         this.number = 0
-        this.$emit("input", this.listToString(this.fileList))
+        this.$emit('input', this.listToString(this.fileList))
         this.$modal.closeLoading()
       }
     },
     // 鑾峰彇鏂囦欢鍚嶇О
     getFileName(name) {
       // 濡傛灉鏄痷rl閭ｄ箞鍙栨渶鍚庣殑鍚嶅瓧 濡傛灉涓嶆槸鐩存帴杩斿洖
-      if (name.lastIndexOf("/") > -1) {
-        return name.slice(name.lastIndexOf("/") + 1)
+      if (name.lastIndexOf('/') > -1) {
+        return name.slice(name.lastIndexOf('/') + 1)
       } else {
         return name
       }
     },
     // 瀵硅薄杞垚鎸囧畾瀛楃涓插垎闅?
     listToString(list, separator) {
-      let strs = ""
-      separator = separator || ","
+      let strs = ''
+      separator = separator || ','
       for (let i in list) {
         strs += list[i].url + separator
       }

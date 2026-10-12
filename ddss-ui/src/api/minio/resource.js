@@ -13,7 +13,7 @@ export function downloadMinioFile(objectName) {
   return request({
     url: '/resource/minio/download',
     method: 'get',
-    params: { objectName: objectName },
+    params: {objectName},
     responseType: 'blob'
   })
 }
@@ -23,7 +23,7 @@ export function getMinioPreviewUrl(objectName) {
   return request({
     url: '/resource/minio/previewUrl',
     method: 'get',
-    params: { objectName: objectName }
+    params: {objectName}
   })
 }
 
@@ -32,6 +32,6 @@ export function delMinioResource(objectName) {
   return request({
     url: '/resource/minio',
     method: 'delete',
-    params: { objectName: objectName }
+    params: {objectName}
   })
 }

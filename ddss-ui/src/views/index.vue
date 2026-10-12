@@ -1,71 +1,110 @@
 <template>
   <div class="dashboard-container">
     <!-- 顶部统计卡片 -->
-    <el-row :gutter="24" class="stats-row">
-      <el-col :xs="24" :sm="12" :lg="6">
+    <el-row
+      :gutter="24"
+      class="stats-row"
+    >
+      <el-col
+        :xs="24"
+        :sm="12"
+        :lg="6"
+      >
         <div class="stat-card stat-card-blue">
           <div class="stat-card-inner">
             <div class="stat-icon">
-              <svg-icon icon-class="video"/>
+              <svg-icon icon-class="video" />
             </div>
             <div class="stat-content">
-              <div class="stat-label">视频资源</div>
+              <div class="stat-label">
+                视频资源
+              </div>
               <div class="stat-value">
-                <count-to :start-val="0" :end-val="1256" :duration="2000"/>
+                <count-to
+                  :start-val="0"
+                  :end-val="1256"
+                  :duration="2000"
+                />
               </div>
               <div class="stat-trend up">
-                <i class="el-icon-top"></i> 12.5%
+                <i class="el-icon-top" /> 12.5%
               </div>
             </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
+      <el-col
+        :xs="24"
+        :sm="12"
+        :lg="6"
+      >
         <div class="stat-card stat-card-green">
           <div class="stat-card-inner">
             <div class="stat-icon">
-              <svg-icon icon-class="peoples"/>
+              <svg-icon icon-class="peoples" />
             </div>
             <div class="stat-content">
-              <div class="stat-label">用户总数</div>
+              <div class="stat-label">
+                用户总数
+              </div>
               <div class="stat-value">
-                <count-to :start-val="0" :end-val="3842" :duration="2000"/>
+                <count-to
+                  :start-val="0"
+                  :end-val="3842"
+                  :duration="2000"
+                />
               </div>
               <div class="stat-trend up">
-                <i class="el-icon-top"></i> 8.2%
+                <i class="el-icon-top" /> 8.2%
               </div>
             </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
+      <el-col
+        :xs="24"
+        :sm="12"
+        :lg="6"
+      >
         <div class="stat-card stat-card-orange">
           <div class="stat-card-inner">
             <div class="stat-icon">
-              <svg-icon icon-class="message"/>
+              <svg-icon icon-class="message" />
             </div>
             <div class="stat-content">
-              <div class="stat-label">系统消息</div>
+              <div class="stat-label">
+                系统消息
+              </div>
               <div class="stat-value">
-                <count-to :start-val="0" :end-val="156" :duration="2000"/>
+                <count-to
+                  :start-val="0"
+                  :end-val="156"
+                  :duration="2000"
+                />
               </div>
               <div class="stat-trend down">
-                <i class="el-icon-bottom"></i> 3.1%
+                <i class="el-icon-bottom" /> 3.1%
               </div>
             </div>
           </div>
         </div>
       </el-col>
-      <el-col :xs="24" :sm="12" :lg="6">
+      <el-col
+        :xs="24"
+        :sm="12"
+        :lg="6"
+      >
         <div class="stat-card stat-card-purple">
           <div class="stat-card-inner">
             <div class="stat-icon">
-              <svg-icon icon-class="server"/>
+              <svg-icon icon-class="server" />
             </div>
             <div class="stat-content">
-              <div class="stat-label">服务器</div>
+              <div class="stat-label">
+                服务器
+              </div>
               <div class="stat-value server-status">
-                <span class="dot online"></span> 正常
+                <span class="dot online" /> 正常
               </div>
               <div class="stat-trend">
                 运行 32天
@@ -77,34 +116,81 @@
     </el-row>
 
     <!-- 图表区域 -->
-    <el-row :gutter="24" class="chart-row">
-      <el-col :xs="24" :lg="16">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-header">
+    <el-row
+      :gutter="24"
+      class="chart-row"
+    >
+      <el-col
+        :xs="24"
+        :lg="16"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-header"
+          >
             <span class="card-title">数据趋势</span>
-            <el-radio-group v-model="chartPeriod" size="mini" @change="updateLineChart">
-              <el-radio-button label="week">近7天</el-radio-button>
-              <el-radio-button label="month">近30天</el-radio-button>
+            <el-radio-group
+              v-model="chartPeriod"
+              size="mini"
+              @change="updateLineChart"
+            >
+              <el-radio-button label="week">
+                近7天
+              </el-radio-button>
+              <el-radio-button label="month">
+                近30天
+              </el-radio-button>
             </el-radio-group>
           </div>
-          <line-chart :chart-data="lineChartData" height="320px"/>
+          <line-chart
+            :chart-data="lineChartData"
+            height="320px"
+          />
         </el-card>
       </el-col>
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-header">
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-header"
+          >
             <span class="card-title">资源分类占比</span>
           </div>
-          <pie-chart height="320px" class="pie-chart-wrapper"/>
+          <pie-chart
+            height="320px"
+            class="pie-chart-wrapper"
+          />
         </el-card>
       </el-col>
     </el-row>
 
     <!-- 底部信息 -->
-    <el-row :gutter="24" class="bottom-row">
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-header">
+    <el-row
+      :gutter="24"
+      class="bottom-row"
+    >
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-header"
+          >
             <span class="card-title">系统信息</span>
           </div>
           <div class="system-info">
@@ -114,7 +200,12 @@
             </div>
             <div class="info-item">
               <span class="info-label">版本号</span>
-              <el-tag size="small" type="success">v{{ version }}</el-tag>
+              <el-tag
+                size="small"
+                type="success"
+              >
+                v{{ version }}
+              </el-tag>
             </div>
             <div class="info-item">
               <span class="info-label">前端技术</span>
@@ -130,47 +221,80 @@
             </div>
             <div class="info-item">
               <span class="info-label">运行环境</span>
-              <span class="info-value" :style="{color: '#34c759'}">正常运行中</span>
+              <span
+                class="info-value"
+                :style="{color: '#34c759'}"
+              >正常运行中</span>
             </div>
           </div>
         </el-card>
       </el-col>
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-header">
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-header"
+          >
             <span class="card-title">快捷操作</span>
           </div>
           <div class="quick-actions">
-            <div class="action-item" @click="$router.push('/video')">
+            <div
+              class="action-item"
+              @click="$router.push('/video')"
+            >
               <div class="action-icon bg-blue">
-                <svg-icon icon-class="video"/>
+                <svg-icon icon-class="video" />
               </div>
               <span>视频管理</span>
             </div>
-            <div class="action-item" @click="goUser">
+            <div
+              class="action-item"
+              @click="goUser"
+            >
               <div class="action-icon bg-green">
-                <svg-icon icon-class="user"/>
+                <svg-icon icon-class="user" />
               </div>
               <span>用户管理</span>
             </div>
-            <div class="action-item" @click="goSystem">
+            <div
+              class="action-item"
+              @click="goSystem"
+            >
               <div class="action-icon bg-orange">
-                <svg-icon icon-class="system"/>
+                <svg-icon icon-class="system" />
               </div>
               <span>系统管理</span>
             </div>
-            <div class="action-item" @click="goMonitor">
+            <div
+              class="action-item"
+              @click="goMonitor"
+            >
               <div class="action-icon bg-purple">
-                <svg-icon icon-class="monitor"/>
+                <svg-icon icon-class="monitor" />
               </div>
               <span>系统监控</span>
             </div>
           </div>
         </el-card>
       </el-col>
-      <el-col :xs="24" :lg="8">
-        <el-card shadow="never" class="chart-card">
-          <div slot="header" class="card-header">
+      <el-col
+        :xs="24"
+        :lg="8"
+      >
+        <el-card
+          shadow="never"
+          class="chart-card"
+        >
+          <div
+            slot="header"
+            class="card-header"
+          >
             <span class="card-title">DDSS 数据驱动决策系统</span>
           </div>
           <div class="about-section">
@@ -179,14 +303,54 @@
               提供视频资源管理、用户管理、系统监控等功能模块。
             </p>
             <div class="tech-tags">
-              <el-tag size="small" type="">Spring Boot</el-tag>
-              <el-tag size="small" type="success">Vue 2</el-tag>
-              <el-tag size="small" type="warning">Element UI</el-tag>
-              <el-tag size="small" type="danger">MyBatis-Plus</el-tag>
-              <el-tag size="small" type="info">Redis</el-tag>
-              <el-tag size="small" type="">ECharts</el-tag>
-              <el-tag size="small" type="success">MinIO</el-tag>
-              <el-tag size="small" type="warning">Nacos</el-tag>
+              <el-tag
+                size="small"
+                type=""
+              >
+                Spring Boot
+              </el-tag>
+              <el-tag
+                size="small"
+                type="success"
+              >
+                Vue 2
+              </el-tag>
+              <el-tag
+                size="small"
+                type="warning"
+              >
+                Element UI
+              </el-tag>
+              <el-tag
+                size="small"
+                type="danger"
+              >
+                MyBatis-Plus
+              </el-tag>
+              <el-tag
+                size="small"
+                type="info"
+              >
+                Redis
+              </el-tag>
+              <el-tag
+                size="small"
+                type=""
+              >
+                ECharts
+              </el-tag>
+              <el-tag
+                size="small"
+                type="success"
+              >
+                MinIO
+              </el-tag>
+              <el-tag
+                size="small"
+                type="warning"
+              >
+                Nacos
+              </el-tag>
             </div>
           </div>
         </el-card>

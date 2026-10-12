@@ -1,17 +1,28 @@
 <template>
   <div class="popup-result">
-    <p class="title">最近5次运行时间</p>
+    <p class="title">
+      最近5次运行时间
+    </p>
     <ul class="popup-result-scroll">
-      <template v-if='isShow'>
-        <li v-for='item in resultList' :key="item">{{ item }}</li>
+      <template v-if="isShow">
+        <li
+          v-for="item in resultList"
+          :key="item"
+        >
+          {{ item }}
+        </li>
       </template>
-      <li v-else>计算结果中...</li>
+      <li v-else>
+        计算结果中...
+      </li>
     </ul>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'CrontabResult',
+  props: ['ex'],
   data() {
     return {
       dayRule: '',
@@ -21,7 +32,13 @@ export default {
       isShow: false
     }
   },
-  name: 'crontab-result',
+  watch: {
+    'ex': 'expressionChange'
+  },
+  mounted: function () {
+    // 初始化 获取一次结果
+    this.expressionChange()
+  },
   methods: {
     // 表达式值变化时，开始去计算结果
     expressionChange() {
@@ -121,7 +138,7 @@ export default {
         // 循环月份数组
         goMonth: for (let Mi = MIdx; Mi < MDate.length; Mi++) {
           // 赋值、方便后面运算
-          let MM = MDate[Mi];
+          let MM = MDate[Mi]
           MM = MM < 10 ? '0' + MM : MM
           // 如果到达最大值时
           if (nDay > DDate[DDate.length - 1]) {
@@ -544,14 +561,6 @@ export default {
       let format = this.formatDate(time)
       return value === format
     }
-  },
-  watch: {
-    'ex': 'expressionChange'
-  },
-  props: ['ex'],
-  mounted: function () {
-    // 初始化 获取一次结果
-    this.expressionChange()
   }
 }
 

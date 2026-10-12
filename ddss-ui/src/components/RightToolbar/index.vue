@@ -1,58 +1,104 @@
 <template>
-  <div :style="style" class="top-right-btn">
+  <div
+    :style="style"
+    class="top-right-btn"
+  >
     <el-row>
-      <el-tooltip v-if="search" :content="showSearch ? '隐藏搜索' : '显示搜索'" class="item" effect="dark"
-                  placement="top">
-        <el-button circle icon="el-icon-search" size="mini" @click="toggleSearch()"/>
+      <el-tooltip
+        v-if="search"
+        :content="showSearch ? '隐藏搜索' : '显示搜索'"
+        class="item"
+        effect="dark"
+        placement="top"
+      >
+        <el-button
+          circle
+          icon="el-icon-search"
+          size="mini"
+          @click="toggleSearch()"
+        />
       </el-tooltip>
-      <el-tooltip class="item" content="刷新" effect="dark" placement="top">
-        <el-button circle icon="el-icon-refresh" size="mini" @click="refresh()"/>
+      <el-tooltip
+        class="item"
+        content="刷新"
+        effect="dark"
+        placement="top"
+      >
+        <el-button
+          circle
+          icon="el-icon-refresh"
+          size="mini"
+          @click="refresh()"
+        />
       </el-tooltip>
-      <el-tooltip v-if="Object.keys(columns).length > 0" class="item" content="显隐列" effect="dark" placement="top">
-        <el-button v-if="showColumnsType == 'transfer'" circle icon="el-icon-menu" size="mini" @click="showColumn()"/>
-        <el-dropdown v-if="showColumnsType == 'checkbox'" :hide-on-click="false" style="padding-left: 12px"
-                     trigger="click">
-          <el-button circle icon="el-icon-menu" size="mini"/>
+      <el-tooltip
+        v-if="Object.keys(columns).length > 0"
+        class="item"
+        content="显隐列"
+        effect="dark"
+        placement="top"
+      >
+        <el-button
+          v-if="showColumnsType == 'transfer'"
+          circle
+          icon="el-icon-menu"
+          size="mini"
+          @click="showColumn()"
+        />
+        <el-dropdown
+          v-if="showColumnsType == 'checkbox'"
+          :hide-on-click="false"
+          style="padding-left: 12px"
+          trigger="click"
+        >
+          <el-button
+            circle
+            icon="el-icon-menu"
+            size="mini"
+          />
           <el-dropdown-menu slot="dropdown">
             <!-- 全选/反选 按钮 -->
             <el-dropdown-item>
-              <el-checkbox v-model="isChecked" :indeterminate="isIndeterminate" @change="toggleCheckAll"> 列展示
+              <el-checkbox
+                v-model="isChecked"
+                :indeterminate="isIndeterminate"
+                @change="toggleCheckAll"
+              >
+                列展示
               </el-checkbox>
             </el-dropdown-item>
-            <div class="check-line"></div>
+            <div class="check-line" />
             <template v-for="(item, key) in columns">
               <el-dropdown-item :key="key">
-                <el-checkbox v-model="item.visible" :label="item.label" @change="checkboxChange($event, key)"/>
+                <el-checkbox
+                  v-model="item.visible"
+                  :label="item.label"
+                  @change="checkboxChange($event, key)"
+                />
               </el-dropdown-item>
             </template>
           </el-dropdown-menu>
         </el-dropdown>
       </el-tooltip>
     </el-row>
-    <el-dialog :title="title" :visible.sync="open" append-to-body>
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      append-to-body
+    >
       <el-transfer
         v-model="value"
         :data="transferData"
         :titles="['显示', '隐藏']"
         @change="dataChange"
-      ></el-transfer>
+      />
     </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  name: "RightToolbar",
-  data() {
-    return {
-      // 显隐数据
-      value: [],
-      // 弹出层标题
-      title: "显示/隐藏",
-      // 是否显示弹出层
-      open: false
-    }
-  },
+  name: 'RightToolbar',
   props: {
     /* 是否显示检索条件 */
     showSearch: {
@@ -72,13 +118,23 @@ export default {
     /* 显隐列类型（transfer穿梭框、checkbox复选框） */
     showColumnsType: {
       type: String,
-      default: "checkbox"
+      default: 'checkbox'
     },
     /* 右外边距 */
     gutter: {
       type: Number,
       default: 10
-    },
+    }
+  },
+  data() {
+    return {
+      // 显隐数据
+      value: [],
+      // 弹出层标题
+      title: '显示/隐藏',
+      // 是否显示弹出层
+      open: false
+    }
   },
   computed: {
     style() {
@@ -127,11 +183,11 @@ export default {
   methods: {
     // 搜索
     toggleSearch() {
-      this.$emit("update:showSearch", !this.showSearch)
+      this.$emit('update:showSearch', !this.showSearch)
     },
     // 刷新
     refresh() {
-      this.$emit("queryTable")
+      this.$emit('queryTable')
     },
     // 右侧列表元素变化
     dataChange(data) {
@@ -167,7 +223,7 @@ export default {
         Object.values(this.columns).forEach((col) => (col.visible = newValue))
       }
     }
-  },
+  }
 }
 </script>
 

@@ -3,23 +3,33 @@
     <!-- 左侧品牌展示区 -->
     <aside class="brand-side">
       <div class="brand-bg">
-        <div class="aurora aurora-1"></div>
-        <div class="aurora aurora-2"></div>
-        <div class="aurora aurora-3"></div>
-        <div class="grid-overlay"></div>
-        <div class="orbital-ring"></div>
+        <div class="aurora aurora-1" />
+        <div class="aurora aurora-2" />
+        <div class="aurora aurora-3" />
+        <div class="grid-overlay" />
+        <div class="orbital-ring" />
       </div>
 
       <div class="brand-content">
         <div class="brand-logo">
-          <img src="../assets/logo/logo.png" alt="Logo" />
+          <img
+            src="../assets/logo/logo.png"
+            alt="Logo"
+          >
         </div>
-        <h1 class="brand-title">{{ title }}</h1>
-        <p class="brand-slogan">数据驱动的决策支持系统</p>
+        <h1 class="brand-title">
+          {{ title }}
+        </h1>
+        <p class="brand-slogan">
+          数据驱动的决策支持系统
+        </p>
 
         <ul class="brand-features">
-          <li v-for="f in features" :key="f.title">
-            <i :class="f.icon"></i>
+          <li
+            v-for="f in features"
+            :key="f.title"
+          >
+            <i :class="f.icon" />
             <div>
               <h4>{{ f.title }}</h4>
               <p>{{ f.desc }}</p>
@@ -41,19 +51,28 @@
           <p>请登录您的账户以继续</p>
         </div>
 
-        <el-form ref="loginForm" :model="loginForm" @keyup.enter.native="handleLogin">
+        <el-form
+          ref="loginForm"
+          :model="loginForm"
+          @keyup.enter.native="handleLogin"
+        >
           <div class="field">
             <label>用户名</label>
             <div class="input-box">
-              <i class="el-icon-user"></i>
-              <el-input v-model="loginForm.username" placeholder="请输入用户名" type="text" clearable />
+              <i class="el-icon-user" />
+              <el-input
+                v-model="loginForm.username"
+                placeholder="请输入用户名"
+                type="text"
+                clearable
+              />
             </div>
           </div>
 
           <div class="field">
             <label>密码</label>
             <div class="input-box">
-              <i class="el-icon-lock"></i>
+              <i class="el-icon-lock" />
               <el-input
                 v-model="loginForm.password"
                 placeholder="请输入密码"
@@ -63,26 +82,56 @@
             </div>
           </div>
 
-          <div v-if="captchaEnabled" class="field">
+          <div
+            v-if="captchaEnabled"
+            class="field"
+          >
             <label>验证码</label>
             <div class="captcha-row">
               <div class="input-box captcha-input">
-                <i class="el-icon-picture-outline"></i>
-                <el-input v-model="loginForm.code" placeholder="请输入验证码" />
+                <i class="el-icon-picture-outline" />
+                <el-input
+                  v-model="loginForm.code"
+                  placeholder="请输入验证码"
+                />
               </div>
-              <div class="captcha-box" @click="getCode" title="点击刷新">
-                <span v-if="mathCaptcha" class="captcha-text">{{ captchaTip }}</span>
-                <img v-else :src="codeUrl" alt="验证码" />
+              <div
+                class="captcha-box"
+                title="点击刷新"
+                @click="getCode"
+              >
+                <span
+                  v-if="mathCaptcha"
+                  class="captcha-text"
+                >{{ captchaTip }}</span>
+                <img
+                  v-else
+                  :src="codeUrl"
+                  alt="验证码"
+                >
               </div>
             </div>
           </div>
 
           <div class="form-options">
-            <el-checkbox v-model="loginForm.rememberMe">记住密码</el-checkbox>
-            <router-link v-if="register" to="/register" class="link">立即注册</router-link>
+            <el-checkbox v-model="loginForm.rememberMe">
+              记住密码
+            </el-checkbox>
+            <router-link
+              v-if="register"
+              to="/register"
+              class="link"
+            >
+              立即注册
+            </router-link>
           </div>
 
-          <el-button type="primary" class="submit-btn" :loading="loading" @click="handleLogin">
+          <el-button
+            type="primary"
+            class="submit-btn"
+            :loading="loading"
+            @click="handleLogin"
+          >
             <span v-if="!loading">登 录</span>
             <span v-else>登录中...</span>
           </el-button>
@@ -97,26 +146,28 @@
 </template>
 
 <script>
-import { getCodeImg } from "@/api/login"
-import Cookies from "js-cookie"
-import { decrypt, encrypt } from '@/utils/jsencrypt'
+import { getCodeImg } from '@/api/login'
+import Cookies from 'js-cookie'
+
+const USERNAME_COOKIE = 'username'
+const REMEMBER_COOKIE = 'rememberMe'
 
 export default {
-  name: "Login",
+  name: 'Login',
   data() {
     return {
       title: process.env.VUE_APP_TITLE,
-      codeUrl: "",
-      captchaTip: "看不清？点击刷新",
+      codeUrl: '',
+      captchaTip: '看不清？点击刷新',
       passwordVisible: false,
-      captchaUuid: "",
-      mathCaptcha: "",
+      captchaUuid: '',
+      mathCaptcha: '',
       loginForm: {
-        username: "admin",
-        password: "admin123",
+        username: '',
+        password: '',
         rememberMe: false,
-        code: "",
-        uuid: ""
+        code: '',
+        uuid: ''
       },
       loading: false,
       captchaEnabled: true,
@@ -152,9 +203,9 @@ export default {
             this.codeUrl = ''
             this.captchaTip = `${res.math} = ?`
           } else {
-            this.codeUrl = "data:image/gif;base64," + res.img
+            this.codeUrl = 'data:image/gif;base64,' + res.img
             this.mathCaptcha = ''
-            this.captchaTip = "看不清？点击刷新"
+            this.captchaTip = '看不清？点击刷新'
           }
         }
       }).catch(() => {
@@ -163,13 +214,13 @@ export default {
     },
 
     getCookie() {
-      const username = Cookies.get("username")
-      const password = Cookies.get("password")
-      const rememberMe = Cookies.get('rememberMe')
+      const username = Cookies.get(USERNAME_COOKIE)
+      const rememberMe = Cookies.get(REMEMBER_COOKIE)
       this.loginForm = {
-        username: username === undefined ? this.loginForm.username : username,
-        password: password === undefined ? this.loginForm.password : decrypt(password),
-        rememberMe: rememberMe === undefined ? false : Boolean(rememberMe)
+        username: username || this.loginForm.username,
+        // 出于安全考虑不从 Cookie 恢复密码；浏览器端不可安全保存可逆密码。
+        password: '',
+        rememberMe: rememberMe === 'true'
       }
     },
 
@@ -177,18 +228,17 @@ export default {
       this.loading = true
       setTimeout(() => {
         if (this.loginForm.rememberMe) {
-          Cookies.set("username", this.loginForm.username, { expires: 30 })
-          Cookies.set("password", encrypt(this.loginForm.password), { expires: 30 })
-          Cookies.set('rememberMe', this.loginForm.rememberMe, { expires: 30 })
+          Cookies.set(USERNAME_COOKIE, this.loginForm.username, { expires: 30 })
+          Cookies.set(REMEMBER_COOKIE, 'true', { expires: 30 })
         } else {
-          Cookies.remove("username")
-          Cookies.remove("password")
-          Cookies.remove('rememberMe')
+          Cookies.remove(USERNAME_COOKIE)
+          Cookies.remove(REMEMBER_COOKIE)
         }
         const loginData = { ...this.loginForm, uuid: this.captchaUuid }
-        this.$store.dispatch("Login", loginData).then(() => {
+        this.$store.dispatch('Login', loginData).then(() => {
+          this.loading = false
           this.$message.success('登录成功')
-          this.$router.push({ path: this.redirect || "/" }).catch(() => {})
+          this.$router.push({ path: this.redirect || '/' }).catch(() => {})
         }).catch((error) => {
           this.loading = false
           if (error.message && error.message.includes('验证码')) {

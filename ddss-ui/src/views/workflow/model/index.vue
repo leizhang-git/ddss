@@ -1,8 +1,17 @@
 <template>
   <div class="app-container workflow-model-page">
     <!-- 搜索栏 -->
-    <el-form v-show="showSearch" ref="queryForm" :model="queryParams" size="small" inline>
-      <el-form-item label="流程名称" prop="flowName">
+    <el-form
+      v-show="showSearch"
+      ref="queryForm"
+      :model="queryParams"
+      size="small"
+      inline
+    >
+      <el-form-item
+        label="流程名称"
+        prop="flowName"
+      >
         <el-input
           v-model="queryParams.flowName"
           clearable
@@ -11,7 +20,10 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="流程Key" prop="flowKey">
+      <el-form-item
+        label="流程Key"
+        prop="flowKey"
+      >
         <el-input
           v-model="queryParams.flowKey"
           clearable
@@ -20,25 +32,73 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" clearable placeholder="全部" style="width: 130px">
-          <el-option label="草稿" value="0" />
-          <el-option label="已发布" value="1" />
+      <el-form-item
+        label="状态"
+        prop="status"
+      >
+        <el-select
+          v-model="queryParams.status"
+          clearable
+          placeholder="全部"
+          style="width: 130px"
+        >
+          <el-option
+            label="草稿"
+            value="0"
+          />
+          <el-option
+            label="已发布"
+            value="1"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button icon="el-icon-search" size="mini" type="primary" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          icon="el-icon-search"
+          size="mini"
+          type="primary"
+          @click="handleQuery"
+        >
+          搜索
+        </el-button>
+        <el-button
+          icon="el-icon-refresh"
+          size="mini"
+          @click="resetQuery"
+        >
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
 
     <!-- 工具栏 -->
-    <el-row :gutter="10" class="mb8">
+    <el-row
+      :gutter="10"
+      class="mb8"
+    >
       <el-col :span="1.5">
-        <el-button v-hasPermi="['workflow:model:add']" icon="el-icon-plus" plain size="mini" type="primary" @click="handleAdd">新建流程</el-button>
+        <el-button
+          v-hasPermi="['workflow:model:add']"
+          icon="el-icon-plus"
+          plain
+          size="mini"
+          type="primary"
+          @click="handleAdd"
+        >
+          新建流程
+        </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button v-hasPermi="['workflow:model:import']" icon="el-icon-upload2" plain size="mini" type="success" @click="handleImport">导入流程</el-button>
+        <el-button
+          v-hasPermi="['workflow:model:import']"
+          icon="el-icon-upload2"
+          plain
+          size="mini"
+          type="success"
+          @click="handleImport"
+        >
+          导入流程
+        </el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -49,40 +109,124 @@
           size="mini"
           type="danger"
           @click="handleDelete"
-        >删除</el-button>
+        >
+          删除
+        </el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" />
+      <right-toolbar
+        :showSearch.sync="showSearch"
+        @queryTable="getList"
+      />
     </el-row>
 
     <!-- 数据表格 -->
-    <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="流程名称" prop="flowName" min-width="160" show-overflow-tooltip />
-      <el-table-column label="流程Key" prop="flowKey" width="130" align="center" />
-      <el-table-column label="版本" prop="version" width="70" align="center">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      />
+      <el-table-column
+        label="流程名称"
+        prop="flowName"
+        min-width="160"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        label="流程Key"
+        prop="flowKey"
+        width="130"
+        align="center"
+      />
+      <el-table-column
+        label="版本"
+        prop="version"
+        width="70"
+        align="center"
+      >
         <template slot-scope="scope">
-          <el-tag size="mini" type="info">v{{ scope.row.version }}</el-tag>
+          <el-tag
+            size="mini"
+            type="info"
+          >
+            v{{ scope.row.version }}
+          </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="状态" prop="status" width="90" align="center">
+      <el-table-column
+        label="状态"
+        prop="status"
+        width="90"
+        align="center"
+      >
         <template slot-scope="scope">
           <el-tag :type="scope.row.status === '1' ? 'success' : 'warning'">
             {{ scope.row.status === '1' ? '已发布' : '草稿' }}
           </el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="创建者" prop="createBy" width="110" align="center" />
-      <el-table-column label="更新时间" prop="updateTime" width="160" align="center">
+      <el-table-column
+        label="创建者"
+        prop="createBy"
+        width="110"
+        align="center"
+      />
+      <el-table-column
+        label="更新时间"
+        prop="updateTime"
+        width="160"
+        align="center"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updateTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        width="200"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
-          <el-button icon="el-icon-edit-outline" size="mini" type="text" @click="handleDesign(scope.row)">设计</el-button>
-          <el-button v-hasPermi="['workflow:model:publish']" icon="el-icon-upload2" size="mini" type="text" @click="handlePublish(scope.row)">发布</el-button>
-          <el-button v-hasPermi="['workflow:model:edit']" icon="el-icon-edit" size="mini" type="text" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button v-hasPermi="['workflow:model:remove']" icon="el-icon-delete" size="mini" type="text" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button
+            icon="el-icon-edit-outline"
+            size="mini"
+            type="text"
+            @click="handleDesign(scope.row)"
+          >
+            设计
+          </el-button>
+          <el-button
+            v-hasPermi="['workflow:model:publish']"
+            icon="el-icon-upload2"
+            size="mini"
+            type="text"
+            @click="handlePublish(scope.row)"
+          >
+            发布
+          </el-button>
+          <el-button
+            v-hasPermi="['workflow:model:edit']"
+            icon="el-icon-edit"
+            size="mini"
+            type="text"
+            @click="handleUpdate(scope.row)"
+          >
+            修改
+          </el-button>
+          <el-button
+            v-hasPermi="['workflow:model:remove']"
+            icon="el-icon-delete"
+            size="mini"
+            type="text"
+            @click="handleDelete(scope.row)"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -96,18 +240,48 @@
     />
 
     <!-- 新建流程对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="480px" append-to-body :close-on-click-modal="false">
-      <el-form ref="form" :model="form" :rules="rules" label-width="90px">
-        <el-form-item label="流程名称" prop="flowName">
-          <el-input v-model="form.flowName" placeholder="请输入流程名称，如：请假审批流程" />
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="480px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="90px"
+      >
+        <el-form-item
+          label="流程名称"
+          prop="flowName"
+        >
+          <el-input
+            v-model="form.flowName"
+            placeholder="请输入流程名称，如：请假审批流程"
+          />
         </el-form-item>
-        <el-form-item label="流程Key" prop="flowKey">
-          <el-input v-model="form.flowKey" placeholder="请输入唯一Key，如：leaveDemo" />
+        <el-form-item
+          label="流程Key"
+          prop="flowKey"
+        >
+          <el-input
+            v-model="form.flowKey"
+            placeholder="请输入唯一Key，如：leaveDemo"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm"
+        >
+          确 定
+        </el-button>
+        <el-button @click="cancel">
+          取 消
+        </el-button>
       </div>
     </el-dialog>
 
@@ -118,7 +292,7 @@
       accept=".bpmn20.xml,.bpmn"
       style="display: none"
       @change="handleFileChange"
-    />
+    >
   </div>
 </template>
 

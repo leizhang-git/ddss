@@ -5,29 +5,32 @@
     :style="`width:${realWidth};height:${realHeight};`"
     fit="cover"
   >
-    <div slot="error" class="image-slot">
-      <i class="el-icon-picture-outline"></i>
+    <div
+      slot="error"
+      class="image-slot"
+    >
+      <i class="el-icon-picture-outline" />
     </div>
   </el-image>
 </template>
 
 <script>
-import {isExternal} from "@/utils/validate"
+import {isExternal} from '@/utils/validate'
 
 export default {
-  name: "ImagePreview",
+  name: 'ImagePreview',
   props: {
     src: {
       type: String,
-      default: ""
+      default: ''
     },
     width: {
       type: [Number, String],
-      default: ""
+      default: ''
     },
     height: {
       type: [Number, String],
-      default: ""
+      default: ''
     }
   },
   computed: {
@@ -35,7 +38,7 @@ export default {
       if (!this.src) {
         return
       }
-      let real_src = this.src.split(",")[0]
+      let real_src = this.src.split(',')[0]
       if (isExternal(real_src)) {
         return real_src
       }
@@ -45,7 +48,7 @@ export default {
       if (!this.src) {
         return
       }
-      let real_src_list = this.src.split(",")
+      let real_src_list = this.src.split(',')
       let srcList = []
       real_src_list.forEach(item => {
         if (isExternal(item)) {
@@ -56,10 +59,10 @@ export default {
       return srcList
     },
     realWidth() {
-      return typeof this.width == "string" ? this.width : `${this.width}px`
+      return typeof this.width == 'string' ? this.width : `${this.width}px`
     },
     realHeight() {
-      return typeof this.height == "string" ? this.height : `${this.height}px`
+      return typeof this.height == 'string' ? this.height : `${this.height}px`
     }
   }
 }

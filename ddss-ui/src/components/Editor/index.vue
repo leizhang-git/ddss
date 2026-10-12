@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-upload
-      v-if="this.type == 'url'"
+      v-if="type == 'url'"
       ref="upload"
       :action="uploadUrl"
       :before-upload="handleBeforeUpload"
@@ -11,84 +11,87 @@
       :show-file-list="false"
       name="file"
       style="display: none"
-    >
-    </el-upload>
-    <div ref="editor" :style="styles" class="editor"></div>
+    />
+    <div
+      ref="editor"
+      :style="styles"
+      class="editor"
+    />
   </div>
 </template>
 
 <script>
-import axios from "axios"
-import Quill from "quill"
-import "quill/dist/quill.core.css"
-import "quill/dist/quill.snow.css"
-import "quill/dist/quill.bubble.css"
-import {getToken} from "@/utils/auth"
+import axios from 'axios'
+import Quill from 'quill'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+import {getToken} from '@/utils/auth'
 
 export default {
-  name: "Editor",
+  name: 'Editor',
   props: {
     /* 编辑器的内容 */
     value: {
       type: String,
-      default: "",
+      default: ''
     },
     /* 高度 */
     height: {
       type: Number,
-      default: null,
+      default: null
     },
     /* 最小高度 */
     minHeight: {
       type: Number,
-      default: null,
+      default: null
     },
     /* 只读 */
     readOnly: {
       type: Boolean,
-      default: false,
+      default: false
     },
     /* 上传文件大小限制(MB) */
     fileSize: {
       type: Number,
-      default: 5,
+      default: 5
     },
     /* 类型（base64格式、url格式） */
     type: {
       type: String,
-      default: "url",
+      default: 'url'
     }
   },
   data() {
     return {
-      uploadUrl: process.env.VUE_APP_BASE_API + "/common/upload", // 上传的图片服务器地址
+      uploadUrl: process.env.VUE_APP_BASE_API + '/common/upload', // 上传的图片服务器地址
       headers: {
-        Authorization: "Bearer " + getToken()
+        Authorization: 'Bearer ' + getToken()
       },
       Quill: null,
-      currentValue: "",
+      currentValue: '',
       options: {
-        theme: "snow",
+        theme: 'snow',
         bounds: document.body,
-        debug: "warn",
+        debug: 'warn',
         modules: {
           // 工具栏配置
           toolbar: [
-            ["bold", "italic", "underline", "strike"],       // 加粗 斜体 下划线 删除线
-            ["blockquote", "code-block"],                    // 引用  代码块
-            [{list: "ordered"}, {list: "bullet"}],       // 有序、无序列表
-            [{indent: "-1"}, {indent: "+1"}],            // 缩进
-            [{size: ["small", false, "large", "huge"]}],   // 字体大小
+            ['bold', 'italic', 'underline', 'strike'],       // 加粗 斜体 下划线 删除线
+            ['blockquote', 'code-block'],                    // 引用  代码块
+            [{list: 'ordered'}, {list: 'bullet'}],       // 有序、无序列表
+            [{indent: '-1'}, {indent: '+1'}],            // 缩进
+            [{size: ['small', false, 'large', 'huge']}],   // 字体大小
             [{header: [1, 2, 3, 4, 5, 6, false]}],         // 标题
             [{color: []}, {background: []}],             // 字体颜色、字体背景颜色
             [{align: []}],                                 // 对齐方式
-            ["clean"],                                       // 清除文本格式
-            ["link", "image", "video"]                       // 链接、图片、视频
-          ],
+            ['clean'],                                       // 清除文本格式
+            ['link', 'image', 'video']                       // 链接、图片、视频
+          ]
         },
-        placeholder: "请输入内容",
-        readOnly: this.readOnly,
-      },
+        placeholder: '请输入内容',
+        readOnly: this.readOnly
+      }
     }
   },
   computed: {
@@ -107,20 +110,28 @@ export default {
     value: {
       handler(val) {
         if (val !== this.currentValue) {
-          this.currentValue = val === null ? "" : val
+          this.currentValue = val === null ? '' : val
           if (this.Quill) {
             this.Quill.clipboard.dangerouslyPasteHTML(this.currentValue)
           }
         }
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   mounted() {
     this.init()
   },
   beforeDestroy() {
-    this.Quill = null
+    if (this.Quill) {
+      if (this.type === 'url' && this.Quill.root) {
+        this.Quill.root.removeEventListener('paste', this.handlePasteCapture, true)
+      }
+      this.Quill.off('text-change')
+      this.Quill.off('selection-change')
+      this.Quill.off('editor-change')
+      this.Quill = null
+    }
   },
   methods: {
     init() {
@@ -128,38 +139,38 @@ export default {
       this.Quill = new Quill(editor, this.options)
       // 如果设置了上传地址则自定义图片上传事件
       if (this.type == 'url') {
-        let toolbar = this.Quill.getModule("toolbar")
-        toolbar.addHandler("image", (value) => {
+        let toolbar = this.Quill.getModule('toolbar')
+        toolbar.addHandler('image', (value) => {
           if (value) {
             this.$refs.upload.$children[0].$refs.input.click()
           } else {
-            this.quill.format("image", false)
+            this.Quill.format('image', false)
           }
         })
         this.Quill.root.addEventListener('paste', this.handlePasteCapture, true)
       }
       this.Quill.clipboard.dangerouslyPasteHTML(this.currentValue)
-      this.Quill.on("text-change", (delta, oldDelta, source) => {
+      this.Quill.on('text-change', (delta, oldDelta, source) => {
         const html = this.$refs.editor.children[0].innerHTML
         const text = this.Quill.getText()
         const quill = this.Quill
         this.currentValue = html
-        this.$emit("input", html)
-        this.$emit("on-change", {html, text, quill})
+        this.$emit('input', html)
+        this.$emit('on-change', {html, text, quill})
       })
-      this.Quill.on("text-change", (delta, oldDelta, source) => {
-        this.$emit("on-text-change", delta, oldDelta, source)
+      this.Quill.on('text-change', (delta, oldDelta, source) => {
+        this.$emit('on-text-change', delta, oldDelta, source)
       })
-      this.Quill.on("selection-change", (range, oldRange, source) => {
-        this.$emit("on-selection-change", range, oldRange, source)
+      this.Quill.on('selection-change', (range, oldRange, source) => {
+        this.$emit('on-selection-change', range, oldRange, source)
       })
-      this.Quill.on("editor-change", (eventName, ...args) => {
-        this.$emit("on-editor-change", eventName, ...args)
+      this.Quill.on('editor-change', (eventName, ...args) => {
+        this.$emit('on-editor-change', eventName, ...args)
       })
     },
     // 上传前校检格式和大小
     handleBeforeUpload(file) {
-      const type = ["image/jpeg", "image/jpg", "image/png", "image/svg"]
+      const type = ['image/jpeg', 'image/jpg', 'image/png', 'image/svg']
       const isJPG = type.includes(file.type)
       // 检验文件格式
       if (!isJPG) {
@@ -184,15 +195,15 @@ export default {
         // 获取光标所在位置
         let length = quill.getSelection().index
         // 插入图片  res.url为服务器返回的图片地址
-        quill.insertEmbed(length, "image", process.env.VUE_APP_BASE_API + res.fileName)
+        quill.insertEmbed(length, 'image', process.env.VUE_APP_BASE_API + res.fileName)
         // 调整光标到最后
         quill.setSelection(length + 1)
       } else {
-        this.$message.error("图片插入失败")
+        this.$message.error('图片插入失败')
       }
     },
     handleUploadError() {
-      this.$message.error("图片插入失败")
+      this.$message.error('图片插入失败')
     },
     // 复制粘贴图片处理
     handlePasteCapture(e) {
@@ -210,14 +221,16 @@ export default {
     },
     insertImage(file) {
       const formData = new FormData()
-      formData.append("file", file)
+      formData.append('file', file)
       axios.post(this.uploadUrl, formData, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          'Content-Type': 'multipart/form-data',
           Authorization: this.headers.Authorization
         }
       }).then(res => {
         this.handleUploadSuccess(res.data)
+      }).catch(() => {
+        this.handleUploadError()
       })
     }
   }

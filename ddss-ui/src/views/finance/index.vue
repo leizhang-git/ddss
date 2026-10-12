@@ -1,91 +1,466 @@
 <template>
   <div class="app-container finance-page">
-    <el-card shadow="never" class="toolbar-card">
+    <el-card
+      shadow="never"
+      class="toolbar-card"
+    >
       <div class="toolbar">
         <div class="toolbar-group">
-          <el-button v-hasPermi="['finance:add']" icon="el-icon-plus" plain size="mini" type="primary" @click="handleAdd">新增</el-button>
-          <el-button v-hasPermi="['finance:edit']" :disabled="single" icon="el-icon-edit" plain size="mini" type="success" @click="handleUpdate">修改</el-button>
-          <el-button v-hasPermi="['finance:remove']" :disabled="multiple" icon="el-icon-delete" plain size="mini" type="danger" @click="handleDelete">删除</el-button>
+          <el-button
+            v-hasPermi="['finance:add']"
+            icon="el-icon-plus"
+            plain
+            size="mini"
+            type="primary"
+            @click="handleAdd"
+          >
+            新增
+          </el-button>
+          <el-button
+            v-hasPermi="['finance:edit']"
+            :disabled="single"
+            icon="el-icon-edit"
+            plain
+            size="mini"
+            type="success"
+            @click="handleUpdate"
+          >
+            修改
+          </el-button>
+          <el-button
+            v-hasPermi="['finance:remove']"
+            :disabled="multiple"
+            icon="el-icon-delete"
+            plain
+            size="mini"
+            type="danger"
+            @click="handleDelete"
+          >
+            删除
+          </el-button>
         </div>
-        <el-divider direction="vertical"></el-divider>
+        <el-divider direction="vertical" />
         <div class="toolbar-group">
-          <el-popover placement="bottom" width="200" trigger="click" title="列设置">
+          <el-popover
+            placement="bottom"
+            width="200"
+            trigger="click"
+            title="列设置"
+          >
             <el-checkbox-group v-model="visibleCols">
-              <el-checkbox v-for="c in allCols" :key="c.key" :label="c.key" style="display:block;margin:4px 0">{{ c.label }}</el-checkbox>
+              <el-checkbox
+                v-for="c in allCols"
+                :key="c.key"
+                :label="c.key"
+                style="display:block;margin:4px 0"
+              >
+                {{ c.label }}
+              </el-checkbox>
             </el-checkbox-group>
-            <el-button slot="reference" icon="el-icon-menu" plain size="mini">列</el-button>
+            <el-button
+              slot="reference"
+              icon="el-icon-menu"
+              plain
+              size="mini"
+            >
+              列
+            </el-button>
           </el-popover>
-          <el-button icon="el-icon-refresh" plain size="mini" @click="getList">刷新</el-button>
-          <el-button v-hasPermi="['finance:list']" icon="el-icon-download" plain size="mini" type="warning" @click="handleExport">导出</el-button>
+          <el-button
+            icon="el-icon-refresh"
+            plain
+            size="mini"
+            @click="getList"
+          >
+            刷新
+          </el-button>
+          <el-button
+            v-hasPermi="['finance:list']"
+            icon="el-icon-download"
+            plain
+            size="mini"
+            type="warning"
+            @click="handleExport"
+          >
+            导出
+          </el-button>
         </div>
       </div>
     </el-card>
 
-    <el-card shadow="never" class="table-card">
+    <el-card
+      shadow="never"
+      class="table-card"
+    >
       <div class="table-wrapper">
-        <el-table ref="table" v-loading="loading" :data="sortedList" stripe size="small"
-          :height="tableHeight" show-summary :summary-method="getSummaries"
-          @selection-change="handleSelectionChange" @sort-change="handleSort" :default-sort="{prop:'repaymentDay',order:'ascending'}">
-          <el-table-column type="selection" width="55"/>
-          <el-table-column label="名称" prop="creditorName" width="180" sortable="custom" fixed="left" show-overflow-tooltip v-if="vis('name')"/>
-          <el-table-column label="便宜" width="100" sortable="custom" align="right" v-if="vis('cheap')"><template slot-scope="s"><span class="amt-positive">{{ cheap(s.row) }}</span></template></el-table-column>
-          <el-table-column label="提前结清" prop="earlySettlementAmount" width="110" sortable="custom" align="right" v-if="vis('early')"/>
-          <el-table-column label="总额" width="110" sortable="custom" align="right" v-if="vis('total')"><template slot-scope="s"><span class="amt-bold">{{ totalRepay(s.row) }}</span></template></el-table-column>
-          <el-table-column label="日期" prop="repaymentStartDate" width="105" sortable="custom" align="center" v-if="vis('date')"/>
-          <el-table-column label="几号" prop="repaymentDay" width="75" sortable="custom" align="center" v-if="vis('day')"/>
+        <el-table
+          ref="table"
+          v-loading="loading"
+          :data="sortedList"
+          stripe
+          size="small"
+          :height="tableHeight"
+          show-summary
+          :summary-method="getSummaries"
+          :default-sort="{prop:'repaymentDay',order:'ascending'}"
+          @selection-change="handleSelectionChange"
+          @sort-change="handleSort"
+        >
+          <el-table-column
+            type="selection"
+            width="55"
+          />
+          <el-table-column
+            v-if="vis('name')"
+            label="名称"
+            prop="creditorName"
+            width="180"
+            sortable="custom"
+            fixed="left"
+            show-overflow-tooltip
+          />
+          <el-table-column
+            v-if="vis('cheap')"
+            label="便宜"
+            width="100"
+            sortable="custom"
+            align="right"
+          >
+            <template slot-scope="s">
+              <span class="amt-positive">{{ cheap(s.row) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="vis('early')"
+            label="提前结清"
+            prop="earlySettlementAmount"
+            width="110"
+            sortable="custom"
+            align="right"
+          />
+          <el-table-column
+            v-if="vis('total')"
+            label="总额"
+            width="110"
+            sortable="custom"
+            align="right"
+          >
+            <template slot-scope="s">
+              <span class="amt-bold">{{ totalRepay(s.row) }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            v-if="vis('date')"
+            label="日期"
+            prop="repaymentStartDate"
+            width="105"
+            sortable="custom"
+            align="center"
+          />
+          <el-table-column
+            v-if="vis('day')"
+            label="几号"
+            prop="repaymentDay"
+            width="75"
+            sortable="custom"
+            align="center"
+          />
           <template v-if="vis('months')">
-            <el-table-column v-for="m in months" :key="m" :label="m" width="88" align="center">
-              <template slot-scope="s"><span :class="getCellVal(s.row,m)>0?'cell-val':'cell-zero'" @dblclick="startEdit(s.row,m)">{{ getCellVal(s.row,m)||0 }}</span></template>
+            <el-table-column
+              v-for="m in months"
+              :key="m"
+              :label="m"
+              width="88"
+              align="center"
+            >
+              <template slot-scope="s">
+                <span
+                  :class="getCellVal(s.row,m)>0?'cell-val':'cell-zero'"
+                  @dblclick="startEdit(s.row,m)"
+                >{{ getCellVal(s.row,m)||0 }}</span>
+              </template>
             </el-table-column>
           </template>
-          <el-table-column label="剩余" prop="remainingAmount" width="110" sortable="custom" align="right" v-if="vis('remain')"/>
-          <el-table-column label="状态" width="70" align="center" fixed="right" v-if="vis('status')">
+          <el-table-column
+            v-if="vis('remain')"
+            label="剩余"
+            prop="remainingAmount"
+            width="110"
+            sortable="custom"
+            align="right"
+          />
+          <el-table-column
+            v-if="vis('status')"
+            label="状态"
+            width="70"
+            align="center"
+            fixed="right"
+          >
             <template slot-scope="s">
-              <el-tag v-if="s.row.status==='0'" type="warning" size="mini" effect="plain">还款中</el-tag>
-              <el-tag v-else-if="s.row.status==='1'" type="success" size="mini" effect="plain">已结清</el-tag>
-              <el-tag v-else-if="s.row.status==='2'" type="danger" size="mini" effect="plain">逾期</el-tag>
+              <el-tag
+                v-if="s.row.status==='0'"
+                type="warning"
+                size="mini"
+                effect="plain"
+              >
+                还款中
+              </el-tag>
+              <el-tag
+                v-else-if="s.row.status==='1'"
+                type="success"
+                size="mini"
+                effect="plain"
+              >
+                已结清
+              </el-tag>
+              <el-tag
+                v-else-if="s.row.status==='2'"
+                type="danger"
+                size="mini"
+                effect="plain"
+              >
+                逾期
+              </el-tag>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </el-card>
 
-    <el-dialog title="编辑金额" :visible.sync="cellEdit.open" width="300px" append-to-body>
-      <el-form label-width="70px" @submit.native.prevent="saveCell">
-        <el-form-item label="月份"><el-input :value="cellEdit.month" readonly/></el-form-item>
-        <el-form-item label="金额"><el-input-number v-model="cellEdit.val" :min="0" :precision="2" style="width:100%" controls-position="right" ref="cellInput"/></el-form-item>
+    <el-dialog
+      title="编辑金额"
+      :visible.sync="cellEdit.open"
+      width="300px"
+      append-to-body
+    >
+      <el-form
+        label-width="70px"
+        @submit.native.prevent="saveCell"
+      >
+        <el-form-item label="月份">
+          <el-input
+            :value="cellEdit.month"
+            readonly
+          />
+        </el-form-item>
+        <el-form-item label="金额">
+          <el-input-number
+            ref="cellInput"
+            v-model="cellEdit.val"
+            :min="0"
+            :precision="2"
+            style="width:100%"
+            controls-position="right"
+          />
+        </el-form-item>
       </el-form>
-      <div slot="footer"><el-button type="primary" @click="saveCell">保存</el-button><el-button @click="cellEdit.open=false">取消</el-button></div>
+      <div slot="footer">
+        <el-button
+          type="primary"
+          @click="saveCell"
+        >
+          保存
+        </el-button><el-button @click="cellEdit.open=false">
+          取消
+        </el-button>
+      </div>
     </el-dialog>
 
-    <el-dialog :title="formTitle" :visible.sync="formOpen" width="750px" append-to-body :close-on-click-modal="false">
-      <el-form ref="form" :model="form" :rules="rules" label-width="90px">
+    <el-dialog
+      :title="formTitle"
+      :visible.sync="formOpen"
+      width="750px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="90px"
+      >
         <el-row :gutter="20">
-          <el-col :span="12"><el-form-item label="名称" prop="creditorName"><el-input v-model="form.creditorName"/></el-form-item></el-col>
-          <el-col :span="12"><el-form-item label="总额"><el-input-number v-model="form.loanAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="12">
+            <el-form-item
+              label="名称"
+              prop="creditorName"
+            >
+              <el-input v-model="form.creditorName" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="总额">
+              <el-input-number
+                v-model="form.loanAmount"
+                :min="0"
+                :precision="2"
+                style="width:100%"
+                controls-position="right"
+                @change="autoCalc"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8"><el-form-item label="提前结清"><el-input-number v-model="form.earlySettlementAmount" :min="0" :precision="2" style="width:100%" controls-position="right"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="便宜"><el-input :value="cheap(form)" readonly style="font-weight:bold;color:#34c759"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="月还款"><el-input-number v-model="form.monthlyPayment" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="8">
+            <el-form-item label="提前结清">
+              <el-input-number
+                v-model="form.earlySettlementAmount"
+                :min="0"
+                :precision="2"
+                style="width:100%"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="便宜">
+              <el-input
+                :value="cheap(form)"
+                readonly
+                style="font-weight:bold;color:#34c759"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="月还款">
+              <el-input-number
+                v-model="form.monthlyPayment"
+                :min="0"
+                :precision="2"
+                style="width:100%"
+                controls-position="right"
+                @change="autoCalc"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8"><el-form-item label="开始日期"><el-date-picker v-model="form.repaymentStartDate" type="date" value-format="yyyy-MM-dd" style="width:100%" @change="autoCalc"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="几号还"><el-input-number v-model="form.repaymentDay" :min="1" :max="31" style="width:100%" controls-position="right"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="期限(月)"><el-input-number v-model="form.loanTerm" :min="0" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="8">
+            <el-form-item label="开始日期">
+              <el-date-picker
+                v-model="form.repaymentStartDate"
+                type="date"
+                value-format="yyyy-MM-dd"
+                style="width:100%"
+                @change="autoCalc"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="几号还">
+              <el-input-number
+                v-model="form.repaymentDay"
+                :min="1"
+                :max="31"
+                style="width:100%"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="期限(月)">
+              <el-input-number
+                v-model="form.loanTerm"
+                :min="0"
+                style="width:100%"
+                controls-position="right"
+                @change="autoCalc"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8"><el-form-item label="利率(%)"><el-input-number v-model="form.interestRate" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="利息总额"><el-input-number v-model="form.interestAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="已还"><el-input-number v-model="form.paidAmount" :min="0" :precision="2" style="width:100%" controls-position="right" @change="autoCalc"/></el-form-item></el-col>
+          <el-col :span="8">
+            <el-form-item label="利率(%)">
+              <el-input-number
+                v-model="form.interestRate"
+                :min="0"
+                :precision="2"
+                style="width:100%"
+                controls-position="right"
+                @change="autoCalc"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="利息总额">
+              <el-input-number
+                v-model="form.interestAmount"
+                :min="0"
+                :precision="2"
+                style="width:100%"
+                controls-position="right"
+                @change="autoCalc"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="已还">
+              <el-input-number
+                v-model="form.paidAmount"
+                :min="0"
+                :precision="2"
+                style="width:100%"
+                controls-position="right"
+                @change="autoCalc"
+              />
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row :gutter="20">
-          <el-col :span="8"><el-form-item label="剩余未还"><el-input-number v-model="form.remainingAmount" :min="0" :precision="2" style="width:100%" controls-position="right"/></el-form-item></el-col>
-          <el-col :span="8"><el-form-item label="状态" prop="status"><el-select v-model="form.status" style="width:100%"><el-option label="还款中" value="0"/><el-option label="已结清" value="1"/><el-option label="逾期" value="2"/></el-select></el-form-item></el-col>
+          <el-col :span="8">
+            <el-form-item label="剩余未还">
+              <el-input-number
+                v-model="form.remainingAmount"
+                :min="0"
+                :precision="2"
+                style="width:100%"
+                controls-position="right"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item
+              label="状态"
+              prop="status"
+            >
+              <el-select
+                v-model="form.status"
+                style="width:100%"
+              >
+                <el-option
+                  label="还款中"
+                  value="0"
+                /><el-option
+                  label="已结清"
+                  value="1"
+                /><el-option
+                  label="逾期"
+                  value="2"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
-        <el-form-item label="备注"><el-input v-model="form.remark" type="textarea" :rows="2"/></el-form-item>
+        <el-form-item label="备注">
+          <el-input
+            v-model="form.remark"
+            type="textarea"
+            :rows="2"
+          />
+        </el-form-item>
       </el-form>
-      <div slot="footer"><el-button type="primary" @click="submitForm">确定</el-button><el-button @click="formOpen=false">取消</el-button></div>
+      <div slot="footer">
+        <el-button
+          type="primary"
+          @click="submitForm"
+        >
+          确定
+        </el-button><el-button @click="formOpen=false">
+          取消
+        </el-button>
+      </div>
     </el-dialog>
   </div>
 </template>

@@ -1,46 +1,84 @@
 <template>
   <div class="navbar">
     <div class="navbar-left">
-      <div class="hamburger" @click="toggleSideBar">
+      <div
+        class="hamburger"
+        @click="toggleSideBar"
+      >
         <i :class="['hamburger-icon', sidebar.opened ? 'is-active' : '']">
-          <span></span><span></span><span></span>
+          <span /><span /><span />
         </i>
       </div>
-      <breadcrumb v-if="!topNav" class="breadcrumb" />
-      <top-nav v-if="topNav" class="top-nav" />
+      <breadcrumb
+        v-if="!topNav"
+        class="breadcrumb"
+      />
+      <top-nav
+        v-if="topNav"
+        class="top-nav"
+      />
     </div>
 
     <div class="navbar-right">
-      <el-tooltip content="全屏" placement="bottom" :open-delay="300">
-        <div class="nav-icon-btn" @click="toggleFullscreen">
-          <i class="el-icon-full-screen"></i>
+      <el-tooltip
+        content="全屏"
+        placement="bottom"
+        :open-delay="300"
+      >
+        <div
+          class="nav-icon-btn"
+          @click="toggleFullscreen"
+        >
+          <i class="el-icon-full-screen" />
         </div>
       </el-tooltip>
 
-      <el-tooltip content="布局设置" placement="bottom" :open-delay="300">
-        <div class="nav-icon-btn" @click="setLayout">
-          <i class="el-icon-setting"></i>
+      <el-tooltip
+        content="布局设置"
+        placement="bottom"
+        :open-delay="300"
+      >
+        <div
+          class="nav-icon-btn"
+          @click="setLayout"
+        >
+          <i class="el-icon-setting" />
         </div>
       </el-tooltip>
 
-      <el-dropdown trigger="click" @command="handleCommand" class="user-dropdown">
+      <el-dropdown
+        trigger="click"
+        class="user-dropdown"
+        @command="handleCommand"
+      >
         <div class="user-trigger">
-          <img :src="avatar" class="user-avatar" />
+          <img
+            :src="avatar"
+            class="user-avatar"
+          >
           <span class="user-name">{{ nickName }}</span>
-          <i class="el-icon-arrow-down user-arrow"></i>
+          <i class="el-icon-arrow-down user-arrow" />
         </div>
         <el-dropdown-menu slot="dropdown">
           <div class="dropdown-header">
-            <img :src="avatar" class="dropdown-avatar" />
+            <img
+              :src="avatar"
+              class="dropdown-avatar"
+            >
             <div>
-              <div class="dropdown-name">{{ nickName }}</div>
+              <div class="dropdown-name">
+                {{ nickName }}
+              </div>
             </div>
           </div>
           <el-dropdown-item command="profile">
-            <i class="el-icon-user"></i> 个人中心
+            <i class="el-icon-user" /> 个人中心
           </el-dropdown-item>
-          <el-dropdown-item divided command="logout">
-            <i class="el-icon-switch-button"></i> 退出登录
+          <el-dropdown-item
+            divided
+            command="logout"
+          >
+            <i class="el-icon-switch-button" /> 退出登录
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -54,8 +92,8 @@ import Breadcrumb from '@/components/Breadcrumb'
 import TopNav from '@/components/TopNav'
 
 export default {
-  emits: ['setLayout'],
   components: { Breadcrumb, TopNav },
+  emits: ['setLayout'],
   computed: {
     ...mapGetters(['sidebar', 'avatar', 'nickName', 'device']),
     setting() {

@@ -1,74 +1,244 @@
 <template>
   <div class="app-container sql-record-page">
     <!-- 搜索栏 -->
-    <el-form v-show="showSearch" ref="queryForm" :inline="true" :model="queryParams" size="small">
-      <el-form-item label="作用" prop="purpose">
-        <el-input v-model="queryParams.purpose" clearable placeholder="请输入作用关键词" style="width: 240px" @keyup.enter.native="handleQuery" />
+    <el-form
+      v-show="showSearch"
+      ref="queryForm"
+      :inline="true"
+      :model="queryParams"
+      size="small"
+    >
+      <el-form-item
+        label="作用"
+        prop="purpose"
+      >
+        <el-input
+          v-model="queryParams.purpose"
+          clearable
+          placeholder="请输入作用关键词"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
-      <el-form-item label="SQL内容" prop="sqlContent">
-        <el-input v-model="queryParams.sqlContent" clearable placeholder="请输入SQL关键词" style="width: 240px" @keyup.enter.native="handleQuery" />
+      <el-form-item
+        label="SQL内容"
+        prop="sqlContent"
+      >
+        <el-input
+          v-model="queryParams.sqlContent"
+          clearable
+          placeholder="请输入SQL关键词"
+          style="width: 240px"
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
-        <el-button icon="el-icon-search" size="mini" type="primary" @click="handleQuery">搜索</el-button>
-        <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button
+          icon="el-icon-search"
+          size="mini"
+          type="primary"
+          @click="handleQuery"
+        >
+          搜索
+        </el-button>
+        <el-button
+          icon="el-icon-refresh"
+          size="mini"
+          @click="resetQuery"
+        >
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
 
     <!-- 工具栏 -->
-    <el-row :gutter="10" class="mb8">
+    <el-row
+      :gutter="10"
+      class="mb8"
+    >
       <el-col :span="1.5">
-        <el-button v-hasPermi="['system:sql:add']" icon="el-icon-plus" plain size="mini" type="primary" @click="handleAdd">新增</el-button>
+        <el-button
+          v-hasPermi="['system:sql:add']"
+          icon="el-icon-plus"
+          plain
+          size="mini"
+          type="primary"
+          @click="handleAdd"
+        >
+          新增
+        </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button v-hasPermi="['system:sql:edit']" :disabled="single" icon="el-icon-edit" plain size="mini" type="success" @click="handleUpdate">修改</el-button>
+        <el-button
+          v-hasPermi="['system:sql:edit']"
+          :disabled="single"
+          icon="el-icon-edit"
+          plain
+          size="mini"
+          type="success"
+          @click="handleUpdate"
+        >
+          修改
+        </el-button>
       </el-col>
       <el-col :span="1.5">
-        <el-button v-hasPermi="['system:sql:remove']" :disabled="multiple" icon="el-icon-delete" plain size="mini" type="danger" @click="handleDelete">删除</el-button>
+        <el-button
+          v-hasPermi="['system:sql:remove']"
+          :disabled="multiple"
+          icon="el-icon-delete"
+          plain
+          size="mini"
+          type="danger"
+          @click="handleDelete"
+        >
+          删除
+        </el-button>
       </el-col>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" />
+      <right-toolbar
+        :showSearch.sync="showSearch"
+        @queryTable="getList"
+      />
     </el-row>
 
     <!-- 数据表格 -->
-    <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="作用" prop="purpose" min-width="200" show-overflow-tooltip />
-      <el-table-column label="SQL" prop="sqlContent" min-width="400" show-overflow-tooltip>
+    <el-table
+      v-loading="loading"
+      :data="list"
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        type="selection"
+        width="55"
+        align="center"
+      />
+      <el-table-column
+        label="作用"
+        prop="purpose"
+        min-width="200"
+        show-overflow-tooltip
+      />
+      <el-table-column
+        label="SQL"
+        prop="sqlContent"
+        min-width="400"
+        show-overflow-tooltip
+      >
         <template slot-scope="scope">
           <code class="sql-preview">{{ scope.row.sqlContent }}</code>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" prop="createTime" width="160" align="center">
+      <el-table-column
+        label="创建时间"
+        prop="createTime"
+        width="160"
+        align="center"
+      >
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="200" align="center" class-name="small-padding fixed-width">
+      <el-table-column
+        label="操作"
+        width="200"
+        align="center"
+        class-name="small-padding fixed-width"
+      >
         <template slot-scope="scope">
-          <el-button v-hasPermi="['system:sql:edit']" icon="el-icon-edit" size="mini" type="text" @click="handleUpdate(scope.row)">修改</el-button>
-          <el-button v-hasPermi="['system:sql:remove']" icon="el-icon-delete" size="mini" type="text" @click="handleDelete(scope.row)">删除</el-button>
-          <el-button icon="el-icon-document-copy" size="mini" type="text" @click="handleCopy(scope.row)">复制</el-button>
+          <el-button
+            v-hasPermi="['system:sql:edit']"
+            icon="el-icon-edit"
+            size="mini"
+            type="text"
+            @click="handleUpdate(scope.row)"
+          >
+            修改
+          </el-button>
+          <el-button
+            v-hasPermi="['system:sql:remove']"
+            icon="el-icon-delete"
+            size="mini"
+            type="text"
+            @click="handleDelete(scope.row)"
+          >
+            删除
+          </el-button>
+          <el-button
+            icon="el-icon-document-copy"
+            size="mini"
+            type="text"
+            @click="handleCopy(scope.row)"
+          >
+            复制
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total > 0" :limit.sync="queryParams.pageSize" :page.sync="queryParams.pageNum" :total="total" @pagination="getList" />
+    <pagination
+      v-show="total > 0"
+      :limit.sync="queryParams.pageSize"
+      :page.sync="queryParams.pageNum"
+      :total="total"
+      @pagination="getList"
+    />
 
     <!-- 新增/修改对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body :close-on-click-modal="false">
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="作用" prop="purpose">
-          <el-input v-model="form.purpose" placeholder="请简要描述这条SQL的作用" />
+    <el-dialog
+      :title="title"
+      :visible.sync="open"
+      width="700px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
+      <el-form
+        ref="form"
+        :model="form"
+        :rules="rules"
+        label-width="80px"
+      >
+        <el-form-item
+          label="作用"
+          prop="purpose"
+        >
+          <el-input
+            v-model="form.purpose"
+            placeholder="请简要描述这条SQL的作用"
+          />
         </el-form-item>
-        <el-form-item label="SQL" prop="sqlContent">
-          <el-input v-model="form.sqlContent" type="textarea" :rows="12" placeholder="请输入SQL语句" style="font-family: 'SF Mono', Consolas, monospace; font-size: 13px" />
+        <el-form-item
+          label="SQL"
+          prop="sqlContent"
+        >
+          <el-input
+            v-model="form.sqlContent"
+            type="textarea"
+            :rows="12"
+            placeholder="请输入SQL语句"
+            style="font-family: 'SF Mono', Consolas, monospace; font-size: 13px"
+          />
         </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" :rows="2" placeholder="备注（可选）" />
+        <el-form-item
+          label="备注"
+          prop="remark"
+        >
+          <el-input
+            v-model="form.remark"
+            type="textarea"
+            :rows="2"
+            placeholder="备注（可选）"
+          />
         </el-form-item>
       </el-form>
       <div slot="footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
-        <el-button @click="cancel">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="submitForm"
+        >
+          确 定
+        </el-button>
+        <el-button @click="cancel">
+          取 消
+        </el-button>
       </div>
     </el-dialog>
   </div>
@@ -160,15 +330,15 @@ export default {
         if (!valid) return
         if (this.form.sqlId != null) {
           updateSqlRecord(this.form).then(() => {
-          this.$message.success('修改成功')
-          this.open = false
-          this.getList()
+            this.$message.success('修改成功')
+            this.open = false
+            this.getList()
           })
         } else {
           addSqlRecord(this.form).then(() => {
-          this.$message.success('新增成功')
-          this.open = false
-          this.getList()
+            this.$message.success('新增成功')
+            this.open = false
+            this.getList()
           })
         }
       })
