@@ -29,6 +29,15 @@
         </dependency>
         <dependency>
             <groupId>com.ddss</groupId>
+            <artifactId>ddss-domain</artifactId>
+            <version>${ddss.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.ddss</groupId>
+            <artifactId>ddss-application</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ddss</groupId>
             <artifactId>ddss-framework</artifactId>
         </dependency>
 

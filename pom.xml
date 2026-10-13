@@ -19,7 +19,7 @@
         <ruoyi.version>3.9.0</ruoyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
         <spring-boot.version>2.5.15</spring-boot.version>
         <druid.version>1.2.23</druid.version>
@@ -309,6 +309,18 @@
                 <version>${ddss.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.ddss</groupId>
+                <artifactId>ddss-domain</artifactId>
+                <version>${ddss.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ddss</groupId>
+                <artifactId>ddss-application</artifactId>
+                <version>${ddss.version}</version>
+            </dependency>
+
             <!-- 对外契约总集：全部业务域实体/Service/Mapper 接口 -->
             <dependency>
                 <groupId>com.ddss</groupId>
@@ -347,6 +359,8 @@
     </dependencyManagement>
 
     <modules>
+        <module>ddss-domain</module>
+        <module>ddss-application</module>
         <module>ddss-bootstrap</module>
         <module>ddss-common</module>
         <module>ddss-framework</module>

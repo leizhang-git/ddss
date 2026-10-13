@@ -1,5 +1,6 @@
 package com.ddss.workflow.vo;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -12,7 +13,7 @@ public class WorkflowTaskVO {
     private Long leaveId;
     private String applicant;
     private String applyUserName;
-    private Integer leaveDays;
+    private BigDecimal leaveDays;
     private LocalDate startDate;
     private String reason;
     private String leader;
@@ -23,7 +24,7 @@ public class WorkflowTaskVO {
 
     public WorkflowTaskVO() {}
     public WorkflowTaskVO(String taskId, String taskName, String processInstanceId, Date taskCreateTime, Long leaveId,
-                          String applicant, String applyUserName, Integer leaveDays, LocalDate startDate, String reason,
+                          String applicant, String applyUserName, BigDecimal leaveDays, LocalDate startDate, String reason,
                           String leader, String boss, Boolean approved, String comment, Date finishTime) {
         this.taskId = taskId; this.taskName = taskName; this.processInstanceId = processInstanceId;
         this.taskCreateTime = taskCreateTime; this.leaveId = leaveId; this.applicant = applicant;
@@ -45,8 +46,8 @@ public class WorkflowTaskVO {
     public void setApplicant(String value) { applicant = value; }
     public String getApplyUserName() { return applyUserName; }
     public void setApplyUserName(String value) { applyUserName = value; }
-    public Integer getLeaveDays() { return leaveDays; }
-    public void setLeaveDays(Integer value) { leaveDays = value; }
+    public BigDecimal getLeaveDays() { return leaveDays; }
+    public void setLeaveDays(BigDecimal value) { leaveDays = value; }
     public LocalDate getStartDate() { return startDate; }
     public void setStartDate(LocalDate value) { startDate = value; }
     public String getReason() { return reason; }

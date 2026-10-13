@@ -1,5 +1,9 @@
 import request from '@/utils/request'
 
+const uploadConfig = {
+  headers: { 'Content-Type': 'multipart/form-data' }
+}
+
 // ==================== 请假申请 ====================
 
 // 我的请假申请列表
@@ -89,7 +93,8 @@ export function deployDefinition(data) {
   return request({
     url: '/workflow/definition/deploy',
     method: 'post',
-    data: data
+    data: data,
+    ...uploadConfig
   })
 }
 
@@ -102,10 +107,11 @@ export function getDefinitionXml(deploymentId, resourceName) {
   })
 }
 
-// 删除流程定义
-export function delDefinition(deploymentId) {
+// 删除流程定义（多个部署 ID 以逗号分隔并沿用路径参数）
+export function delDefinition(deploymentIds) {
+  const ids = Array.isArray(deploymentIds) ? deploymentIds.join(',') : deploymentIds
   return request({
-    url: '/workflow/definition/' + deploymentId,
+    url: '/workflow/definition/' + ids,
     method: 'delete'
   })
 }

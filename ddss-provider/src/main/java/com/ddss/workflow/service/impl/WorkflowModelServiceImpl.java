@@ -152,7 +152,7 @@ public class WorkflowModelServiceImpl implements WorkflowModelService {
             update.setUpdateTime(LocalDateTime.now());
             flowDesignMapper.updateById(update);
         } catch (FlowableException e) {
-            throw new ServiceException("流程发布失败：" + e.getMessage());
+            throw new ServiceException("流程发布失败：" + e.getMessage(), e);
         }
         return true;
     }
@@ -183,7 +183,7 @@ public class WorkflowModelServiceImpl implements WorkflowModelService {
             XMLStreamReader reader = inputFactory.createXMLStreamReader(new StringReader(xmlContent));
             bpmnModel = new BpmnXMLConverter().convertToBpmnModel(reader);
         } catch (FlowableException | javax.xml.stream.XMLStreamException e) {
-            throw new ServiceException("BPMN 文件解析失败，请确认文件内容合法");
+            throw new ServiceException("BPMN 文件解析失败，请确认文件内容合法", e);
         }
         Process process = bpmnModel == null ? null : bpmnModel.getMainProcess();
         if (process == null || StringUtils.isEmpty(process.getId())) {
@@ -222,7 +222,7 @@ public class WorkflowModelServiceImpl implements WorkflowModelService {
         try (InputStream in = new ClassPathResource(TEMPLATE_PATH).getInputStream()) {
             return StreamUtils.copyToString(in, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new ServiceException("加载流程模板失败");
+            throw new ServiceException("加载流程模板失败", e);
         }
     }
 

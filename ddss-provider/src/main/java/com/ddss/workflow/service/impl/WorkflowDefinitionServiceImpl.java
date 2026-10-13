@@ -1,5 +1,7 @@
 package com.ddss.workflow.service.impl;
 
+import com.ddss.application.workflow.DeleteWorkflowDeployments;
+import com.ddss.application.workflow.DeploymentDeletionResult;
 import com.ddss.workflow.service.WorkflowDefinitionService;
 
 import com.ddss.common.exception.ServiceException;
@@ -7,7 +9,6 @@ import com.ddss.common.utils.StringUtils;
 import com.ddss.workflow.vo.WorkflowDefinitionVO;
 import com.ddss.workflow.vo.WorkflowPage;
 import org.flowable.engine.RepositoryService;
-import org.flowable.engine.RuntimeService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class WorkflowDefinitionServiceImpl implements WorkflowDefinitionService 
     private RepositoryService repositoryService;
 
     @Autowired
-    private RuntimeService runtimeService;
+    private DeleteWorkflowDeployments deleteWorkflowDeployments;
 
     @Override
     public WorkflowPage<WorkflowDefinitionVO> selectDefinitionList(int pageNum, int pageSize) {
@@ -60,19 +61,17 @@ public class WorkflowDefinitionServiceImpl implements WorkflowDefinitionService 
     }
 
     @Override
-    public void deleteDefinition(String deploymentId) {
-        if (StringUtils.isEmpty(deploymentId)) {
-            throw new ServiceException("部署ID不能为空");
+    @org.springframework.transaction.annotation.Transactional(rollbackFor = Exception.class)
+    public void deleteDefinition(String deploymentIds) {
+        DeploymentDeletionResult result = deleteWorkflowDeployments.execute(deploymentIds);
+        if (result instanceof DeploymentDeletionResult.Rejected) {
+            DeploymentDeletionResult.Rejected rejection = (DeploymentDeletionResult.Rejected) result;
+            throw new ServiceException(switch (rejection.reason()) {
+                case DEPLOYMENT_ID_REQUIRED -> "部署ID不能为空";
+                case DEPLOYMENT_NOT_FOUND -> "流程部署不存在: " + rejection.deploymentId();
+                case RUNNING_INSTANCES -> "流程定义存在运行中的实例，无法删除";
+            });
         }
-        for (ProcessDefinition definition : repositoryService.createProcessDefinitionQuery()
-                .deploymentId(deploymentId).list()) {
-            if (runtimeService.createProcessInstanceQuery()
-                    .processDefinitionId(definition.getId()).count() > 0) {
-                throw new ServiceException("流程定义存在运行中的实例，无法删除");
-            }
-        }
-        // 级联删除历史
-        repositoryService.deleteDeployment(deploymentId, true);
     }
 
     @Override
@@ -81,16 +80,12 @@ public class WorkflowDefinitionServiceImpl implements WorkflowDefinitionService 
         if (inputStream == null) {
             throw new ServiceException("未找到流程定义资源: " + resourceName);
         }
-        try {
-            return StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+        try (InputStream stream = inputStream) {
+            return StreamUtils.copyToString(stream, StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new ServiceException("读取流程定义内容失败");
-        } finally {
-            try {
-                inputStream.close();
-            } catch (Exception ignored) {
-                // ignore
-            }
+            ServiceException exception = new ServiceException("读取流程定义内容失败");
+            exception.initCause(e);
+            throw exception;
         }
     }
 

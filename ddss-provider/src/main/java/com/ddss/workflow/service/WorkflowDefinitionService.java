@@ -23,9 +23,9 @@ public interface WorkflowDefinitionService {
     String deployProcess(String fileName, String content);
 
     /**
-     * 删除流程定义（级联删除运行实例）
+     * 删除流程定义（级联删除历史；拒绝删除包含运行实例的任一部署）
      */
-    void deleteDefinition(String deploymentId);
+    void deleteDefinition(String deploymentIds);
 
     /**
      * 查看流程定义 XML 内容

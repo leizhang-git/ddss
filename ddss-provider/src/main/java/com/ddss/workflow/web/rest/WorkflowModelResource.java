@@ -129,7 +129,7 @@ public class WorkflowModelResource extends BaseController {
             if (e instanceof ServiceException) {
                 throw (ServiceException) e;
             }
-            throw new ServiceException("BPMN 文件导入失败");
+            throw new ServiceException("BPMN 文件导入失败", e);
         }
     }
 

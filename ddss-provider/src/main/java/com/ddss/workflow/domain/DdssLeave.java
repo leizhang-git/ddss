@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ public class DdssLeave {
     @TableField(value = "apply_user_name")
     private String applyUserName;
     @TableField(value = "leave_days")
-    private Integer leaveDays;
+    private BigDecimal leaveDays;
     @TableField(value = "start_date")
     private LocalDate startDate;
     @TableField(value = "reason")
@@ -42,7 +43,7 @@ public class DdssLeave {
 
     public DdssLeave() {}
 
-    public DdssLeave(Long leaveId, String applyUser, String applyUserName, Integer leaveDays, LocalDate startDate,
+    public DdssLeave(Long leaveId, String applyUser, String applyUserName, BigDecimal leaveDays, LocalDate startDate,
                      String reason, String leader, String boss, String processInstanceId, String status,
                      String createBy, LocalDateTime createTime, String updateBy, LocalDateTime updateTime) {
         this.leaveId = leaveId; this.applyUser = applyUser; this.applyUserName = applyUserName;
@@ -57,8 +58,8 @@ public class DdssLeave {
     public void setApplyUser(String value) { this.applyUser = value; }
     public String getApplyUserName() { return applyUserName; }
     public void setApplyUserName(String value) { this.applyUserName = value; }
-    public Integer getLeaveDays() { return leaveDays; }
-    public void setLeaveDays(Integer value) { this.leaveDays = value; }
+    public BigDecimal getLeaveDays() { return leaveDays; }
+    public void setLeaveDays(BigDecimal value) { this.leaveDays = value; }
     public LocalDate getStartDate() { return startDate; }
     public void setStartDate(LocalDate value) { this.startDate = value; }
     public String getReason() { return reason; }

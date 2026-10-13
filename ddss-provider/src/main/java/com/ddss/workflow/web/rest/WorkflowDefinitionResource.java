@@ -66,7 +66,9 @@ public class WorkflowDefinitionResource extends BaseController {
         try {
             content = new String(file.getBytes(), StandardCharsets.UTF_8);
         } catch (Exception e) {
-            throw new ServiceException("读取 BPMN 文件失败");
+            ServiceException exception = new ServiceException("读取 BPMN 文件失败");
+            exception.initCause(e);
+            throw exception;
         }
         String deploymentId = workflowDefinitionService.deployProcess(fileName, content);
         return AjaxResult.success("操作成功", (Object) deploymentId);
@@ -86,9 +88,9 @@ public class WorkflowDefinitionResource extends BaseController {
      */
     @Log(title = "流程定义", businessType = BusinessType.DELETE)
     @PreAuthorize("@ss.hasPermi('workflow:definition:remove')")
-    @DeleteMapping("/{deploymentId}")
-    public AjaxResult remove(@PathVariable String deploymentId) {
-        workflowDefinitionService.deleteDefinition(deploymentId);
+    @DeleteMapping("/{deploymentIds}")
+    public AjaxResult remove(@PathVariable String deploymentIds) {
+        workflowDefinitionService.deleteDefinition(deploymentIds);
         return success();
     }
 

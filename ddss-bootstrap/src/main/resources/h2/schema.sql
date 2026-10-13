@@ -381,7 +381,7 @@ CREATE TABLE ddss_leave (
   leave_id BIGINT NOT NULL AUTO_INCREMENT,
   apply_user VARCHAR(64) NOT NULL,
   apply_user_name VARCHAR(64) DEFAULT '',
-  leave_days INT DEFAULT NULL,
+  leave_days DECIMAL(4,1) DEFAULT NULL,
   start_date DATE DEFAULT NULL,
   reason VARCHAR(500) DEFAULT NULL,
   leader VARCHAR(64) DEFAULT NULL,

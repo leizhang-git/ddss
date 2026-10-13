@@ -274,6 +274,7 @@ export default {
       listTodo(this.todoParams).then(res => {
         this.todoList = res.rows
         this.todoTotal = res.total
+      }).catch(() => {}).finally(() => {
         this.loading = false
       })
     },
@@ -282,6 +283,7 @@ export default {
       listDone(this.doneParams).then(res => {
         this.doneList = res.rows
         this.doneTotal = res.total
+      }).catch(() => {}).finally(() => {
         this.doneLoading = false
       })
     },

@@ -81,7 +81,7 @@ CREATE TABLE `ddss_leave`  (
   `leave_id` bigint NOT NULL AUTO_INCREMENT COMMENT '请假单ID',
   `apply_user` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '申请人账号',
   `apply_user_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT '' COMMENT '申请人姓名',
-  `leave_days` int NULL DEFAULT NULL COMMENT '请假天数',
+  `leave_days` decimal(4,1) NULL DEFAULT NULL COMMENT '请假天数',
   `start_date` date NULL DEFAULT NULL COMMENT '开始日期',
   `reason` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '请假事由',
   `leader` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '一级审批人（部门经理）账号',

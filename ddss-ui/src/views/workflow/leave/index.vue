@@ -341,6 +341,7 @@ export default {
       listLeave(this.queryParams).then(res => {
         this.list = res.rows
         this.total = res.total
+      }).catch(() => {}).finally(() => {
         this.loading = false
       })
     },

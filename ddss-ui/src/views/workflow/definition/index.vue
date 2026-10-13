@@ -194,6 +194,7 @@ export default {
       listDefinition(this.queryParams).then(res => {
         this.list = res.rows
         this.total = res.total
+      }).catch(() => {}).finally(() => {
         this.loading = false
       })
     },
@@ -239,7 +240,7 @@ export default {
     handleDelete(row) {
       const deploymentIds = row.deploymentId ? [row.deploymentId] : this.ids
       this.$modal.confirm('确认删除选中的流程定义？存在运行中实例的流程将无法删除。').then(() => {
-        return delDefinition(deploymentIds.join(','))
+        return delDefinition(deploymentIds)
       }).then(() => {
         this.getList()
         this.$message.success('删除成功')

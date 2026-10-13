@@ -1,5 +1,9 @@
 import request from '@/utils/request'
 
+const uploadConfig = {
+  headers: { 'Content-Type': 'multipart/form-data' }
+}
+
 // 流程模型列表
 export function listModel(query) {
   return request({
@@ -81,6 +85,7 @@ export function importModel(data) {
   return request({
     url: '/workflow/model/import',
     method: 'post',
-    data: data
+    data: data,
+    ...uploadConfig
   })
 }
